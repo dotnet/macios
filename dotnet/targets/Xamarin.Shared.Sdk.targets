@@ -2971,6 +2971,9 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 		</_CollectItemsForPostProcessingDependsOn>
 	</PropertyGroup>
 	<Target Name="_CollectR2RFrameworksForPostProcessing" DependsOnTargets="_ComputeFrameworksToCreate;_PrepareR2RModules">
+		<ReadItemsFromFile File="@(_AppExtensionPostProcessingItemsPath)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0' And '@(_AppExtensionPostProcessingItemsPath->Count())' != '0'">
+			<Output TaskParameter="Items" ItemName="_AppExtensionPostProcessingItemsForR2RFrameworks" />
+		</ReadItemsFromFile>
 		<ItemGroup>
 			<!-- Add CoreCLR runtime -->
 			<_PostProcessingItem
@@ -2986,11 +2989,20 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 				<DSymName>%(_R2RModule.FrameworkName).framework.dSYM</DSymName>
 			</_PostProcessingItem>
 			<!-- App extension frameworks are copied into the container app. -->
-			<_AppExtensionR2RFramework Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true' And '%(_FrameworksFromAppExtensions.Extension)' == '.r2r'" />
-			<_PostProcessingItem Include="@(_AppExtensionR2RFramework->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+			<_AppExtensionR2RFrameworkForPostProcessing Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true' And '%(_FrameworksFromAppExtensions.Extension)' == '.r2r'" />
+			<_AppExtensionR2RFrameworkForPostProcessing Include="@(_AppExtensionPostProcessingItemsForR2RFrameworks)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0' And '$(IsAppExtension)' != 'true' And '%(_AppExtensionPostProcessingItemsForR2RFrameworks.Kind)' == 'Framework' And '%(_AppExtensionPostProcessingItemsForR2RFrameworks.Extension)' == '.r2r'" />
+			<_AppExtensionR2RFrameworkPostProcessingItem Include="@(_AppExtensionR2RFrameworkForPostProcessing->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
 				<Kind>Framework</Kind>
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
-			</_PostProcessingItem>
+				<NoSymbolStrip Condition="'%(_AppExtensionR2RFrameworkForPostProcessing.NoSymbolStrip)' == 'true'">true</NoSymbolStrip>
+				<NoDSymUtil Condition="'%(_AppExtensionR2RFrameworkForPostProcessing.NoDSymUtil)' == 'true'">true</NoDSymUtil>
+			</_AppExtensionR2RFrameworkPostProcessingItem>
+		</ItemGroup>
+		<RemoveDuplicates Inputs="@(_AppExtensionR2RFrameworkPostProcessingItem)">
+			<Output TaskParameter="Filtered" ItemName="_UniqueAppExtensionR2RFrameworkPostProcessingItem" />
+		</RemoveDuplicates>
+		<ItemGroup>
+			<_PostProcessingItem Include="@(_UniqueAppExtensionR2RFrameworkPostProcessingItem)" />
 		</ItemGroup>
 	</Target>
 

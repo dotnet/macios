@@ -797,6 +797,63 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", true)]
+		public void AppExtensionR2RFrameworkPostProcessingWithMultipleRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers, bool extensionOptsOutOfPostProcessing)
+		{
+			const string configuration = "Release";
+			const string frameworkName = "ExtensionProject.r2r";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GetProjectPath ("ExtensionConsumer", runtimeIdentifiers, platform, out var appPath, configuration: configuration);
+			var extensionProjectPath = GetProjectPath ("ExtensionProject", platform: platform);
+			Clean (extensionProjectPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["EnableCodeSigning"] = "false";
+			properties ["UseMonoRuntime"] = "false";
+			properties ["NoSymbolStrip"] = "false";
+			properties ["NoDSymUtil"] = "false";
+			properties ["CreateR2RFramework"] = "true";
+			var extensionProperties = GetDefaultProperties (runtimeIdentifiers);
+			extensionProperties ["Configuration"] = configuration;
+			extensionProperties ["EnableCodeSigning"] = "false";
+			extensionProperties ["UseMonoRuntime"] = "false";
+			extensionProperties ["CreateR2RFramework"] = "true";
+			extensionProperties ["NoSymbolStrip"] = extensionOptsOutOfPostProcessing ? "true" : "false";
+			extensionProperties ["NoDSymUtil"] = extensionOptsOutOfPostProcessing ? "true" : "false";
+			DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+			properties ["_BuildReferencedExtensionProjects"] = "false";
+
+			var result = DotNet.AssertBuild (projectPath, properties);
+
+			var frameworkDirectory = platform == ApplePlatform.MacCatalyst ? Path.Combine (appPath, "Contents", "Frameworks") : Path.Combine (appPath, "Frameworks");
+			var framework = Path.Combine (frameworkDirectory, frameworkName + ".framework", frameworkName);
+			var dsymDir = Path.Combine (Path.GetDirectoryName (appPath)!, frameworkName + ".framework.dSYM");
+			Assert.That (framework, Does.Exist, "Extension framework");
+			var frameworkItemSuffix = $"{frameworkName}.framework/{frameworkName}";
+			var appBundlePrefix = Path.GetFileName (appPath).Replace ('\\', '/') + "/";
+			var frameworkItems = GetPostProcessingItems (result.BinLogPath).Where (i => {
+				var itemSpec = i.ItemSpec.Replace ('\\', '/');
+				return itemSpec.StartsWith (appBundlePrefix, StringComparison.Ordinal) && itemSpec.EndsWith (frameworkItemSuffix, StringComparison.Ordinal) && !itemSpec.Contains ("/PlugIns/", StringComparison.Ordinal);
+			}).ToArray ();
+			Assert.That (frameworkItems.Length, Is.EqualTo (1), "Extension framework post-processing item");
+			if (extensionOptsOutOfPostProcessing) {
+				Assert.That (frameworkItems [0].GetMetadata ("NoSymbolStrip"), Is.EqualTo ("true"), "NoSymbolStrip metadata");
+				Assert.That (frameworkItems [0].GetMetadata ("NoDSymUtil"), Is.EqualTo ("true"), "NoDSymUtil metadata");
+				Assert.That (dsymDir, Does.Not.Exist, "Extension framework dSYM should not be generated");
+			} else {
+				Assert.That (dsymDir, Does.Exist, "Extension framework dSYM");
+				var frameworkUuids = AssertExecute ("xcrun", "dwarfdump", "--uuid", framework).ToString ().Split ('\n', StringSplitOptions.RemoveEmptyEntries).Select (line => line.Split (' ', StringSplitOptions.RemoveEmptyEntries) [1]).ToArray ();
+				var dsym = Path.Combine (dsymDir, "Contents", "Resources", "DWARF", frameworkName);
+				var dsymUuids = AssertExecute ("xcrun", "dwarfdump", "--uuid", dsym).ToString ().Split ('\n', StringSplitOptions.RemoveEmptyEntries).Select (line => line.Split (' ', StringSplitOptions.RemoveEmptyEntries) [1]).ToArray ();
+				Assert.That (dsymUuids, Is.EquivalentTo (frameworkUuids), "Extension framework dSYM UUIDs");
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "Release")]
 		public void BundleStructureDSyms (ApplePlatform platform, string runtimeIdentifiers, string configuration)

@@ -43,13 +43,3 @@ This prevents an earlier, unrelated crash from ending the wait too soon.
 Native samples do not guarantee managed method names. On physical devices,
 xharness collects crash reports, but these tools cannot inspect the app process.
 
-Run the focused parser and native-process tests with:
-
-```sh
-dotnet test tests/xharness.Tests/xharness.Tests.csproj
-```
-
-The native-process tests require macOS. They exercise a sleeping process,
-a stopped process, and rejection of a mismatched executable or start time.
-Their native stack reports are attached to the test results. This project is
-currently run manually, not by the CI test pipeline.

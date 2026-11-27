@@ -277,6 +277,9 @@ namespace Xharness {
 			// object that will take care of capturing and parsing the results
 			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
 
+			if (isSimulator && !await FindSimulatorAsync ())
+				return 1;
+
 			var testReporterTimeout = TimeSpan.FromMinutes (harness.Timeout * timeoutMultiplier);
 			var testReporter = testReporterFactory.Create (MainLog,
 				MainLog,
@@ -287,7 +290,7 @@ namespace Xharness {
 				AppInformation,
 				runMode,
 				harness.XmlJargon,
-				deviceName,
+				isSimulator ? simulator!.UDID : deviceName,
 				testReporterTimeout,
 				buildTask?.Logs?.Directory);
 
@@ -309,9 +312,6 @@ namespace Xharness {
 				args.Add (new DisableMemoryLimitsArgument ());
 
 			if (isSimulator) {
-				if (!await FindSimulatorAsync ())
-					return 1;
-
 				var stdout_log = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}.log", "Standard output");
 				var stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}.log", "Standard error");
 				args.Add (new SetStdoutArgument (stdout_log));
@@ -369,7 +369,6 @@ namespace Xharness {
 				timeoutCancellation.Cancel ();
 				if (timedOut) {
 					try {
-						await ProcessDiagnostics.CollectSimulatorLifecycleAsync (processManager, Logs, MainLog, simulator.UDID, AppInformation.BundleIdentifier, testReporterTimeout);
 						await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
 					} finally {
 						// Collect the app's stacks before cancelling mlaunch, which may also terminate the app.

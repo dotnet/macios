@@ -99,21 +99,32 @@ namespace Xharness {
 					return;
 				}
 
+				var exitTask = current.WaitForExitAsync ();
 				log.WriteLine ($"Sending SIGABRT to test app PID {pid} to request a crash report.");
 				await RunToolAsync (processManager, log, "/bin/kill", "-ABRT", pid.ToString ());
-				if (!current.HasExited && IsSameProcess (pid, path, startTime)) {
-					// A stopped app cannot handle SIGABRT until it is resumed. Its original state was captured above.
-					await RunToolAsync (processManager, log, "/bin/kill", "-CONT", pid.ToString ());
-				}
-				if (!await current.WaitForExitAsync ().TimeoutAfter (TimeSpan.FromSeconds (5))) {
-					if (!IsSameProcess (pid, path, startTime)) {
-						log.WriteLine ($"Skipping SIGKILL for PID {pid}: process identity changed.");
-						return;
+				try {
+					if (!exitTask.IsCompleted && IsSameProcess (pid, path, startTime)) {
+						// A stopped app cannot handle SIGABRT until it is resumed. Its original state was captured above.
+						await RunToolAsync (processManager, log, "/bin/kill", "-CONT", pid.ToString ());
 					}
-					log.WriteLine ($"Test app PID {pid} did not exit after SIGABRT; sending SIGKILL.");
-					current.Kill ();
-				} else {
-					await WaitForCrashReportAsync (pid, executable, startTime, log);
+					if (!await exitTask.TimeoutAfter (TimeSpan.FromSeconds (5))) {
+						if (!IsSameProcess (pid, path, startTime)) {
+							if (await Task.WhenAny (exitTask, Task.Delay (TimeSpan.FromSeconds (1))) == exitTask && exitTask.IsCompletedSuccessfully)
+								await WaitForCrashReportAsync (pid, executable, startTime, log);
+							else
+								log.WriteLine ($"Skipping SIGKILL for PID {pid}: process identity changed.");
+							return;
+						}
+						log.WriteLine ($"Test app PID {pid} did not exit after SIGABRT; sending SIGKILL.");
+						current.Kill ();
+					} else {
+						await WaitForCrashReportAsync (pid, executable, startTime, log);
+					}
+				} catch (Exception ex) when (ex is ArgumentException or InvalidOperationException or Win32Exception) {
+					if (await Task.WhenAny (exitTask, Task.Delay (TimeSpan.FromSeconds (1))) == exitTask && exitTask.IsCompletedSuccessfully)
+						await WaitForCrashReportAsync (pid, executable, startTime, log);
+					else
+						log.WriteLine ($"Could not inspect or terminate test app PID {pid}: {ex.Message}");
 				}
 			} catch (ArgumentException ex) {
 				log.WriteLine ($"Test app PID {pid} is no longer available for diagnostics or termination: {ex.Message}");
@@ -136,33 +147,39 @@ namespace Xharness {
 			while (watch.Elapsed < TimeSpan.FromSeconds (30)) {
 				try {
 					foreach (var path in Directory.EnumerateFiles (directory)) {
-						if (!Path.GetFileName (path).StartsWith (executable + "-", StringComparison.Ordinal) || File.GetLastWriteTimeUtc (path) < started)
-							continue;
-						if (path.EndsWith (".ips", StringComparison.Ordinal)) {
-							using var reader = File.OpenText (path);
-							var header = reader.ReadLine ();
-							var body = reader.ReadToEnd ();
-							using var document = JsonDocument.Parse (body.Length > 0 ? body : header ?? "");
-							if (!document.RootElement.TryGetProperty ("pid", out var reportPid) || reportPid.ValueKind != JsonValueKind.Number || !reportPid.TryGetInt32 (out var value) || value != pid)
+						try {
+							if (!Path.GetFileName (path).StartsWith (executable + "-", StringComparison.Ordinal) || File.GetLastWriteTimeUtc (path) < started)
 								continue;
-						} else if (path.EndsWith (".crash", StringComparison.Ordinal)) {
-							using var reader = File.OpenText (path);
-							var processLine = reader.ReadLine ();
-							if (processLine is null || !processLine.StartsWith ("Process:", StringComparison.Ordinal) || !processLine.TrimEnd ().EndsWith ($"[{pid}]", StringComparison.Ordinal))
+							if (path.EndsWith (".ips", StringComparison.Ordinal)) {
+								using var reader = File.OpenText (path);
+								var header = reader.ReadLine ();
+								var body = reader.ReadToEnd ();
+								using var document = JsonDocument.Parse (body.Length > 0 ? body : header ?? "");
+								if (document.RootElement.ValueKind != JsonValueKind.Object || !document.RootElement.TryGetProperty ("pid", out var reportPid) || reportPid.ValueKind != JsonValueKind.Number || !reportPid.TryGetInt32 (out var value) || value != pid)
+									continue;
+							} else if (path.EndsWith (".crash", StringComparison.Ordinal)) {
+								using var reader = File.OpenText (path);
+								var processLine = reader.ReadLine ();
+								if (processLine is null || !processLine.StartsWith ("Process:", StringComparison.Ordinal) || !processLine.TrimEnd ().EndsWith ($"[{pid}]", StringComparison.Ordinal))
+									continue;
+							} else {
 								continue;
-						} else {
-							continue;
+							}
+							log.WriteLine ($"Test app crash report is ready for collection: {path}");
+							return;
+						} catch (IOException ex) {
+							log.WriteLine ($"Could not read pending test app crash report '{path}': {ex.Message}");
+						} catch (UnauthorizedAccessException ex) {
+							log.WriteLine ($"Could not read pending test app crash report '{path}': {ex.Message}");
+						} catch (JsonException ex) {
+							log.WriteLine ($"Test app crash report '{path}' is not yet readable: {ex.Message}");
 						}
-						log.WriteLine ($"Test app crash report is ready for collection: {path}");
-						return;
 					}
 				} catch (IOException ex) {
 					log.WriteLine ($"Could not read pending test app crash report: {ex.Message}");
 				} catch (UnauthorizedAccessException ex) {
 					log.WriteLine ($"Could not read pending test app crash report: {ex.Message}");
 					return;
-				} catch (JsonException ex) {
-					log.WriteLine ($"Test app crash report is not yet readable: {ex.Message}");
 				}
 				await Task.Delay (TimeSpan.FromSeconds (1));
 			}

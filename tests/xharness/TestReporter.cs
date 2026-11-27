@@ -261,6 +261,9 @@ namespace Xharness {
 			isSimulatorTest = true;
 			await CollectResult (runResult);
 
+			if (timedout && deviceName is not null)
+				await ProcessDiagnostics.CollectSimulatorLifecycleAsync (processManager, logs, mainLog, deviceName, appInfo.BundleIdentifier, timeout);
+
 			if (Success is not null && !Success.Value) {
 				var pid = await GetPidFromRunLog ();
 				if (pid > 0) {
@@ -366,7 +369,11 @@ namespace Xharness {
 		async Task<(bool Succeeded, bool Crashed, string ResultLine)> TestsSucceeded (AppBundleInformation appInfo, string testLogPath, bool timedOut)
 		{
 			var (resultLine, failed, crashed) = await ParseResultFile (appInfo, testLogPath, timedOut);
-			if (resultLine is not null) {
+			if (timedOut) {
+				WrenchLog.WriteLine ("AddSummary: <b><i>{0} timed out</i></b><br/>", runMode);
+				mainLog.WriteLine ("Test run timed out");
+				return (false, false, "Test run timed out");
+			} else if (resultLine is not null) {
 				var testsRun = resultLine.Replace ("Tests run: ", "");
 				if (failed) {
 					WrenchLog.WriteLine ("AddSummary: <b>{0} failed: {1}</b><br/>", runMode, testsRun);
@@ -377,10 +384,6 @@ namespace Xharness {
 					mainLog.WriteLine ("Test run succeeded");
 					return (true, crashed, resultLine);
 				}
-			} else if (timedOut) {
-				WrenchLog.WriteLine ("AddSummary: <b><i>{0} timed out</i></b><br/>", runMode);
-				mainLog.WriteLine ("Test run timed out");
-				return (false, false, "Test run timed out");
 			} else {
 				WrenchLog.WriteLine ("AddSummary: <b><i>{0} crashed</i></b><br/>", runMode);
 				mainLog.WriteLine ("Test run crashed");
@@ -392,6 +395,19 @@ namespace Xharness {
 		{
 			if (!ResultsUseXml)
 				return;
+
+			if (timedout) {
+				resultParser.GenerateFailure (
+					logs,
+					"timeout",
+					appInfo.AppName,
+					appInfo.Variation,
+					$"App Timeout {appInfo.AppName} {appInfo.Variation} on bot {deviceName}",
+					$"{appInfo.AppName} {appInfo.Variation} Test run timed out after {timeout.TotalMinutes} minute(s) on bot {deviceName}.",
+					mainLog.FullPath,
+					xmlJargon);
+				return;
+			}
 
 			if (!string.IsNullOrEmpty (crashReason)) {
 				resultParser.GenerateFailure (
@@ -433,16 +449,6 @@ namespace Xharness {
 						mainLog.FullPath,
 						xmlJargon);
 				}
-			} else if (timedout) {
-				resultParser.GenerateFailure (
-					logs,
-					"timeout",
-					appInfo.AppName,
-					appInfo.Variation,
-					$"App Timeout {appInfo.AppName} {appInfo.Variation} on bot {deviceName}",
-					$"{appInfo.AppName} {appInfo.Variation} Test run timed out after {timeout.TotalMinutes} minute(s) on bot {deviceName}.",
-					mainLog.FullPath,
-					xmlJargon);
 			}
 		}
 

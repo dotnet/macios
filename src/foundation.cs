@@ -275,35 +275,32 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSArray FromUrl (NSUrl url, out NSError error);
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Internal]
+		[Sealed]
 		[Export ("differenceFromArray:withOptions:")]
 		NativeHandle _GetDifference (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options);
 
-		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (NSArray.FromNSObjects (other), options))")]
+		[Export ("differenceFromArray:withOptions:")]
 		[return: NullAllowed]
-		NSOrderedCollectionDifference GetDifference (NSObject[] other, NSOrderedCollectionDifferenceCalculationOptions options);
+		NSOrderedCollectionDifference GetDifference (NSObject [] other, NSOrderedCollectionDifferenceCalculationOptions options);
 
 		[Internal]
+		[Sealed]
 		[Export ("differenceFromArray:")]
 		NativeHandle _GetDifference (NSArray other);
 
-		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference(NSArray.FromNSObjects (other)))")]
+		[Export ("differenceFromArray:")]
 		[return: NullAllowed]
-		NSOrderedCollectionDifference GetDifference (NSObject[] other);
+		NSOrderedCollectionDifference GetDifference (NSObject [] other);
 
 		[Export ("arrayByApplyingDifference:")]
+		[Internal]
 		[return: NullAllowed]
 		NativeHandle _GetArrayByApplyingDifference (NSOrderedCollectionDifference difference);
 
-		[Wrap ("NSArray.ArrayFromHandle<NSObject> (_GetArrayByApplyingDifference (difference))")]
-		[return: NullAllowed]
-		NSObject[] GetArrayByApplyingDifference (NSOrderedCollectionDifference difference);
-
 		[Internal]
 		[Export ("differenceFromArray:withOptions:usingEquivalenceTest:")]
-		NativeHandle _GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, /* Func<NSObject, NSObject, bool> block */ ref BlockLiteral block);
-#endif
+		unsafe NativeHandle _GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, BlockLiteral* block);
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -5605,10 +5602,8 @@ namespace Foundation {
 		[Static, Export ("arrayWithContentsOfURL:")]
 		NSMutableArray FromUrl (NSUrl url);
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Export ("applyDifference:")]
 		void ApplyDifference (NSOrderedCollectionDifference difference);
-#endif
 	}
 
 	interface NSMutableArray<TValue> : NSMutableArray { }
@@ -13542,11 +13537,10 @@ namespace Foundation {
 		[Export ("reversedOrderedSet")]
 		NSOrderedSet GetReverseOrderedSet ();
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other, options))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options);
-		
+
 		[Internal]
 		[Export ("differenceFromOrderedSet:withOptions:")]
 		IntPtr _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options);
@@ -13554,7 +13548,7 @@ namespace Foundation {
 		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (other))")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSOrderedSet other);
-		
+
 		[Internal]
 		[Export ("differenceFromOrderedSet:")]
 		IntPtr _GetDifference (NSOrderedSet other);
@@ -13562,7 +13556,7 @@ namespace Foundation {
 		[Wrap ("Runtime.GetNSObject <NSOrderedSet> (_GetOrderedSet (difference))")]
 		[return: NullAllowed]
 		NSOrderedSet GetOrderedSet (NSOrderedCollectionDifference difference);
-		
+
 		[Internal]
 		[Export ("orderedSetByApplyingDifference:")]
 		[return: NullAllowed]
@@ -13570,8 +13564,7 @@ namespace Foundation {
 
 		[Internal]
 		[Export ("differenceFromOrderedSet:withOptions:usingEquivalenceTest:")]
-		/* NSOrderedCollectionDifference<NSObject>*/ IntPtr _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, /* Func<NSObject, NSObject, bool> */ ref BlockLiteral block);
-#endif
+		unsafe NativeHandle _GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, BlockLiteral* block);
 	}
 
 	interface NSMutableOrderedSet<TKey> : NSMutableOrderedSet { }
@@ -13738,15 +13731,13 @@ namespace Foundation {
 		[Export ("sortRange:options:usingComparator:")]
 		void SortRange (NSRange range, NSSortOptions sortOptions, NSComparator comparator);
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Internal]
 		[Export ("applyDifference:")]
 		void _ApplyDifference (IntPtr difference);
 
 		[Sealed]
 		[Export ("applyDifference:")]
-		void ApplyDifference (NSOrderedCollectionDifference<NSObject> difference);
-#endif
+		void ApplyDifference (NSOrderedCollectionDifference difference);
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -23122,13 +23113,11 @@ namespace Foundation {
 		string ReflexiveForm { get; set; }
 	}
 
-#if false // https://github.com/dotnet/macios/issues/15577
-	interface NSOrderedCollectionChange <TKey> : NSOrderedCollectionChange {}
-	
+	interface NSOrderedCollectionChange<TKey> : NSOrderedCollectionChange { }
+
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface NSOrderedCollectionChange
-	{
+	interface NSOrderedCollectionChange {
 		[Internal]
 		[Static]
 		[Export ("changeWithObject:type:index:")]
@@ -23155,42 +23144,37 @@ namespace Foundation {
 		[Internal]
 		[Export ("initWithObject:type:index:")]
 		NativeHandle Constructor (IntPtr anObject, NSCollectionChangeType type, nuint index);
-		
-		[Wrap ("this (anObject!.Handle, type, index)")]
-		NativeHandle Constructor ([NullAllowed] NSObject anObject, NSCollectionChangeType type, nuint index);
 
 		[Internal]
 		[DesignatedInitializer]
 		[Export ("initWithObject:type:index:associatedIndex:")]
 		NativeHandle Constructor (IntPtr anObject, NSCollectionChangeType type, nuint index, nuint associatedIndex);
-		
-		[Wrap ("this (anObject!.Handle, type, index, associatedIndex)")]
-		[DesignatedInitializer]
-		NativeHandle Constructor ([NullAllowed] NSObject anObject, NSCollectionChangeType type, nuint index, nuint associatedIndex);
+
 	}
 
-	interface NSOrderedCollectionDifference <TKey> : NSOrderedCollectionDifference {}
-	
+	interface NSOrderedCollectionDifference<TKey> : NSOrderedCollectionDifference { }
+
 	[BaseType (typeof (NSObject))]
-	interface NSOrderedCollectionDifference : INSFastEnumeration
-	{
+	interface NSOrderedCollectionDifference : INSFastEnumeration {
 		[Export ("initWithChanges:")]
-		NativeHandle Constructor (NSOrderedCollectionChange[] changes);
-		
+		NativeHandle Constructor (NSOrderedCollectionChange [] changes);
+
 		[Internal]
-		[DesignatedInitializer]
+		[Sealed]
 		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:")]
-		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects, NSOrderedCollectionChange[] changes);
+		NativeHandle _Init (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects, NSOrderedCollectionChange [] changes);
 
-		[Wrap ("this (inserts, NSArray.FromNSObjects (insertedObjects), removes, NSArray.FromNSObjects (removedObjects), changes)")]
-		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSObject[] insertedObjects, NSIndexSet removes, [NullAllowed] NSObject[] removedObjects, NSOrderedCollectionChange[] changes);
+		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSObject [] insertedObjects, NSIndexSet removes, [NullAllowed] NSObject [] removedObjects, NSOrderedCollectionChange [] changes);
 
 		[Internal]
+		[Sealed]
 		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:")]
-		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects);
-		
-		[Wrap ("this (inserts, NSArray.FromNSObjects (insertedObjects), removes, NSArray.FromNSObjects (removedObjects))")]
-		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSObject[] insertedObjects, NSIndexSet removes, [NullAllowed] NSObject[] removedObjects);
+		NativeHandle _Init (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects);
+
+		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:")]
+		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSObject [] insertedObjects, NSIndexSet removes, [NullAllowed] NSObject [] removedObjects);
 
 		[Internal]
 		[Export ("insertions", ArgumentSemantic.Strong)]
@@ -23205,13 +23189,12 @@ namespace Foundation {
 
 		[Internal]
 		[Export ("differenceByTransformingChangesWithBlock:")]
-		NativeHandle _GetDifference (/* Func<NSOrderedCollectionChange<NSObject>, NSOrderedCollectionChange<NSObject>>*/ ref BlockLiteral block); 
+		unsafe NativeHandle _GetDifference (BlockLiteral* block);
 
 		[Internal]
 		[Export ("inverseDifference")]
 		NativeHandle _InverseDifference ();
 	}
-#endif
 
 	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]

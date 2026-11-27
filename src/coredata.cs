@@ -502,7 +502,7 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectClassName")]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string ManagedObjectClassName { get; set; }
 
 		/// <summary>Gets or sets the a value that is used to resolve name conflicts from one model to another.</summary>
@@ -679,7 +679,7 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name")]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Name { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -2619,7 +2619,7 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("entityMappings", ArgumentSemantic.Retain)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSEntityMapping [] EntityMappings { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -3419,7 +3419,7 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("identifier")]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Identifier { get; set; }
 
 		/// <summary>Application developers override this method to provide a unique store type to use when adding the store to the store coordinator.</summary>
@@ -3438,7 +3438,7 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("metadata", ArgumentSemantic.Retain)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 #if XAMCORE_5_0
 		NSDictionary<NSString, NSObject> Metadata { get; set; }
 #else
@@ -5323,7 +5323,7 @@ namespace CoreData {
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationStage {
-		[NullAllowed, Export ("label")]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("label")]
 		string Label { get; set; }
 	}
 

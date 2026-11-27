@@ -1530,7 +1530,7 @@ namespace CloudKit {
 		Action LongLivedOperationWasPersistedCallback { get; set; }
 
 		[MacCatalyst (13, 1)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		CKOperationConfiguration Configuration { get; set; }
 
@@ -1547,7 +1547,7 @@ namespace CloudKit {
 		[Export ("operationGroupID")]
 		string OperationGroupId { get; }
 
-		[NullAllowed] // null_resettable
+		[System.Diagnostics.CodeAnalysis.AllowNull] // null_resettable
 		[Export ("defaultConfiguration", ArgumentSemantic.Copy)]
 		CKOperationConfiguration DefaultConfiguration { get; set; }
 

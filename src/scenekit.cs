@@ -4171,7 +4171,7 @@ namespace SceneKit {
 		SCNText Create ([NullAllowed] NSObject str, nfloat extrusionDepth);
 
 		[Export ("font", ArgumentSemantic.Retain)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSFont Font { get; set; }
 
 		/// <summary>To be added.</summary>

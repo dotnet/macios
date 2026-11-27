@@ -367,12 +367,13 @@ for example:
 string Text { get; set; }
 ```
 
-The [`[NullAllowed]`](~/cross-platform/macios/binding/binding-types-reference.md#NullAllowedAttribute) 
-parameter can also be specified directly on the setter:
+If only the setter accepts null and the getter always returns a non-null value,
+use `System.Diagnostics.CodeAnalysis.AllowNullAttribute` on the property:
 
 ```csharp
 [Export ("text")]
-string Text { get; [NullAllowed] set; }
+[System.Diagnostics.CodeAnalysis.AllowNull]
+string Text { get; set; }
 ```
 
 #### Caveats of binding custom controls

@@ -21747,8 +21747,8 @@ namespace UIKit {
 		///     Do not read this property from <see cref="WillMoveToSuperview(UIView)" /> when the new parent
 		///     is <see langword="null" />. UIKit also makes that call while the parent view is being
 		///     deallocated, and the native <c>superview</c> property still returns the parent. Reading this
-		///     property creates a managed wrapper that retains the parent, but the retain does not stop
-		///     deallocation. The app crashes later, when the wrapper is released, not when the property is read.
+		///     property can create a managed wrapper that retains the parent, but the retain does not stop
+		///     deallocation. The app can then crash later, when the wrapper is released, not when the property is read.
 		///   </para>
 		///   <para>Store what you need from the parent earlier, for example when this view is added to it.</para>
 		/// </remarks>
@@ -21825,9 +21825,9 @@ namespace UIKit {
 		///     If <paramref name="newsuper" /> is <see langword="null" />, do not read <see cref="Superview" />
 		///     in an override. UIKit also calls this method with <see langword="null" /> while it deallocates
 		///     the current parent, and an override can't tell that apart from a normal removal. During that
-		///     call, <see cref="Superview" /> still returns the parent being deallocated. Reading it creates
+		///     call, <see cref="Superview" /> still returns the parent being deallocated. Reading it can create
 		///     a managed wrapper that retains the parent, but the retain does not stop deallocation. The app
-		///     crashes later, when the wrapper is released, so catching exceptions around the read does not help.
+		///     can then crash later, when the wrapper is released, so catching exceptions around the read does not help.
 		///   </para>
 		///   <para>Store what you need from the old parent earlier, for example when this view is added to it.</para>
 		/// </remarks>

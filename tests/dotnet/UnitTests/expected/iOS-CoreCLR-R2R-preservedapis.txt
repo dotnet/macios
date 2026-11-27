@@ -262,6 +262,7 @@ Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boo
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.iOS.dll:Foundation.NSObject.BeginInvokeOnMainThread(System.Threading.SendOrPostCallback, System.Object)
+Microsoft.iOS.dll:Foundation.NSObject.ClearFlags(Foundation.NSObject/Flags)
 Microsoft.iOS.dll:Foundation.NSObject.ClearHandle()
 Microsoft.iOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
@@ -304,12 +305,13 @@ Microsoft.iOS.dll:Foundation.NSObject.ObjCRuntime.IReleaseOnMainThread.ReleaseOn
 Microsoft.iOS.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.iOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
-Microsoft.iOS.dll:Foundation.NSObject.set_FlagsInternal(Foundation.NSObject/Flags)
 Microsoft.iOS.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_RemoveFromObjectMap(System.Boolean)
+Microsoft.iOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags, System.Boolean)
+Microsoft.iOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags)
 Microsoft.iOS.dll:Foundation.NSObject.ToString()
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
@@ -320,6 +322,7 @@ Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject::FlagsInternal()
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
@@ -5789,6 +5792,8 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribut
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException..ctor(System.Diagnostics.Contracts.ContractFailureKind, System.String, System.String, System.String, System.Exception)
@@ -9173,6 +9178,7 @@ System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.GenericC
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.GenericCache`2::_lastFlushSize
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.GenericCache`2::_maxCacheSize
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.InlineArrayAttribute::<Length>k__BackingField
+System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.MemorySafetyRulesAttribute::<Version>k__BackingField
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.MethodImplOptions::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.MethodTable::MultiDimensionalArrayRank()
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.MethodTableAuxiliaryData::CachedVersionResilientHashCode
@@ -14972,21 +14978,21 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.Inte
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::CurrentAssembly()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.InteropServices.TypeMapLazyDictionary/DelayedType::_fallbackAssembly
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly..ctor()
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetCodeBase>g____PInvoke|14_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetFlags>g____PInvoke|82_0(System.Runtime.CompilerServices.QCallAssembly, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetFullName>g____PInvoke|19_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetHashAlgorithm>g____PInvoke|80_0(System.Runtime.CompilerServices.QCallAssembly, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetLocale>g____PInvoke|73_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetLocation>g____PInvoke|61_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetManifestModule>g__GetManifestModuleWorker|93_0(System.Reflection.RuntimeAssembly)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetManifestModuleSlow>g____PInvoke|95_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetModules>g____PInvoke|89_0(System.Runtime.CompilerServices.QCallAssembly, System.Int32, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetPublicKey>g____PInvoke|84_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetSimpleName>g____PInvoke|78_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetTypeCore>g____PInvoke|25_0(System.Runtime.CompilerServices.QCallAssembly, System.Byte*, System.IntPtr*, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetTypeCoreIgnoreCase>g____PInvoke|26_0(System.Runtime.CompilerServices.QCallAssembly, System.UInt16*, System.IntPtr*, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetVersion>g____PInvoke|71_0(System.Runtime.CompilerServices.QCallAssembly, System.Int32*, System.Int32*, System.Int32*, System.Int32*, System.IntPtr*)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<InternalLoad>g____PInvoke|48_0(System.Reflection.NativeAssemblyNameParts*, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.StackCrawlMarkHandle, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetCodeBase>g____PInvoke|16_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetFlags>g____PInvoke|84_0(System.Runtime.CompilerServices.QCallAssembly, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetFullName>g____PInvoke|21_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetHashAlgorithm>g____PInvoke|82_0(System.Runtime.CompilerServices.QCallAssembly, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetLocale>g____PInvoke|75_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetLocation>g____PInvoke|63_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetManifestModule>g__GetManifestModuleWorker|95_0(System.Reflection.RuntimeAssembly)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetManifestModuleSlow>g____PInvoke|97_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetModules>g____PInvoke|91_0(System.Runtime.CompilerServices.QCallAssembly, System.Int32, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetPublicKey>g____PInvoke|86_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetSimpleName>g____PInvoke|80_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetTypeCore>g____PInvoke|27_0(System.Runtime.CompilerServices.QCallAssembly, System.Byte*, System.IntPtr*, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetTypeCoreIgnoreCase>g____PInvoke|28_0(System.Runtime.CompilerServices.QCallAssembly, System.UInt16*, System.IntPtr*, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetVersion>g____PInvoke|73_0(System.Runtime.CompilerServices.QCallAssembly, System.Int32*, System.Int32*, System.Int32*, System.Int32*, System.IntPtr*)
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<InternalLoad>g____PInvoke|50_0(System.Reflection.NativeAssemblyNameParts*, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.StackCrawlMarkHandle, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.get_FullName()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.get_IsDynamic()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.get_Location()
@@ -16085,6 +16091,8 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.IsVolatile
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ITaskAwaiter
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IteratorStateMachineAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IteratorStateMachineAttribute..ctor(System.Type)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.MemorySafetyRulesAttribute
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.MemorySafetyRulesAttribute..ctor(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.MethodDesc
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.MethodDesc.get_MethodTable()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.MethodDesc.GetMethodDescChunk()
@@ -18271,7 +18279,7 @@ System.Private.CoreLib.dll:System.RuntimeType System.Signature::_returnTypeORfie
 System.Private.CoreLib.dll:System.RuntimeType System.Signature::FieldType()
 System.Private.CoreLib.dll:System.RuntimeType System.Signature::ReturnType()
 System.Private.CoreLib.dll:System.RuntimeType..ctor()
-System.Private.CoreLib.dll:System.RuntimeType.<CreateInstanceImpl>g__CreateInstanceLocal|147_0(System.Boolean)
+System.Private.CoreLib.dll:System.RuntimeType.<CreateInstanceImpl>g__CreateInstanceLocal|148_0(System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.AllocateValueType(System.RuntimeType, System.Object)
 System.Private.CoreLib.dll:System.RuntimeType.Box(System.Byte&)
 System.Private.CoreLib.dll:System.RuntimeType.CacheEquals(System.Object)
@@ -20774,6 +20782,7 @@ System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.UInt32&, Syst
 System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.UInt64&, System.UInt64)
 System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.Int32&, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.Int64&, System.Int64)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.And`1(T&, T)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Byte&, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Double&, System.Double, System.Double)
@@ -22944,8 +22953,8 @@ System.Private.CoreLib.dll:System.Type/<>c
 System.Private.CoreLib.dll:System.Type/<>c System.Type/<>c::<>9
 System.Private.CoreLib.dll:System.Type/<>c..cctor()
 System.Private.CoreLib.dll:System.Type/<>c..ctor()
-System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__292_0(System.Reflection.MemberInfo, System.Object)
-System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__292_1(System.Reflection.MemberInfo, System.Object)
+System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__293_0(System.Reflection.MemberInfo, System.Object)
+System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__293_1(System.Reflection.MemberInfo, System.Object)
 System.Private.CoreLib.dll:System.TypeAccessException
 System.Private.CoreLib.dll:System.TypeAccessException..ctor()
 System.Private.CoreLib.dll:System.TypeAccessException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)

@@ -7,6 +7,25 @@ namespace GeneratorTests {
 	[TestFixture ()]
 	[Parallelizable (ParallelScope.All)]
 	public class ErrorTests {
+		[TestCase ("[Export (\"value\")] int Value { get; }", "Value")]
+		[TestCase ("[Export (\"method\")] void Method ();", "Method")]
+		public void PropagateToSubclassesRequiresStatic (string declaration, string memberName)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool { Profile = Profile.iOS };
+			bgen.CreateTemporaryBinding ($@"
+using Foundation;
+namespace Propagation {{
+	[BaseType (typeof (NSObject))]
+	interface Invalid {{
+		[PropagateToSubclasses]
+		{declaration}
+	}}
+}}");
+			bgen.AssertExecuteError ("non-static propagated member");
+			bgen.AssertError (1130, $"The [PropagateToSubclasses] attribute on 'Propagation.Invalid.{memberName}' can only be used on static methods and properties. Add [Static] or remove [PropagateToSubclasses].");
+		}
+
 		[Test]
 		[NonParallelizable]
 		public void ApiDefinitionSourceIsNotSupported ()

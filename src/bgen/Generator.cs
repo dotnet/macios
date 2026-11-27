@@ -1364,6 +1364,8 @@ public partial class Generator : IMemberGatherer {
 				if (pi.IsUnavailable (this))
 					continue;
 
+				ValidatePropagateToSubclasses (pi);
+
 				if (AttributeManager.HasAttribute<IsThreadStaticAttribute> (pi) && !AttributeManager.HasAttribute<StaticAttribute> (pi))
 					throw new BindingException (1008, true);
 
@@ -1419,6 +1421,8 @@ public partial class Generator : IMemberGatherer {
 				if (mi.IsUnavailable (this))
 					continue;
 
+				ValidatePropagateToSubclasses (mi);
+
 				bool seenAbstract = false;
 				bool seenDefaultValue = false;
 				bool seenNoDefaultValue = false;
@@ -1431,7 +1435,7 @@ public partial class Generator : IMemberGatherer {
 						selector = ea.Selector;
 					} else if (ba is not null) {
 						selector = ba.Selector;
-					} else if (attr is StaticAttribute) {
+					} else if (attr is StaticAttribute || attr is PropagateToSubclassesAttribute) {
 						continue;
 					} else if (attr is InternalAttribute || attr is ProtectedAttribute) {
 						continue;
@@ -3859,6 +3863,12 @@ public partial class Generator : IMemberGatherer {
 		var ea = AttributeManager.GetCustomAttributes<ExportAttribute> (p);
 		var sem = ea [0].ArgumentSemantic;
 		return (sem != ArgumentSemantic.Assign && sem != ArgumentSemantic.Weak); // also cover UnsafeUnretained
+	}
+
+	void ValidatePropagateToSubclasses (MemberInfo member)
+	{
+		if (AttributeManager.HasAttribute<PropagateToSubclassesAttribute> (member) && !AttributeManager.IsStatic (member))
+			throw new BindingException (1130, true, member.DeclaringType, member.Name);
 	}
 
 	public IEnumerable<MethodInfo> GetTypeContractMethods (Type source)

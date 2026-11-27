@@ -18,11 +18,14 @@ namespace ExecutionPolicy {
 		Authorized,
 	}
 
+	/// <summary>Enumerates the errors that the ExecutionPolicy framework reports.</summary>
 	[MacCatalyst (16, 0)]
 	[Native]
 	[ErrorDomain ("EPErrorDomain")]
 	public enum EPError : long {
+		/// <summary>A general error occurred.</summary>
 		Generic = 1,
+		/// <summary>The process isn't a developer tool.</summary>
 		NotADeveloperTool,
 	}
 

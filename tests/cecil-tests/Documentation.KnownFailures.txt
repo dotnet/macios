@@ -5498,8 +5498,6 @@ F:SafetyKit.SAErrorCode.NotAuthorized
 F:SafetyKit.SAErrorCode.OperationFailed
 F:SceneKit.SCNLightAreaType.Polygon
 F:SceneKit.SCNLightAreaType.Rectangle
-F:SceneKit.SCNLightProbeType.Irradiance
-F:SceneKit.SCNLightProbeType.Radiance
 F:SceneKit.SCNLightProbeUpdateType.Never
 F:SceneKit.SCNLightProbeUpdateType.Realtime
 F:ScreenCaptureKit.SCCaptureDynamicRange.HdrCanonicalDisplay
@@ -58264,7 +58262,6 @@ T:SceneKit.SCNInteractionMode
 T:SceneKit.SCNLayer
 T:SceneKit.SCNLightAreaType
 T:SceneKit.SCNLightAttribute
-T:SceneKit.SCNLightProbeType
 T:SceneKit.SCNLightProbeUpdateType
 T:SceneKit.SCNNodeHandler
 T:SceneKit.SCNParticleProperty

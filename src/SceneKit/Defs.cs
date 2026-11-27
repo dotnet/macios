@@ -622,10 +622,13 @@ namespace SceneKit {
 		Focusable,
 	}
 
+	/// <summary>Enumerates the kinds of light probes.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeType : long {
+		/// <summary>The probe bakes and stores spherical harmonics. This is the default.</summary>
 		Irradiance = 0,
+		/// <summary>The probe captures radiance (reflections) in its extents, either by capturing the scene or from a cube texture the app provides.</summary>
 		Radiance = 1,
 	}
 

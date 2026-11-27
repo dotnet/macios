@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -276,6 +277,9 @@ namespace Xharness {
 			// object that will take care of capturing and parsing the results
 			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
 
+			if (isSimulator && !await FindSimulatorAsync ())
+				return 1;
+
 			var testReporterTimeout = TimeSpan.FromMinutes (harness.Timeout * timeoutMultiplier);
 			var testReporter = testReporterFactory.Create (MainLog,
 				MainLog,
@@ -286,7 +290,7 @@ namespace Xharness {
 				AppInformation,
 				runMode,
 				harness.XmlJargon,
-				deviceName,
+				isSimulator ? simulator!.UDID : deviceName,
 				testReporterTimeout,
 				buildTask?.Logs?.Directory);
 
@@ -308,9 +312,6 @@ namespace Xharness {
 				args.Add (new DisableMemoryLimitsArgument ());
 
 			if (isSimulator) {
-				if (!await FindSimulatorAsync ())
-					return 1;
-
 				var stdout_log = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}.log", "Standard output");
 				var stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}.log", "Standard error");
 				args.Add (new SetStdoutArgument (stdout_log));
@@ -359,8 +360,24 @@ namespace Xharness {
 
 				MainLog.WriteLine ("Starting test run");
 
-				var testRunResult = await processManager.ExecuteCommandAsync (args, MainLog, testReporterTimeout, cancellationToken: testReporter.CancellationToken);
-				await testReporter.CollectSimulatorResult (testRunResult);
+				using var launchProcess = new Process ();
+				using var runCancellation = new CancellationTokenSource ();
+				using var timeoutCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
+				var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog);
+				var execution = processManager.RunAsync (launchProcess, args, launchLog, testReporterTimeout + TimeSpan.FromMinutes (3), cancellationToken: runCancellation.Token, diagnostics: false);
+				var timedOut = await Task.WhenAny (execution, Task.Delay (testReporterTimeout, timeoutCancellation.Token)) != execution;
+				timeoutCancellation.Cancel ();
+				if (timedOut) {
+					try {
+						await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
+					} finally {
+						// Collect the app's stacks before cancelling mlaunch, which may also terminate the app.
+						runCancellation.Cancel ();
+					}
+					await execution;
+				} else {
+					await testReporter.CollectSimulatorResult (await execution);
+				}
 
 				// cleanup after us
 				if (EnsureCleanSimulatorState)

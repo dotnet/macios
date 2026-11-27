@@ -13,6 +13,32 @@ using System.ComponentModel;
 
 namespace CoreGraphics {
 
+	/// <summary>Identifies the rectangles associated with a display stream update.</summary>
+	[NoiOS, NoTV, MacCatalyst (13, 1)]
+	public enum CGDisplayStreamUpdateRectType {
+		/// <summary>Rectangles that were redrawn, excluding moved rectangles.</summary>
+		RefreshedRects = 0,
+		/// <summary>Rectangles moved within the frame.</summary>
+		MovedRects = 1,
+		/// <summary>The union of refreshed and moved rectangles.</summary>
+		DirtyRects = 2,
+		/// <summary>A simplified set of rectangles covering all dirty regions.</summary>
+		ReducedDirtyRects = 3,
+	}
+
+	/// <summary>Describes a frame delivered by a display stream.</summary>
+	[NoiOS, NoTV, MacCatalyst (13, 1)]
+	public enum CGDisplayStreamFrameStatus {
+		/// <summary>A new frame is available.</summary>
+		FrameComplete = 0,
+		/// <summary>No new frame was generated.</summary>
+		FrameIdle = 1,
+		/// <summary>The display is blank.</summary>
+		FrameBlank = 2,
+		/// <summary>The stream has stopped delivering frames.</summary>
+		Stopped = 3,
+	}
+
 	/// <summary>Specifies the order in which an affine transformation is combined with the current transformation.</summary>
 	public enum MatrixOrder {
 		/// <summary>Applies the new transformation before the current transformation.</summary>

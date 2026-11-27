@@ -304,6 +304,7 @@ namespace MonoTests.System.Net.Http {
 			using var serverCancellationTokenSource = new CancellationTokenSource ();
 			var serverCancellationToken = serverCancellationTokenSource.Token;
 			var listener = new TcpListener (IPAddress.Loopback, 0);
+			var listenerLock = new object ();
 			listener.Start ();
 			var port = ((IPEndPoint) listener.LocalEndpoint).Port;
 
@@ -316,7 +317,10 @@ namespace MonoTests.System.Net.Http {
 				serverReady.SetResult (true);
 				try {
 					while (true) {
-						using var client = await listener.AcceptTcpClientAsync (serverCancellationToken);
+						ValueTask<TcpClient> acceptTask;
+						lock (listenerLock)
+							acceptTask = listener.AcceptTcpClientAsync (serverCancellationToken);
+						using var client = await acceptTask;
 						using var stream = client.GetStream ();
 						using (var reader = new StreamReader (stream, Encoding.ASCII, false, 1024, leaveOpen: true)) {
 							while (!string.IsNullOrEmpty (await reader.ReadLineAsync (serverCancellationToken))) {
@@ -370,7 +374,8 @@ namespace MonoTests.System.Net.Http {
 				}, out ex);
 			} finally {
 				serverCancellationTokenSource.Cancel ();
-				listener.Stop ();
+				lock (listenerLock)
+					listener.Stop ();
 				Assert.That (serverTask.Wait (TimeSpan.FromSeconds (5)), Is.True, "Server did not stop.");
 			}
 
@@ -958,7 +963,13 @@ namespace MonoTests.System.Net.Http {
 				while (true) {
 					TcpClient client;
 					try {
-						client = await listener.AcceptTcpClientAsync ().ConfigureAwait (false);
+						Task<TcpClient> acceptTask;
+						lock (clients) {
+							if (disposed)
+								return;
+							acceptTask = listener.AcceptTcpClientAsync ();
+						}
+						client = await acceptTask.ConfigureAwait (false);
 					} catch (SocketException) {
 						return;
 					} catch (ObjectDisposedException) {

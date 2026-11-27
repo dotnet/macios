@@ -50,7 +50,13 @@ namespace MonoTests.System.Net.Http {
 			while (true) {
 				TcpClient client;
 				try {
-					client = await listener.AcceptTcpClientAsync ().ConfigureAwait (false);
+					Task<TcpClient> acceptTask;
+					lock (clients) {
+						if (disposed)
+							return;
+						acceptTask = listener.AcceptTcpClientAsync ();
+					}
+					client = await acceptTask.ConfigureAwait (false);
 				} catch (ObjectDisposedException) {
 					return;
 				} catch (SocketException) {

@@ -7653,6 +7653,7 @@ public partial class Generator : IMemberGatherer {
 						print ($"\t/// ]]></code>");
 						print ($"\t///   </example>");
 						print ($"\t/// </remarks>");
+						PrintPlatformAttributes (property);
 						print ("\tpublic static NSObject Observe{0} (EventHandler<{1}> handler)", notification_name, event_name);
 						print ("\t{");
 						print ("\t\treturn {0}.AddObserver ({1}, notification => handler (null, new {2} (notification)));", notification_center, property.Name, event_name);
@@ -7676,6 +7677,7 @@ public partial class Generator : IMemberGatherer {
 						print ($"\t/// ]]></code>");
 						print ($"\t///   </example>");
 						print ($"\t/// </remarks>");
+						PrintPlatformAttributes (property);
 						print ("\tpublic static NSObject Observe{0} (NSObject objectToObserve, EventHandler<{1}> handler)", notification_name, event_name);
 						print ("\t{");
 						print ("\t\treturn {0}.AddObserver ({1}, notification => handler (null, new {2} (notification)), objectToObserve);", notification_center, property.Name, event_name);

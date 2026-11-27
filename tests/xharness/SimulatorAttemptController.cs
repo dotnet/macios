@@ -21,12 +21,14 @@ namespace Xharness {
 	public static class SimulatorAttemptController {
 		public const int MaxAttempts = 2;
 
-		// Checks whether any of the logs (the test log, or the app's stdout) shows a failed test or the final summary.
+		// Checks whether any of the logs (the test log, or the app's stdout/stderr) shows a failed test or the final summary.
 		// An attempt with such results is never ended early. This doesn't protect results the app hasn't written yet:
 		// with wrapped XML output (used on CI) the test log only gets results at the end of the run, so only the
-		// app's stdout shows failures while the tests are running.
-		public static bool HasTestResults (params string? [] logPaths)
+		// app's console output (written to stderr through NSLog) shows failures while the tests are running.
+		public static bool HasTestResults (ILog log, out string? failure, params string? [] logPaths)
 		{
+			failure = null;
+			var hasResults = false;
 			foreach (var path in logPaths) {
 				if (path is null || !File.Exists (path))
 					continue;
@@ -36,15 +38,19 @@ namespace Xharness {
 					using var reader = new StreamReader (stream);
 					string? line;
 					while ((line = reader.ReadLine ()) is not null) {
-						if (line.Contains ("[FAIL]", StringComparison.Ordinal) || line.Contains ("Tests run:", StringComparison.Ordinal) || line.Contains ("<test-run ", StringComparison.Ordinal))
+						if (line.Contains ("[FAIL]", StringComparison.Ordinal)) {
+							failure = line;
 							return true;
+						}
+						if (line.Contains ("Tests run:", StringComparison.Ordinal) || line.Contains ("<test-run ", StringComparison.Ordinal))
+							hasResults = true;
 					}
 				} catch (Exception e) when (e is IOException || e is UnauthorizedAccessException) {
-					// If we can't tell, assume there are results, so that the attempt isn't ended.
-					return true;
+					log.WriteLine ($"Could not check test results in '{path}': {e.Message}");
+					hasResults = true;
 				}
 			}
-			return false;
+			return hasResults;
 		}
 
 		public static async Task<string?> GetProgressAfterDiagnosticsAsync (Func<string?> getProgress, Func<Task> collectDiagnostics)

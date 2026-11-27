@@ -381,7 +381,8 @@ namespace Xharness {
 				}
 			}
 
-			StopListener (listener);
+			if (!attempt.ListenerStopped)
+				StopListener (listener);
 
 			// close a tunnel if it was created
 			if (!isSimulator && listenerFactory.UseTunnel)
@@ -410,6 +411,25 @@ namespace Xharness {
 			// check the final status, copy all the required data
 			(Result, FailureMessage) = await testReporter.ParseResult ();
 
+			if (attempt.FailureWhileStopping is string stoppedFailure && Result == TestExecutingResult.Crashed) {
+				Result = TestExecutingResult.Failed;
+				FailureMessage = $"A test failed before the app was stopped: {stoppedFailure}";
+				MainLog.WriteLine (FailureMessage);
+				WrenchLog.WriteLine ($"AddSummary: <b><i>{runMode}: A test failed before the app was stopped; the test run did not finish.</i></b><br/>");
+				if (harness.XmlJargon != XmlResultJargon.Missing) {
+					new XmlResultParser ().GenerateFailure (
+						Logs,
+						"interrupted-test-failure",
+						AppInformation.AppName,
+						AppInformation.Variation,
+						$"Interrupted test failure {AppInformation.AppName} {AppInformation.Variation}",
+						FailureMessage,
+						MainLog.FullPath,
+						harness.XmlJargon);
+				}
+				return 1;
+			}
+
 			// If the result is "Crashed" but the log shows a launch failure, report it as such
 			if (Result == TestExecutingResult.Crashed && IsLaunchFailure (MainLog)) {
 				Result = TestExecutingResult.LaunchFailure;
@@ -426,11 +446,13 @@ namespace Xharness {
 			public required ListenerTransport Transport { get; init; }
 			public required ISimpleListener Listener { get; init; }
 			public required IFileBackedLog TestLog { get; init; }
-			public string? StdoutLog { get; init; }
+			public required string? [] ProgressLogs { get; init; }
 			public required ICrashSnapshotReporter CrashReporter { get; init; }
 			public required ITestReporter TestReporter { get; init; }
 			public required CancellationTokenSource LaunchCallbackCancellation { get; init; }
 			public required List<string> AttemptLogs { get; init; }
+			public bool ListenerStopped { get; set; }
+			public string? FailureWhileStopping { get; set; }
 		}
 
 		LaunchAttempt CreateLaunchAttempt (MlaunchArguments baseArgs, int attemptNumber, bool useXmlOutput, TimeSpan testReporterTimeout)
@@ -495,13 +517,14 @@ namespace Xharness {
 			if (!isSimulator)
 				args.Add (new DisableMemoryLimitsArgument ());
 
-			string? stdoutLog = null;
+			string? stdout_log = null;
+			string? stderr_log = null;
 			if (isSimulator) {
-				stdoutLog = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}{suffix}.log", "Standard output");
-				var stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}{suffix}.log", "Standard error");
-				attemptLogs.Add (stdoutLog);
+				stdout_log = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}{suffix}.log", "Standard output");
+				stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}{suffix}.log", "Standard error");
+				attemptLogs.Add (stdout_log);
 				attemptLogs.Add (stderr_log);
-				args.Add (new SetStdoutArgument (stdoutLog));
+				args.Add (new SetStdoutArgument (stdout_log));
 				args.Add (new SetStderrArgument (stderr_log));
 				args.Add (new SimulatorUDIDArgument (simulator!.UDID));
 			}
@@ -513,7 +536,8 @@ namespace Xharness {
 				Transport = transport,
 				Listener = listener,
 				TestLog = listener_log,
-				StdoutLog = stdoutLog,
+				// The test runner's console output goes through NSLog, which writes to stderr.
+				ProgressLogs = new [] { listener_log.FullPath, stdout_log, stderr_log },
 				CrashReporter = crashReporter,
 				TestReporter = testReporter,
 				LaunchCallbackCancellation = launchCallbackCancellation,
@@ -547,7 +571,7 @@ namespace Xharness {
 					return "completed";
 				if (execution.IsCompleted || timeoutTask.IsCompleted)
 					return "finished or timed out";
-				if (SimulatorAttemptController.HasTestResults (attempt.TestLog.FullPath, attempt.StdoutLog))
+				if (SimulatorAttemptController.HasTestResults (MainLog, out _, attempt.ProgressLogs))
 					return "reported results";
 				return null;
 			}
@@ -568,16 +592,21 @@ namespace Xharness {
 						MainLog.WriteLine ("Ending this attempt.");
 						timeoutCancellation.Cancel ();
 						runCancellation.Cancel ();
+						ProcessExecutionResult stoppedResult;
 						try {
-							await execution;
+							stoppedResult = await execution;
 						} catch (Exception e) {
 							MainLog.WriteLine ($"Failed to stop the test app: {e}");
+							throw;
 						}
 						// Make sure the app isn't still running when it's launched again.
 						await processManager.ExecuteXcodeCommandAsync ("simctl", new string [] { "terminate", udid, AppInformation.BundleIdentifier }, MainLog, TimeSpan.FromMinutes (1));
-						if (SimulatorAttemptController.HasTestResults (attempt.TestLog.FullPath, attempt.StdoutLog)) {
+						StopListener (attempt.Listener);
+						attempt.ListenerStopped = true;
+						if (SimulatorAttemptController.HasTestResults (MainLog, out var failure, attempt.ProgressLogs)) {
+							attempt.FailureWhileStopping = failure;
 							MainLog.WriteLine ("Test results arrived while stopping the app; reporting this attempt instead of relaunching.");
-							await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
+							await testReporter.CollectSimulatorResult (stoppedResult);
 							return false;
 						}
 						return true;
@@ -608,7 +637,8 @@ namespace Xharness {
 		async Task DiscardSimulatorAttemptAsync (int attemptNumber, LaunchAttempt attempt)
 		{
 			attempt.LaunchCallbackCancellation.Cancel ();
-			StopListener (attempt.Listener);
+			if (!attempt.ListenerStopped)
+				StopListener (attempt.Listener);
 			await attempt.CrashReporter.EndCaptureAsync (TimeSpan.FromSeconds (5));
 
 			// Keep the logs, but relabel them so that they're not parsed for test results.

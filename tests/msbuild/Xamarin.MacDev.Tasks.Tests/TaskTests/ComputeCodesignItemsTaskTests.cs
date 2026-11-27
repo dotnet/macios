@@ -23,7 +23,8 @@ namespace Xamarin.MacDev.Tasks {
 		public void StampPaths (
 			[Values (ApplePlatform.iOS, ApplePlatform.TVOS, ApplePlatform.MacOSX, ApplePlatform.MacCatalyst)] ApplePlatform platform,
 			[Values (".", "bin/Debug", "../out", "../../out", "../../../out")] string outputPath,
-			[Values] bool absolutePath)
+			[Values] bool absolutePath,
+			[Values ("PlugIns", "Extensions")] string container)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 			var projectDir = Path.Combine (tmpdir, "repo", "src", "App");
@@ -42,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 					$"{contents}Resources/Test.metallib",
 					$"{contents}XPCServices/Test.xpc",
 				};
-				var bundles = new [] { "Bundle.app", "Bundle.app/PlugIns/Test.appex" };
+				var bundles = new [] { "Bundle.app", $"Bundle.app/{contents}{container}/Test.appex" };
 				var codesignBundle = new List<ITaskItem> ();
 				var expectedStamps = new Dictionary<string, string> ();
 				var stampPath = "obj/Debug/codesign";

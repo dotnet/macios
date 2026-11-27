@@ -7,4 +7,4 @@ libtest.decompile.m
 libtest.methods.h
 libtest.methods.m
 *.generated.cs
-
+*.generated.h

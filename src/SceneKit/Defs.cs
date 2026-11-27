@@ -622,24 +622,33 @@ namespace SceneKit {
 		Focusable,
 	}
 
+	/// <summary>Enumerates the kinds of light probes.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeType : long {
+		/// <summary>The probe bakes and stores spherical harmonics. This is the default.</summary>
 		Irradiance = 0,
+		/// <summary>The probe captures radiance (reflections) in its extents, either by capturing the scene or from a cube texture the app provides.</summary>
 		Radiance = 1,
 	}
 
+	/// <summary>Enumerates how often a light probe updates.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeUpdateType : long {
+		/// <summary>SceneKit never updates the probe automatically. For example, the probe was baked in the Xcode scene editor, or it uses a provided environment.</summary>
 		Never = 0,
+		/// <summary>SceneKit updates the probe automatically every frame.</summary>
 		Realtime = 1,
 	}
 
+	/// <summary>Enumerates the shapes of an area light.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightAreaType : long {
+		/// <summary>The light is a rectangle. This is the default.</summary>
 		Rectangle = 1,
+		/// <summary>The light is a polygon.</summary>
 		Polygon = 4,
 	}
 

@@ -18,15 +18,21 @@ using CoreGraphics;
 
 namespace LinkPresentation {
 
+	/// <summary>Enumerates the errors that can occur when fetching link metadata.</summary>
 	[ErrorDomain ("LPErrorDomain")]
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LPErrorCode : long {
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 1,
+		/// <summary>Fetching the metadata failed.</summary>
 		MetadataFetchFailed,
+		/// <summary>The client canceled the metadata fetch.</summary>
 		MetadataFetchCancelled,
+		/// <summary>The metadata fetch took longer than allowed.</summary>
 		MetadataFetchTimedOut,
+		/// <summary>System policies don't allow the metadata fetch.</summary>
 		MetadataFetchNotAllowed,
 	}
 

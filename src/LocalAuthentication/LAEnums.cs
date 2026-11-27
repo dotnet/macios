@@ -128,12 +128,17 @@ namespace LocalAuthentication {
 		UseKeyKeyExchange,
 	}
 
+	/// <summary>Enumerates the states of a right.</summary>
 	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum LARightState : long {
+		/// <summary>The right hasn't been evaluated yet. This is the initial state of a right.</summary>
 		Unknown = 0,
+		/// <summary>The system is evaluating the requirements. This happens after the app requests authorization, but before the user grants the right.</summary>
 		Authorizing = 1,
+		/// <summary>The right was authorized.</summary>
 		Authorized = 2,
+		/// <summary>The right wasn't authorized. For example, the requirements weren't met or the user rejected the request.</summary>
 		NotAuthorized = 3,
 	}
 }

@@ -255,29 +255,39 @@ namespace CoreBluetooth {
 		High,
 	}
 
+	/// <summary>Enumerates the connection events of a peripheral.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBConnectionEvent : long {
+		/// <summary>The peripheral disconnected.</summary>
 		Disconnected = 0,
+		/// <summary>The peripheral connected.</summary>
 		Connected = 1,
 	}
 
+	/// <summary>Enumerates the device-specific features of a central manager.</summary>
 	[Flags, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCentralManagerFeature : ulong {
+		/// <summary>The hardware supports extended scans and enhanced connection creation.</summary>
 		ExtendedScanAndConnect = 1uL << 0,
 		/// <summary>The hardware and region support channel sounding.</summary>
 		[NoTV, iOS (27, 0), MacCatalyst (27, 0)]
 		ChannelSounding = 1uL << 10,
 	}
 
+	/// <summary>Enumerates the user's Bluetooth authorization status for the app.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerAuthorization : long {
+		/// <summary>The user hasn't made a choice about this app using Bluetooth yet.</summary>
 		NotDetermined = 0,
+		/// <summary>The app isn't authorized to use Bluetooth, and the user can't change that. For example, parental controls might be active.</summary>
 		Restricted,
+		/// <summary>The user denied this app the use of Bluetooth.</summary>
 		Denied,
+		/// <summary>The user authorized this app to always use Bluetooth.</summary>
 		AllowedAlways,
 	}
 }

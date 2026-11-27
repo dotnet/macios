@@ -169,18 +169,24 @@ namespace BackgroundTasks {
 		NativeHandle Constructor (string identifier, string title, string subtitle);
 	}
 
+	/// <summary>Enumerates how the scheduler handles a continued processing task request that can't run immediately.</summary>
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
 	public enum BGContinuedProcessingTaskRequestSubmissionStrategy : long {
+		/// <summary>Fail the submission if the scheduler has no capacity for the request, or if the system is under heavy load and can't run it immediately.</summary>
 		Fail,
+		/// <summary>Add the request to the back of a queue if it can't run immediately. The system cancels queued requests when the user removes the app from the app switcher.</summary>
 		Queue,
 	}
 
+	/// <summary>Enumerates the extra system resources a continued processing task request can ask for.</summary>
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
 	[Flags]
 	public enum BGContinuedProcessingTaskRequestResources : long {
+		/// <summary>No special system resources are required. The scheduler assumes the default resources, which allow background CPU and network access.</summary>
 		Default = 0x0,
+		/// <summary>The task needs background GPU access. The system rejects the request if the app lacks the required entitlement. Not all devices support background GPU execution, and the system doesn't guarantee that the task runs when the GPU is heavily contended.</summary>
 		Gpu = (1L << 0),
 	}
 

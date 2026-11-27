@@ -137,14 +137,20 @@ namespace ClassKit {
 	}
 
 
+	/// <summary>Enumerates the kinds of progress an app can report.</summary>
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, iOS (14, 0)]
 	[Native]
 	public enum CLSProgressReportingCapabilityKind : long {
+		/// <summary>The app reports the time spent. Every context has this capability by default.</summary>
 		Duration = 0,
+		/// <summary>The app reports a progress percentage.</summary>
 		Percent,
+		/// <summary>The app reports a binary value, such as true or false, pass or fail, or correct or incorrect.</summary>
 		Binary,
+		/// <summary>The app reports a discrete value.</summary>
 		Quantity,
+		/// <summary>The app reports a score.</summary>
 		Score,
 	}
 

@@ -6,11 +6,14 @@ using CoreVideo;
 using VideoToolbox;
 
 namespace SensitiveContentAnalysis {
+	/// <summary>Enumerates the types of sensitive content.</summary>
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 	public enum SCSensitiveContentType {
+		/// <summary>The content is nude or sexually explicit.</summary>
 		[Field ("SCSensitiveContentTypeSexuallyExplicit")]
 		SexuallyExplicit,
 
+		/// <summary>The content contains graphic violence or gore.</summary>
 		[Field ("SCSensitiveContentTypeGoreOrViolence")]
 		GoreOrViolence,
 	}
@@ -46,11 +49,15 @@ namespace SensitiveContentAnalysis {
 		bool ShouldMuteAudio { get; }
 	}
 
+	/// <summary>Enumerates the sensitivity analysis policies on the device, which determine the kind of intervention to show.</summary>
 	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum SCSensitivityAnalysisPolicy : long {
+		/// <summary>No feature that requires sensitivity analysis is enabled, so analysis is disabled.</summary>
 		Disabled = 0,
+		/// <summary>Sensitivity analysis is enabled through Sensitive Content Warning in Settings. Apps are expected to show brief, inline UI, such as a simple button to show the content.</summary>
 		SimpleInterventions = 1,
+		/// <summary>Sensitivity analysis is enabled for children or teens through Communication Safety in Screen Time. Apps are expected to show more descriptive UI that explains the potential risks.</summary>
 		DescriptiveInterventions = 2,
 	}
 
@@ -73,10 +80,13 @@ namespace SensitiveContentAnalysis {
 		NSProgress AnalyzeVideo (NSUrl fileUrl, Action<SCSensitivityAnalysis, NSError> completionHandler);
 	}
 
+	/// <summary>Enumerates the directions of a video stream that a video stream analyzer analyzes.</summary>
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
 	public enum SCVideoStreamAnalyzerStreamDirection : long {
+		/// <summary>The stream is sent to another device, such as the stream from this device's camera.</summary>
 		Outgoing = 1,
+		/// <summary>The stream comes from another device, such as one received over the network from another device's camera.</summary>
 		Incoming = 2,
 	}
 

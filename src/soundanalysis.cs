@@ -13,21 +13,30 @@ using CoreMedia;
 
 namespace SoundAnalysis {
 
+	/// <summary>Enumerates the errors that Sound Analysis can report.</summary>
 	[ErrorDomain ("SNErrorDomain")]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum SNErrorCode : long {
+		/// <summary>An unknown error occurred.</summary>
 		UnknownError = 1,
+		/// <summary>The operation failed.</summary>
 		OperationFailed,
+		/// <summary>The audio format is invalid.</summary>
 		InvalidFormat,
+		/// <summary>The model is invalid.</summary>
 		InvalidModel,
+		/// <summary>The file is invalid.</summary>
 		InvalidFile,
 	}
 
+	/// <summary>Enumerates the types of a time duration constraint.</summary>
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum SNTimeDurationConstraintType : long {
+		/// <summary>A duration must be one of a set of discrete permitted values.</summary>
 		Enumerated = 1,
+		/// <summary>A duration must be within a continuous range of permitted values.</summary>
 		Range = 2,
 	}
 
@@ -173,8 +182,10 @@ namespace SoundAnalysis {
 		void DidComplete (ISNRequest request);
 	}
 
+	/// <summary>Enumerates the identifiers of the sound classifiers that Apple provides.</summary>
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	enum SNClassifierIdentifier {
+		/// <summary>The first edition of the Apple-provided sound classifier.</summary>
 		[Field ("SNClassifierIdentifierVersion1")]
 		Version1,
 	}

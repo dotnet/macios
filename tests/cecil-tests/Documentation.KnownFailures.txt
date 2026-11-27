@@ -1668,10 +1668,6 @@ F:CoreBluetooth.CBError.LEGattExceededBackgroundNotificationLimit
 F:CoreBluetooth.CBError.LEGattNearBackgroundNotificationLimit
 F:CoreBluetooth.CBError.PeerRemovedPairingInformation
 F:CoreBluetooth.CBError.TooManyLEPairedDevices
-F:CoreBluetooth.CBManagerAuthorization.AllowedAlways
-F:CoreBluetooth.CBManagerAuthorization.Denied
-F:CoreBluetooth.CBManagerAuthorization.NotDetermined
-F:CoreBluetooth.CBManagerAuthorization.Restricted
 F:CoreData.NSAttributeType.CompositeAttributeType
 F:CoreData.NSBatchInsertRequestResultType.Count
 F:CoreData.NSBatchInsertRequestResultType.ObjectIds
@@ -55111,7 +55107,6 @@ T:CoreBluetooth.AdvertisementData
 T:CoreBluetooth.CBConnectionEventMatchingOptions
 T:CoreBluetooth.CBConnectPeripheralOptions
 T:CoreBluetooth.CBL2CapChannel
-T:CoreBluetooth.CBManagerAuthorization
 T:CoreBluetooth.RestoredState
 T:CoreData.NSBatchInsertRequest
 T:CoreData.NSBatchInsertRequestDictionaryHandler

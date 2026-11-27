@@ -9,6 +9,7 @@
 //
 
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -277,6 +278,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 				});
 
 			var st = session.SetMultiImageCallback ((outputMultiImageReference, sourceFrameReference, status, infoFlags, taggedBufferGroup, presentationTimeStamp, presentationDuration) => {
+				if (status != VTStatus.Ok)
+					failures.Add ($"Multi output callback #{multiFrameCallbackCounter} failed. Expected status = Ok, got status = {status}");
 				if (sourceFrameReference != sourceFrameValue)
 					failures.Add ($"Multi output callback #{multiFrameCallbackCounter} failed: Expected sourceFrame = 0x{sourceFrameValue:x}, got sourceFrame = 0x{sourceFrameReference:x}");
 				if (outputMultiImageReference != multiSourceFrameValue)
@@ -300,6 +303,51 @@ namespace MonoTouchFixtures.VideoToolbox {
 			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (multiFrameCallbackCounter, Is.GreaterThan (0), "Multi-image callback counter");
 			Assert.That (failures, Is.Empty, "Failures");
+		}
+
+		[Test]
+		public void SetMultiImageCallbackRetainsReplacedCallbacksUntilDisposal ()
+		{
+			TestRuntime.AssertXcodeVersion (16, 0);
+
+			using var url = NSBundle.MainBundle.GetUrlForResource ("xamvideotest", "mp4");
+			Assert.That (url, Is.Not.Null, "Url");
+
+			var bufferEnumerator = new SampleBufferEnumerator (url);
+			using var session = CreateSession (bufferEnumerator.FormatDescription, null);
+			var firstCallback = RegisterMultiImageCallback (session);
+			var secondCallback = RegisterMultiImageCallback (session);
+
+			CollectAndDrain ();
+			Assert.That (firstCallback.IsAlive, Is.True, "First replaced callback remains alive");
+			Assert.That (secondCallback.IsAlive, Is.True, "Current callback remains alive");
+
+			session.Dispose ();
+			CollectAndDrain ();
+			Assert.That (firstCallback.IsAlive, Is.False, "First callback collected after disposal");
+			Assert.That (secondCallback.IsAlive, Is.False, "Second callback collected after disposal");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference RegisterMultiImageCallback (VTDecompressionSession session)
+		{
+			var target = new MultiImageCallbackTarget ();
+			Assert.That (session.SetMultiImageCallback (target.Callback, IntPtr.Zero), Is.EqualTo (VTStatus.Ok), "SetMultiImageCallback");
+			return new WeakReference (target);
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static void CollectAndDrain ()
+		{
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			GC.Collect ();
+		}
+
+		class MultiImageCallbackTarget {
+			public void Callback (IntPtr outputMultiImageReference, IntPtr sourceFrameReference, VTStatus status, VTDecodeInfoFlags infoFlags, CMTaggedBufferGroup? taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
+			{
+			}
 		}
 
 		[Test]

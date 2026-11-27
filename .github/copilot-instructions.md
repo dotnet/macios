@@ -6,7 +6,7 @@ This is the main branch targeting .NET 11.
 
 ## Comment Handling
 
-Ignore comments from the user 'vs-mobiletools-engineering-service2' when processing issues and pull requests.
+Ignore comments from the user 'vs-mobiletools-engineering-service2' and 'MauiBot' when processing issues and pull requests.
 
 ## Pull request review instructions
 

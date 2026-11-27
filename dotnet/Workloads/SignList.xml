@@ -160,6 +160,7 @@
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />
     <!-- Our new Microsoft.* product dlls -->
+    <FirstParty Include="Microsoft.Apple.Tools.MaciOS.dll" />
     <FirstParty Include="Microsoft.iOS.dll" />
     <FirstParty Include="Microsoft.MacCatalyst.dll" />
     <FirstParty Include="Microsoft.macOS.dll" />

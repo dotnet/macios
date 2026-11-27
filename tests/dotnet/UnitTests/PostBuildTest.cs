@@ -797,9 +797,10 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", true)]
-		public void AppExtensionR2RFrameworkPostProcessingWithMultipleRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers, bool extensionOptsOutOfPostProcessing)
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", true, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false, true)]
+		public void AppExtensionR2RFrameworkPostProcessingWithMultipleRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers, bool extensionOptsOutOfPostProcessing, bool appOptsOutOfPostProcessing)
 		{
 			const string configuration = "Release";
 			const string frameworkName = "ExtensionProject.r2r";
@@ -817,6 +818,10 @@ namespace Xamarin.Tests {
 			properties ["NoSymbolStrip"] = "false";
 			properties ["NoDSymUtil"] = "false";
 			properties ["CreateR2RFramework"] = "true";
+			if (appOptsOutOfPostProcessing) {
+				properties ["NoSymbolStrip"] = "true";
+				properties ["NoDSymUtil"] = "true";
+			}
 			var extensionProperties = GetDefaultProperties (runtimeIdentifiers);
 			extensionProperties ["Configuration"] = configuration;
 			extensionProperties ["EnableCodeSigning"] = "false";
@@ -840,7 +845,7 @@ namespace Xamarin.Tests {
 				return itemSpec.StartsWith (appBundlePrefix, StringComparison.Ordinal) && itemSpec.EndsWith (frameworkItemSuffix, StringComparison.Ordinal) && !itemSpec.Contains ("/PlugIns/", StringComparison.Ordinal);
 			}).ToArray ();
 			Assert.That (frameworkItems.Length, Is.EqualTo (1), "Extension framework post-processing item");
-			if (extensionOptsOutOfPostProcessing) {
+			if (extensionOptsOutOfPostProcessing || appOptsOutOfPostProcessing) {
 				Assert.That (frameworkItems [0].GetMetadata ("NoSymbolStrip"), Is.EqualTo ("true"), "NoSymbolStrip metadata");
 				Assert.That (frameworkItems [0].GetMetadata ("NoDSymUtil"), Is.EqualTo ("true"), "NoDSymUtil metadata");
 				Assert.That (dsymDir, Does.Not.Exist, "Extension framework dSYM should not be generated");

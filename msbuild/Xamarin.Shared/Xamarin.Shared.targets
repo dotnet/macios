@@ -3121,15 +3121,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 
 		<ItemGroup>
-			<_AppExtensionPostProcessingItemsPath Include="@(_ResolvedAppExtensionReferences -> '%(Identity)\..\postprocessing.items')" Condition="'@(_RuntimeIdentifiersAsItems->Count())' == '0' And Exists('%(Identity)\..\postprocessing.items')" />
+			<_AppExtensionPostProcessingItemsPath Include="@(_ResolvedAppExtensionReferences -> '%(Identity)\..\postprocessing.items')" Condition="Exists('%(Identity)\..\postprocessing.items')" />
 			<_WatchAppPostProcessingItemPath Include="@(_ResolvedWatchAppReferences -> '%(Identity)\..\postprocessing.items')" Condition="Exists('%(Identity)\..\postprocessing.items')"/>
 			<_RuntimeIdentifierPostProcessingItemsFile Include="@(_RuntimeIdentifiersAsItems->'%(Identity)\postprocessing.items')" />
 		</ItemGroup>
 		<CombinePath BasePath="%(_ResolvedAppExtensionReferences.Identity)\.." Paths="@(_RuntimeIdentifierPostProcessingItemsFile)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0'">
-			<Output TaskParameter="CombinedPaths" ItemName="_AppExtensionPostProcessingItemsPathFromRuntimeIdentifiers" />
+			<Output TaskParameter="CombinedPaths" ItemName="_AppExtensionR2RPostProcessingItemsPathFromRuntimeIdentifiers" />
 		</CombinePath>
 		<ItemGroup>
-			<_AppExtensionPostProcessingItemsPath Include="@(_AppExtensionPostProcessingItemsPathFromRuntimeIdentifiers)" Condition="Exists('%(Identity)')" />
+			<_AppExtensionR2RPostProcessingItemsPath Include="@(_AppExtensionR2RPostProcessingItemsPathFromRuntimeIdentifiers)" Condition="Exists('%(Identity)')" />
 		</ItemGroup>
 	</Target>
 

@@ -2971,7 +2971,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 		</_CollectItemsForPostProcessingDependsOn>
 	</PropertyGroup>
 	<Target Name="_CollectR2RFrameworksForPostProcessing" DependsOnTargets="_ComputeFrameworksToCreate;_PrepareR2RModules">
-		<ReadItemsFromFile File="@(_AppExtensionPostProcessingItemsPath)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0' And '@(_AppExtensionPostProcessingItemsPath->Count())' != '0'">
+		<ReadItemsFromFile File="@(_AppExtensionR2RPostProcessingItemsPath)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0' And '@(_AppExtensionR2RPostProcessingItemsPath->Count())' != '0'">
 			<Output TaskParameter="Items" ItemName="_AppExtensionPostProcessingItemsForR2RFrameworks" />
 		</ReadItemsFromFile>
 		<ItemGroup>
@@ -2994,8 +2994,8 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			<_AppExtensionR2RFrameworkPostProcessingItem Include="@(_AppExtensionR2RFrameworkForPostProcessing->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
 				<Kind>Framework</Kind>
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
-				<NoSymbolStrip Condition="'%(_AppExtensionR2RFrameworkForPostProcessing.NoSymbolStrip)' == 'true'">true</NoSymbolStrip>
-				<NoDSymUtil Condition="'%(_AppExtensionR2RFrameworkForPostProcessing.NoDSymUtil)' == 'true'">true</NoDSymUtil>
+				<NoSymbolStrip Condition="'$(NoSymbolStrip)' == 'true' Or '%(_AppExtensionR2RFrameworkForPostProcessing.NoSymbolStrip)' == 'true'">true</NoSymbolStrip>
+				<NoDSymUtil Condition="'$(NoDSymUtil)' == 'true' Or '%(_AppExtensionR2RFrameworkForPostProcessing.NoDSymUtil)' == 'true'">true</NoDSymUtil>
 			</_AppExtensionR2RFrameworkPostProcessingItem>
 		</ItemGroup>
 		<RemoveDuplicates Inputs="@(_AppExtensionR2RFrameworkPostProcessingItem)">

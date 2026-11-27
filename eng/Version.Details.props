@@ -22,7 +22,7 @@ This file should be imported by eng/Versions.props
     <MicrosoftmacOSSdknet110_272PackageVersion>27.2.11066</MicrosoftmacOSSdknet110_272PackageVersion>
     <MicrosofttvOSSdknet110_272PackageVersion>27.2.11066</MicrosofttvOSSdknet110_272PackageVersion>
     <!-- dotnet-macios-devtools dependencies -->
-    <MicrosoftAppleToolsMaciOSPackageVersion>1.0.0-preview.1.26575.1</MicrosoftAppleToolsMaciOSPackageVersion>
+    <MicrosoftAppleToolsMaciOSPackageVersion>1.0.0-preview.1.26576.1</MicrosoftAppleToolsMaciOSPackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26569.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>

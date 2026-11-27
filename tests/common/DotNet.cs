@@ -401,7 +401,8 @@ namespace Xamarin.Tests {
 
 		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
-			return Get (projectPath, name, "Property", target, properties, environment);
+			// MSBuild writes a trailing newline after the value in the result file.
+			return Get (projectPath, name, "Property", target, properties, environment).Trim ();
 		}
 
 		// returns json
@@ -475,8 +476,6 @@ namespace Xamarin.Tests {
 						return false; // ICU data file only present on .NET
 					case "runtime-options.plist":
 						return false; // the .NET runtime will deal with selecting the http handler, no need for us to do anything
-					case "runtimeconfig.bin":
-						return false; // this file is present for .NET apps, but not legacy apps.
 					case "embedded.mobileprovision":
 					case "CodeResources":
 						return false; // sometimes we don't sign in .NET when we do in legacy (if there's an empty Entitlements.plist file)

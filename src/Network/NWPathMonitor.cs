@@ -80,6 +80,7 @@ namespace Network {
 			GC.KeepAlive (queue);
 		}
 
+		[UserDelegateType (typeof (Action<NWPath>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineUpdatedSnapshot (IntPtr block, IntPtr path)
 		{

@@ -17,8 +17,7 @@ namespace Xamarin {
 
 		// These properties are set by the runtime (in xamarin_vm_initialize / xamarin_bridge_vm_initialize)
 		// and passed to coreclr_initialize, so they must not also come from the runtimeconfig.json (otherwise
-		// we'd pass duplicate properties to coreclr_initialize). Keep in sync with runtime/runtime.m and the
-		// _RuntimeConfigReservedProperties item group in Xamarin.Shared.Sdk.targets.
+		// we'd pass duplicate properties to coreclr_initialize). Keep in sync with runtime/runtime.m.
 		static readonly string [] reservedRuntimeConfigProperties = new [] {
 			"APP_CONTEXT_BASE_DIRECTORY",
 			"APP_PATHS",
@@ -41,15 +40,13 @@ namespace Xamarin {
 
 			// For CoreCLR we bake the runtimeconfig.json 'configProperties' directly into the app (as C arrays
 			// in the generated main), instead of shipping the binary runtimeconfig format and decoding it at
-			// startup. MonoVM and NativeAOT are unaffected (they don't use xamarin_bridge_compute_properties).
+			// startup. NativeAOT is unaffected (it doesn't use xamarin_bridge_compute_properties).
 			if (app.XamarinRuntime == XamarinRuntime.CoreCLR)
 				app.RuntimeConfigProperties = LoadRuntimeConfigProperties ();
 
 			if (app.GenerateTrustedPlatformAssemblies) {
 				app.TrustedPlatformAssemblies.AddRange (app.Assemblies.Select (v => v.FileName));
-#if ASSEMBLY_PREPARER
 				app.TrustedPlatformAssemblies.AddRange (Configuration.AddedAssemblies.Select (v => Path.GetFileName (v.Path)));
-#endif
 			}
 
 			// We want this called before any other initialization methods.
@@ -132,7 +129,7 @@ namespace Xamarin {
 
 		// Reads the (already merged with the *.runtimeconfig.dev.json) runtimeconfig.json file and extracts
 		// the 'runtimeOptions.configProperties' as a string->string dictionary, matching the value conversion
-		// done by the shared RuntimeConfigParserTask (from dotnet/runtime) that MonoVM uses.
+		// done by the shared runtime config parser (from dotnet/runtime).
 		Dictionary<string, string>? LoadRuntimeConfigProperties ()
 		{
 			var path = Configuration.RuntimeConfigurationFilePath;

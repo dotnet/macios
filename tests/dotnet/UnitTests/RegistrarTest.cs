@@ -12,6 +12,149 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void DynamicRetainCountExport (ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GenerateProject (platform, nameof (DynamicRetainCountExport), runtimeIdentifier, out _);
+			var projectDirectory = Path.GetDirectoryName (projectPath) ?? throw new InvalidOperationException ("The generated project path has no directory.");
+			File.WriteAllText (Path.Combine (projectDirectory, "Main.cs"), """
+				// Copyright (c) Microsoft Corporation.
+				// Licensed under the MIT License.
+
+				using System;
+				using System.Linq;
+				using System.Reflection;
+				using System.Reflection.Emit;
+				using System.Runtime.InteropServices;
+				using Foundation;
+				using ObjCRuntime;
+
+				class Program {
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern IntPtr objc_allocateClassPair (IntPtr superclass, string name, IntPtr extraBytes);
+
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern void objc_registerClassPair (IntPtr cls);
+
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern IntPtr class_getInstanceMethod (IntPtr cls, IntPtr selector);
+
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern IntPtr method_getImplementation (IntPtr method);
+
+					static void AssertRejected (Type type)
+					{
+						for (var attempt = 0; attempt < 2; attempt++) {
+							try {
+								Class.GetHandle (type);
+								throw new InvalidOperationException ($"Registration of {type.Name} succeeded on attempt {attempt}.");
+							} catch (AggregateException ex) when (ex.Flatten ().InnerExceptions.Any (v => v is RuntimeException error && error.Code == 4199)) {
+							}
+							if (Class.GetHandle (type.Name) != NativeHandle.Zero)
+								throw new InvalidOperationException ($"The rejected native class {type.Name} was registered.");
+						}
+					}
+
+					static void Main ()
+					{
+						var assembly = AssemblyBuilder.DefineDynamicAssembly (new AssemblyName ("RetainCountExports"), AssemblyBuilderAccess.Run);
+						var module = assembly.DefineDynamicModule ("RetainCountExports");
+						var builder = module.DefineType ("RejectedRetainCount", TypeAttributes.Public, typeof (NSObject));
+						var method = builder.DefineMethod ("GetCount", MethodAttributes.Public, typeof (nuint), []);
+						var exportConstructor = typeof (ExportAttribute).GetConstructor ([typeof (string)]) ?? throw new InvalidOperationException ("Missing ExportAttribute constructor.");
+						method.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCount"]));
+						var il = method.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						var type = builder.CreateType () ?? throw new InvalidOperationException ("Could not create the test type.");
+						AssertRejected (type);
+						var derived = module.DefineType ("RejectedDerivedRetainCount", TypeAttributes.Public, type).CreateType () ?? throw new InvalidOperationException ("Could not create the derived test type.");
+						AssertRejected (derived);
+
+						var cls = objc_allocateClassPair (Class.GetHandle (typeof (NSObject)), "RetainCountWrapper", IntPtr.Zero);
+						if (cls == IntPtr.Zero)
+							throw new InvalidOperationException ("Could not allocate the native wrapper class.");
+						objc_registerClassPair (cls);
+						var selector = Selector.GetHandle ("retainCount");
+						var originalImplementation = method_getImplementation (class_getInstanceMethod (cls, selector));
+						var wrapper = module.DefineType ("RetainCountWrapper", TypeAttributes.Public, typeof (NSObject));
+						var registerConstructor = typeof (RegisterAttribute).GetConstructor ([typeof (string), typeof (bool)]) ?? throw new InvalidOperationException ("Missing RegisterAttribute constructor.");
+						wrapper.SetCustomAttribute (new CustomAttributeBuilder (registerConstructor, ["RetainCountWrapper", true]));
+						var wrapperMethod = wrapper.DefineMethod ("GetCount", MethodAttributes.Public, typeof (nuint), []);
+						il = wrapperMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						var wrapperType = wrapper.CreateType () ?? throw new InvalidOperationException ("Could not create the wrapper test type.");
+						var categoryClass = Class.GetHandle (typeof (NSFormatter));
+						var categoryImplementation = method_getImplementation (class_getInstanceMethod (categoryClass, selector));
+						var category = module.DefineType ("RejectedRetainCountCategory", TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed);
+						var categoryConstructor = typeof (CategoryAttribute).GetConstructor ([typeof (Type)]) ?? throw new InvalidOperationException ("Missing CategoryAttribute constructor.");
+						category.SetCustomAttribute (new CustomAttributeBuilder (categoryConstructor, [typeof (NSFormatter)]));
+						var extensionConstructor = typeof (System.Runtime.CompilerServices.ExtensionAttribute).GetConstructor ([]) ?? throw new InvalidOperationException ("Missing ExtensionAttribute constructor.");
+						var validSelector = Selector.GetHandle ("retainCountCategoryRegression");
+						if (class_getInstanceMethod (categoryClass, validSelector) != IntPtr.Zero)
+							throw new InvalidOperationException ("The category test selector already exists.");
+						var validMethod = category.DefineMethod ("ValidExport", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCountCategoryRegression"]));
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
+						il = validMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						var categoryMethod = category.DefineMethod ("GetCount", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
+						categoryMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCount"]));
+						categoryMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
+						il = categoryMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						AssertRejected (category.CreateType () ?? throw new InvalidOperationException ("Could not create the category test type."));
+						if (method_getImplementation (class_getInstanceMethod (categoryClass, selector)) != categoryImplementation)
+							throw new InvalidOperationException ("The category replaced the native retainCount implementation.");
+						if (class_getInstanceMethod (categoryClass, validSelector) != IntPtr.Zero)
+							throw new InvalidOperationException ("The rejected category installed its valid export.");
+
+						var validCategory = module.DefineType ("ValidRetainCountCategory", TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed);
+						validCategory.SetCustomAttribute (new CustomAttributeBuilder (categoryConstructor, [typeof (NSFormatter)]));
+						validMethod = validCategory.DefineMethod ("ValidExport", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCountCategoryRegression"]));
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
+						il = validMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						Class.GetHandle (validCategory.CreateType () ?? throw new InvalidOperationException ("Could not create the valid category test type."));
+						if (class_getInstanceMethod (categoryClass, validSelector) == IntPtr.Zero)
+							throw new InvalidOperationException ("The valid category export was not installed.");
+
+						var callback = wrapperType.GetMethod ("GetCount") ?? throw new InvalidOperationException ("Missing callback.");
+						for (var attempt = 0; attempt < 2; attempt++) {
+							try {
+								Runtime.ConnectMethod (wrapperType, callback, new Selector ("retainCount"));
+								throw new InvalidOperationException ("Connecting retainCount on a wrapper succeeded.");
+							} catch (RuntimeException ex) when (ex.Code == 4199) {
+							}
+							if (method_getImplementation (class_getInstanceMethod (cls, selector)) != originalImplementation)
+								throw new InvalidOperationException ("The native retainCount implementation was replaced.");
+						}
+						Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));
+					}
+				}
+				""");
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Registrar"] = "dynamic";
+			properties ["MtouchLink"] = "None";
+			properties ["UseMonoRuntime"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+			ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifier);
+		}
+
 		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
 		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
 		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)
@@ -31,8 +174,6 @@ namespace Xamarin.Tests {
 
 			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
 			Assert.That (registrar, Is.EqualTo (expectedRegistrar), "Registrar");
-			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "PrepareAssemblies", out var prepareAssemblies), Is.True, "Could not find the 'PrepareAssemblies' property in the binlog.");
-			Assert.That (prepareAssemblies, Is.EqualTo ("true"), "PrepareAssemblies");
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -107,59 +248,6 @@ namespace Xamarin.Tests {
 				ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifiers);
 			} finally {
 				Environment.SetEnvironmentVariable ("XAMARIN_VALIDATE_STATIC_REGISTRAR_CODE", null);
-			}
-		}
-
-		[TestCase (ApplePlatform.MacCatalyst, false)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		public void ClassRewriterTest (ApplePlatform platform, bool rewriteHandles)
-		{
-			var project = "MyClassRedirectApp";
-			var configuration = "Debug";
-			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-
-			var projectPath = GetProjectPath (project, platform: platform);
-			Clean (projectPath);
-			var properties = GetDefaultProperties ();
-			properties ["Registrar"] = "static";
-			// enable the linker (so that the main assembly is modified)
-			properties ["LinkMode"] = "full";
-			properties ["MtouchLink"] = "full";
-			properties ["InlineClassGetHandle"] = "disabled";
-			if (rewriteHandles)
-				properties ["MtouchExtraArgs"] = "--optimize=redirect-class-handles";
-
-			DotNet.AssertBuild (projectPath, properties);
-
-			var appDir = GetAppPath (projectPath, platform, runtimeIdentifiers, configuration);
-			var asmDir = Path.Combine (appDir, GetRelativeAssemblyDirectory (platform));
-
-			var appExecutable = Path.Combine (asmDir, project + ".dll");
-			var platformDll = Path.Combine (asmDir, Configuration.GetBaseLibraryName (platform));
-			Assert.That (File.Exists (platformDll), "No platform dll.");
-			var module = ModuleDefinition.ReadModule (platformDll);
-			var classHandlesMaybe = AllTypes (module).FirstOrDefault (t => t.FullName == "ObjCRuntime.Runtime/ClassHandles");
-			Assert.That (classHandlesMaybe, Is.Not.Null, "Couldn't find ClassHandles type.");
-			var classHandles = classHandlesMaybe!;
-			if (!rewriteHandles) {
-				// NB: there is always at least one field named "unused"
-				var fields = classHandles.Fields.Where (f => f.Name != "unused").Select (f => f.Name).ToList ();
-				var sb = new StringBuilder ();
-				foreach (var f in fields) {
-					sb.Append (" ").Append (f);
-				}
-				Assert.That (fields.Count == 0, "There are fields in classHandles - rewriter was called when it should have done nothing." + sb);
-			} else {
-				// NB: there is always at least one field named "unused"
-				Assert.That (classHandles.HasFields && classHandles.Fields.Count () > 1, "There are no fields in ClassHandles - rewriter did nothing.");
-				var field = classHandles.Fields.FirstOrDefault (f => f.Name.Contains ("SomeObj"));
-				Assert.That (field, Is.Not.Null, "Didn't find a field for 'SomeObj'");
 			}
 		}
 

@@ -83,6 +83,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe OS_nw_protocol_definition nw_framer_create_definition (IntPtr identifier, NWFramerCreateFlags flags, BlockLiteral* start_handler);
 
+		[UserDelegateType (typeof (Func<NWFramer, NWFramerStartResult>))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]

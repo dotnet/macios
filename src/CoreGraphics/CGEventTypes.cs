@@ -441,30 +441,29 @@ namespace CoreGraphics {
 	}
 
 	// CGRemoteOperation.h:typedef uint32_t CGEventFilterMask;
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Flags for event classes that can pass through during event suppression.</summary>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[Flags]
 	public enum CGEventFilterMask : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows local mouse events to pass through event suppression.</summary>
 		PermitLocalMouseEvents = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows local keyboard events to pass through event suppression.</summary>
 		PermitLocalKeyboardEvents = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows system-defined events to pass through event suppression.</summary>
 		PermitSystemDefinedEvents = 4,
 	}
 
 	// CGRemoteOperation.h:typedef uint32_t CGEventSuppressionState;
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Identifies an event-suppression state that may follow the posting of a Quartz event.</summary>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public enum CGEventSuppressionState : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The interval after posting a Quartz event when local hardware events may be suppressed.</summary>
 		SuppressionInterval,
-		/// <summary>To be added.</summary>
+		/// <summary>A synthetic mouse drag, during which local hardware events may be suppressed.</summary>
 		RemoteMouseDrag,
+		/// <summary>The number of event-suppression states.</summary>
 		NumberOfEventSuppressionStates,
 	}
 

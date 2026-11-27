@@ -12,6 +12,7 @@ namespace Xamarin.MacDev.Tasks {
 	/// <summary>
 	/// Provides a localizable way to log a message from an MSBuild target.
 	/// </summary>
+	[MSBuildMultiThreadableTask]
 	public class MacDevMessage : Task {
 
 		/// <summary>

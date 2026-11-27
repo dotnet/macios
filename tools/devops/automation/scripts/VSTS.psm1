@@ -298,47 +298,12 @@ class BuildConfiguration {
         }
     }
 
-    static [string[]] $labelsOfInterest = $(
-        "build-package",
-        "skip-packages",
-        "skip-nugets",
-        "skip-signing",
-        "skip-packaged-macos-tests",
-        "run-packaged-macos-tests",
-        "skip-api-comparison",
-        "run-windows-tests",
-        "skip-windows-tests",
-        "skip-all-tests"
-    )
-
-    [void] SetLabelsFromPR ([PSCustomObject] $prInfo, [bool]$isPR) {
-        if ($prInfo) {
-            Write-Debug "Setting VSTS labels from $($prInfo.labels)"
-            foreach ($l in [BuildConfiguration]::labelsOfInterest) {
-                $labelPresent = 1 -eq ($prInfo.labels | Where-Object { $_.name -eq "$l"}).Count
-                # We need to replace dashes with underscores, because bash can't access an environment variable with a dash in the name.
-                $lbl = $l.Replace('-', '_')
-                Write-Host "##vso[task.setvariable variable=$lbl;isOutput=true]$labelPresent"
-            }
-        } else {
-            Write-Debug "Not setting PR labels because there was not info provided."
-        }
-
-        # set if the build is a PR or not
-        if ($isPR) {
-          Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]True"
-        } else {
-          Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]False"
-        }
-    }
-
     <#
         .SYNOPSIS
             Retrieve the change id and export it as an enviroment variable.
     #>
     [string] ExportPRId ([object] $configuration) {
-        # This is an interesting step, we do know we are dealing with a PR, but we need the PR id to
-        # be able to get the labels, the buildSourceBranch follows the pattern: refs/pull/{ChangeId}/merge
+        # For PR builds, buildSourceBranch follows the pattern: refs/pull/{ChangeId}/merge
         # we could use a regexp but then we would have two problems instead of one
         $prId = $null
         if ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH) {
@@ -354,7 +319,7 @@ class BuildConfiguration {
             } else {
                 Write-Host "Getting the change id from the current build source version with the Github API"
                 # use the github command to retrieve the associate PR id
-                $prIDs = Get-GitHubPRsForHash -Hash $configuration.PARENT_BUILD_BUILD_SOURCEVERSION
+                $prIDs = @(Get-GitHubPRsForHash -Hash $configuration.PARENT_BUILD_BUILD_SOURCEVERSION)
                 Write-Host "PR IDs: $prIDs"
                 if ($prIDs.Length -gt 0) {
                     $prId = $prIDs[0]
@@ -457,7 +422,7 @@ class BuildConfiguration {
     }
 
 
-    [PSCustomObject] Create([bool] $addTags, [string] $configFile) {
+    [PSCustomObject] Create([string] $configFile) {
         # we are going to use a custom object to store all the configuration of the build, this later
         # will be uploaded as an artifact so that it can be easily shared with the cascade pipelines, we will
         # uses a special prefix for the default variable names so that we do not step on the cascading pipeline
@@ -528,68 +493,26 @@ class BuildConfiguration {
 
         $configuration | Add-Member -NotePropertyName Commit -NotePropertyValue $changeId
 
-        # the following list will be used to track the tags and set them in VSTS to make the monitoring person life easier
-        [System.Collections.Generic.List[string]]$tags = @()
-
         $buildReason = $configuration.PARENT_BUILD_BUILD_REASON
         if (-not $buildReason) {
             $buildReason = $Env:BUILD_REASON
         }
 
-        if ($buildReason -eq "Schedule") {
-            $tags.Add("cronjob")
-        }
-
         $prId = $null
         if ($Env:IS_PR -eq "true" -or $buildReason -eq "PullRequest" -or (($buildReason -eq "Manual" -or $buildReason -eq "IndividualCI") -and ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCHNAME -eq "merge")) ) {
           Write-Host "Configuring build from PR."
-
-          # retrieve the PR data to be able to fwd the labels from github
           $prId = $this.ExportPRId($configuration)
         }
 
         if ($prId) {
-          $prInfo = Get-GitHubPRInfo -ChangeId $prId
-          Write-Host $prInfo
-
-          # make peoples life better, loop over the labels and add them as tags in the vsts build
-          foreach ($labelInfo in $prInfo.labels) {
-            $labelName = $labelInfo.name
-            Write-Host "Found label $labelName"
-            $tags.Add($labelName)
-          }
-          # special tag, we want to know if we are using a pr
-          $tags.Add("prBuild")
-
-          # special tag, lets add the target branch, will be useful to the users
-          $ref = $prInfo.base.ref
-          $tags.Add("$ref")
-
-          # set output variables based on the git labels
-          $this.SetLabelsFromPR($prInfo, $true)
+          Write-Host "Found PR: $prId"
+          Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]True"
         } else {
           if ($Env:IS_PR -eq "true") {
             Write-Host "No PR id found; treating build as CI."
           }
-          # thee are not labels to add in a CI build and we will set the build as a ci build.
-          $this.SetLabelsFromPR($null, $false)
-          if ($tags.Contains("cronjob")) {
-            # debug so that we do know why we do not have ciBuild
-            Write-Debug "Skipping the tag 'ciBuild' because we are dealing with a translation build."
-          } else  {
-            $tags.Add("ciBuild")
-          }
-          # set the name of the branch under build
-          $tags.Add("$($configuration.PARENT_BUILD_BUILD_SOURCEBRANCHNAME)")
           Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]False"
         }
-        # Remove empty entries
-        $tags = $tags | Where {$_}
-        if ($addTags) {
-            Set-BuildTags -Tags $tags.ToArray()
-        }
-        # add the tags and serialize to json
-        $configuration | Add-Member -NotePropertyName Tags -NotePropertyValue $tags
 
         $jsonConfiguration = $configuration | ConvertTo-Json
 
@@ -862,14 +785,11 @@ function Get-YamlPreview {
 function New-BuildConfiguration {
     param
     (
-        [bool]
-        $AddTags = $true,
-
         [string]
         $ConfigFile = ''
     )
     $buildConfiguration = [BuildConfiguration]::new()
-    return $buildConfiguration.Create($AddTags, $ConfigFile)
+    return $buildConfiguration.Create($ConfigFile)
 }
 
 function Import-BuildConfiguration {

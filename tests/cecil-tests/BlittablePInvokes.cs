@@ -453,6 +453,7 @@ namespace Cecil.Tests {
 							switch (instr.OpCode.Code) {
 							case Code.Call:
 							case Code.Callvirt:
+							case Code.Newobj:
 								break;
 							default:
 								continue;
@@ -495,6 +496,59 @@ namespace Cecil.Tests {
 		}
 
 		static HashSet<string> knownFailuresBlockLiterals = new HashSet<string> {
+		};
+
+		[Test]
+		public void CheckForBlockTrampolineUserDelegateTypes ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var failures = new Dictionary<string, string> ();
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				foreach (var method in info.Assembly.EnumerateMethods (m => m.HasBody)) {
+					foreach (var instruction in method.Body.Instructions) {
+						if (instruction.OpCode.Code != Code.Call && instruction.OpCode.Code != Code.Newobj)
+							continue;
+						if (instruction.Operand is not MethodReference constructor ||
+							!constructor.DeclaringType.Is ("ObjCRuntime", "BlockLiteral") ||
+							constructor.Name != ".ctor" || constructor.Parameters.Count != 4 ||
+							!constructor.Parameters [2].ParameterType.Is ("System", "Type") ||
+							!constructor.Parameters [3].ParameterType.Is ("System", "String"))
+							continue;
+
+						// Match the typeof/nameof arguments used by the block constructor optimizer.
+						var loadName = PreviousInstruction (instruction);
+						var getType = PreviousInstruction (loadName);
+						var loadType = PreviousInstruction (getType);
+						var location = method.RenderLocation (instruction);
+						Assert.That (loadName.OpCode, Is.EqualTo (OpCodes.Ldstr), location);
+						Assert.That (getType.OpCode, Is.EqualTo (OpCodes.Call), location);
+						Assert.That (getType.Operand is MethodReference getTypeMethod &&
+							getTypeMethod.DeclaringType.Is ("System", "Type") &&
+							getTypeMethod.Name == "GetTypeFromHandle", Is.True, location);
+						Assert.That (loadType.OpCode, Is.EqualTo (OpCodes.Ldtoken), location);
+						var trampolineType = ((TypeReference) loadType.Operand).Resolve ();
+						var trampoline = trampolineType.Methods.Single (m => m.Name == (string) loadName.Operand);
+						if (trampoline.CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "UserDelegateTypeAttribute")))
+							continue;
+
+						var message = $"{trampoline.AsFullName ()}: needs [UserDelegateType] because its signature is used to create a BlockLiteral.";
+						failures [message] = $"{location}: {message}";
+					}
+				}
+			}
+			Helper.AssertFailures (failures, knownFailuresBlockTrampolines, nameof (knownFailuresBlockTrampolines), "Block trampolines without [UserDelegateType]");
+		}
+
+		static Instruction PreviousInstruction (Instruction instruction)
+		{
+			var previous = instruction.Previous;
+			while (previous?.OpCode == OpCodes.Nop)
+				previous = previous.Previous;
+			return previous ?? throw new InvalidOperationException ($"No instruction before {instruction}.");
+		}
+
+		static HashSet<string> knownFailuresBlockTrampolines = new HashSet<string> {
 		};
 
 		[Test]

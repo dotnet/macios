@@ -55,6 +55,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern byte nw_ws_response_enumerate_additional_headers (OS_nw_ws_response response, BlockLiteral* enumerator);
 
+		[UserDelegateType (typeof (Func<IntPtr, IntPtr, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineEnumerateHeadersHandler (IntPtr block, IntPtr headerPointer, IntPtr valuePointer)
 		{

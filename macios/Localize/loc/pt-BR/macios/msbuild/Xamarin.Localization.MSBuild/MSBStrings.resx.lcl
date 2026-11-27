@@ -1652,7 +1652,7 @@
         <Str Cat="Text">
           <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[A Extensão WatchKit '{0}' possui um Info.plist inválido: o matriz UIRequiredDeviceCapabilities não deve conter a capacidade 'watch-companion'.]]></Val>
+            <Val><![CDATA[A Extensão WatchKit '{0}' possui um Info.plist inválido: a matriz UIRequiredDeviceCapabilities não deve conter a capacidade 'watch-companion'.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]D;]A;        ]]></Val>
@@ -2946,6 +2946,15 @@
           <Val><![CDATA[Failed to list physical devices with devicectl: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Falha ao listar dispositivos físicos com devicectl: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7201" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The --aot option is not supported because Mono AOT compilation has been removed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Não há suporte para a opção --aot porque a compilação Mono AOT foi removida.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

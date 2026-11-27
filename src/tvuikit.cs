@@ -19,12 +19,17 @@ namespace TVUIKit {
 		All,
 	}
 
+	/// <summary>Enumerates the transformations that can be applied to the text of a media item.</summary>
 	[TV (15, 0)]
 	[Native]
 	public enum TVMediaItemContentTextTransform : long {
+		/// <summary>The text isn't transformed.</summary>
 		None,
+		/// <summary>The text is shown in uppercase.</summary>
 		Uppercase,
+		/// <summary>The text is shown in lowercase.</summary>
 		Lowercase,
+		/// <summary>The first letter of each word is shown in uppercase.</summary>
 		Capitalized,
 	}
 

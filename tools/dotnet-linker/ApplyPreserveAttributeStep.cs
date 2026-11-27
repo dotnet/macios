@@ -1,6 +1,8 @@
 using System.IO;
+using System.Linq;
 
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 using Xamarin.Bundler;
@@ -29,11 +31,7 @@ namespace Xamarin.Linker.Steps {
 			}
 		}
 
-#if ASSEMBLY_PREPARER
 		public bool UseXmlDescriptionFile { get; set; }
-#else
-		public bool UseXmlDescriptionFile { get; set; } = true;
-#endif
 		public string XmlDescriptionPath { get; set; } = string.Empty;
 
 		public ApplyPreserveAttributeStep ()
@@ -96,6 +94,19 @@ namespace Xamarin.Linker.Steps {
 				return false;
 			}
 
+			// A CopyUsed assembly can still be removed. Use a type token because DynamicDependency
+			// requires members and the target type may not have any.
+			if (!abr.IsAssemblyTrimmed (type)) {
+				var moduleConstructor = GetOrCreateModuleConstructor (abr.CurrentAssembly.MainModule, out var modified);
+				if (moduleConstructor.Body.Instructions.Any (v => v.OpCode == OpCodes.Ldtoken && v.Operand is TypeReference tr && tr.FullName == type.FullName && tr.Resolve () == type))
+					return modified;
+				var il = moduleConstructor.Body.GetILProcessor ();
+				var first = moduleConstructor.Body.Instructions [0];
+				il.InsertBefore (first, il.Create (OpCodes.Ldtoken, abr.CurrentAssembly.MainModule.ImportReference (type)));
+				il.InsertBefore (first, il.Create (OpCodes.Pop));
+				return true;
+			}
+
 			return AddDynamicDependencyAttribute (type, allMembers);
 		}
 
@@ -148,8 +159,18 @@ namespace Xamarin.Linker.Steps {
 			if (member is null)
 				throw ErrorHelper.CreateError (99, $"Unable to add dynamic dependency attribute to {provider.GetType ().FullName}");
 
-			var moduleConstructor = GetOrCreateModuleConstructor (member.GetModule (), out var modified);
-			var signature = DocumentationComments.GetSignature (member);
+			var modified = false;
+			string? signature;
+			if (member is MethodDefinition method) {
+				signature = abr.GetDynamicDependencySignature (method, out var helperAdded);
+				modified |= helperAdded;
+				if (signature is null)
+					return modified;
+			} else {
+				signature = DocumentationComments.GetSignature (member);
+			}
+			var moduleConstructor = GetOrCreateModuleConstructor (member.GetModule (), out var constructorAdded);
+			modified |= constructorAdded;
 			var attrib = abr.CreateDynamicDependencyAttribute (signature, member.DeclaringType);
 			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, attrib);
 			return modified;
@@ -187,18 +208,6 @@ namespace Xamarin.Linker.Steps {
 				Configuration.WriteOutputForMSBuild ("TrimmerRootDescriptor", items);
 			}
 
-#if !ASSEMBLY_PREPARER
-			// The current linker run still needs these roots immediately. Writing the TrimmerRootDescriptor item only
-			// makes the descriptor available to MSBuild after this step has already finished running.
-			var applyXmlStepType = Context.GetType ().Assembly.GetType ("Mono.Linker.Steps.ResolveFromXmlStep");
-			if (applyXmlStepType is not null) {
-				var documentStream = File.OpenRead (xmlPath); // ResolveFromXmlStep will dispose the stream.
-				var applyXmlStep = (BaseStep) Activator.CreateInstance (applyXmlStepType, new object [] { documentStream, xmlPath })!;
-				applyXmlStep.Process (Context);
-			} else {
-				throw ErrorHelper.CreateError (99, $"Unable to find Mono.Linker.Steps.ResolveFromXmlStep to apply the generated XML description file {xmlPath}");
-			}
-#endif
 		}
 	}
 }

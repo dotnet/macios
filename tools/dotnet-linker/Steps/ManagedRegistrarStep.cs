@@ -165,7 +165,7 @@ namespace Xamarin.Linker {
 			// Report back any exceptions that occurred during the processing.
 			exceptions = this.exceptions;
 
-			if (App.PrepareAssemblies && !App.InCustomTrimmerStep) {
+			if (!App.InCustomTrimmerStep) {
 				var ucoMapPath = Configuration.UnmanagedCallersOnlyMapPath;
 				using (var writer = new StreamWriter (ucoMapPath, false)) {
 					foreach (var entry in unmanagedCallersOnlyMap.Select (kvp => $"{kvp.Key}|{kvp.Value}").OrderBy (v => v)) {
@@ -174,14 +174,6 @@ namespace Xamarin.Linker {
 				}
 			}
 
-#if !ASSEMBLY_PREPARER
-			// Mark some stuff we use later on.
-			if (App.InCustomTrimmerStep && App.PrepareAssemblies == false) {
-				abr.SetCurrentAssembly (abr.PlatformAssembly);
-				Annotations.Mark (abr.RegistrarHelper_Register.Resolve ());
-				abr.ClearCurrentAssembly ();
-			}
-#endif
 		}
 
 		protected override void TryProcessAssembly (AssemblyDefinition assembly)
@@ -226,11 +218,6 @@ namespace Xamarin.Linker {
 			if (modified)
 				abr.SaveCurrentAssembly ();
 
-			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
-			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly) && !App.IsPostProcessingAssemblies) {
-				ImplementNSObjectRegisterToggleRefMethodStub ();
-			}
-
 			abr.ClearCurrentAssembly ();
 		}
 
@@ -246,9 +233,8 @@ namespace Xamarin.Linker {
 			var process = false;
 			var isNSObject = IsNSObject (type);
 
-			// The factory methods must be added before trimming: either in the assembly preparer (when
-			// PrepareAssemblies=true), or inside ILLink itself (when PrepareAssemblies=false). They must not
-			// be added again when post-processing assemblies, since they're already there at that point.
+			// The factory methods must be added by the assembly-preparer before trimming, not by ILLink.
+			// They must not be added again when post-processing assemblies.
 			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies
 				&& (!Configuration.HotReloadCompatibleBuild || Annotations.GetAction (type.Module.Assembly) == AssemblyAction.Link)) {
 				if (isNSObject) {
@@ -1779,16 +1765,12 @@ namespace Xamarin.Linker {
 			//   symbols directly. This means ILC may drop the native export for a trampoline whose
 			//   associated type can't be constructed, while the generated native registrar code still
 			//   references it - which would result in an undefined symbol at native link time.
-			// * We're preparing assemblies (PrepareAssemblies), which is the mode that has a post-ILC
-			//   step (the _PostprocessAssembliesAfterIlc target) that regenerates the native registrar
+			// * A post-ILC step (the _PostprocessAssembliesAfterIlc target) regenerates the native registrar
 			//   code after ILC, routing any trampoline that didn't survive ILC through the dlsym fallback
-			//   instead of a direct native reference. Without that reconciliation step (i.e. in the
-			//   non-prepare mode) we must not let ILC drop any trampoline export, so we don't emit the
-			//   field there.
+			//   instead of a direct native reference.
 			if (associatedSourceType is not null
 				&& App.XamarinRuntime == XamarinRuntime.NativeAOT
-				&& App.Registrar == RegistrarMode.TrimmableStatic
-				&& App.PrepareAssemblies) {
+				&& App.Registrar == RegistrarMode.TrimmableStatic) {
 				// Import the type into the current assembly, otherwise Cecil will serialize the Type argument
 				// without an assembly-qualified name when 'associatedSourceType' is a TypeDefinition from another
 				// assembly (because a TypeDefinition's Scope is its own module), and ILC won't be able to resolve
@@ -2003,25 +1985,6 @@ namespace Xamarin.Linker {
 				}
 				if (isManagedNullable)
 					il.Append (endTarget);
-			}
-		}
-
-		void ImplementNSObjectRegisterToggleRefMethodStub ()
-		{
-			// The NSObject.RegisterToggleRef method is a Mono icall that is unused in NativeAOT.
-			// The method isn't included on all platforms but when it is present, we need to modify it
-			// so that ILC can trim it and it doesn't report the following warning:
-			// 
-			//    ILC: Method '[Microsoft.iOS]Foundation.NSObject.RegisterToggleRef(NSObject,native int,bool)' will always throw because:
-			//         Invalid IL or CLR metadata in 'Void Foundation.NSObject.RegisterToggleRef(Foundation.NSObject, IntPtr, Boolean)'
-			//
-			if (abr.TryGet_NSObject_RegisterToggleRef (out var registerToggleRef)) {
-				registerToggleRef!.IsPublic = false;
-				registerToggleRef!.IsInternalCall = false;
-
-				var body = registerToggleRef!.CreateBody (out var il);
-				il.Emit (OpCodes.Ret);
-				body.FinalizeGeneratedBody ();
 			}
 		}
 	}

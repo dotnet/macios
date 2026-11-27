@@ -709,6 +709,7 @@ namespace AudioToolbox {
 
 		public delegate void PrepareCompletionCallback (AudioConverterError status);
 
+		[UserDelegateType (typeof (PrepareCompletionCallback))]
 		[UnmanagedCallersOnly]
 		static void PrepareCompletionHandler (IntPtr block, int status)
 		{

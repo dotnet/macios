@@ -81,12 +81,6 @@
 		<Compile Include="../common/NullableAttributes.cs">
 			<Link>external/tools/common/NullableAttributes.cs</Link>
 		</Compile>
-		<Compile Include="../common/CSToObjCMap.cs">
-			<Link>external/tools/common/CSToObjCMap.cs</Link>
-		</Compile>
-		<Compile Include="../common/ObjCNameIndex.cs">
-			<Link>external/tools/common/ObjCNameIndex.cs</Link>
-		</Compile>
 		<Compile Include="../common/Optimizations.cs">
 			<Link>external/tools/common/Optimizations.cs</Link>
 		</Compile>
@@ -176,9 +170,6 @@
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/AttributeIteratorBaseStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/AttributeIteratorBaseStep.cs</Link>
-		</Compile>
-		<Compile Include="../dotnet-linker/Steps/ComputeAOTArguments.cs">
-			<Link>external/tools/dotnet-linker/Steps/ComputeAOTArguments.cs</Link>
 		</Compile>
 		<Compile Include="../dotnet-linker/Steps/ComputeNativeBuildFlagsStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/ComputeNativeBuildFlagsStep.cs</Link>

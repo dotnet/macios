@@ -95,7 +95,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 #pragma warning restore 649
 
-		static unsafe string GetBlockSignature (BlockLiteral* block)
+		internal static unsafe string GetBlockSignature (BlockLiteral* block)
 		{
 			var test_block = (TestBlockLiteral*) block;
 			var signatureUtf8Ptr = test_block->block_descriptor->signature;

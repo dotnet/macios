@@ -410,6 +410,19 @@ namespace Xamarin.Bundler {
 			App.Log (3, "    WeakFrameworks: {0}", metadata.WeakFrameworks);
 		}
 
+		public static HashSet<string> GetNativeLibraryResourceNames (AssemblyDefinition assembly)
+		{
+			var libraries = new HashSet<string> (StringComparer.OrdinalIgnoreCase);
+			foreach (var attribute in assembly.CustomAttributes) {
+				if (!attribute.AttributeType.Is ("ObjCRuntime", "LinkWithAttribute"))
+					continue;
+				var linkWith = GetLinkWithAttribute (attribute);
+				if (linkWith.LibraryName is not null)
+					libraries.Add (linkWith.LibraryName);
+			}
+			return libraries;
+		}
+
 		public static LinkWithAttribute GetLinkWithAttribute (CustomAttribute attr)
 		{
 			LinkWithAttribute linkWith;
@@ -525,6 +538,9 @@ namespace Xamarin.Bundler {
 					if (string.IsNullOrEmpty (name))
 						continue; // obfuscated assemblies.
 
+					if (App.NativeAOTSurvivingPInvokeModules?.Contains (name) == false)
+						continue;
+
 					string file = Path.GetFileNameWithoutExtension (name);
 
 					if (App.IsFrameworkUnavailable (file)) {
@@ -622,17 +638,15 @@ namespace Xamarin.Bundler {
 			return FileName;
 		}
 
-		public bool IsDedupAssembly { get; set; } = false;
-
 		public bool IsInterpreted {
 			get {
-				return IsDedupAssembly ? false : App.IsInterpreted (Identity);
+				return App.IsInterpreted (Identity);
 			}
 		}
 
 		public bool IsAOTCompiled {
 			get {
-				return IsDedupAssembly ? true : App.IsAOTCompiled (Identity);
+				return App.IsAOTCompiled (Identity);
 			}
 		}
 	}

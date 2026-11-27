@@ -26,6 +26,16 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (task.NoDSymUtil, Is.EqualTo ("false"), "nodsymutil");
 		}
 
+		[TestCase ("--aot")]
+		[TestCase ("--aot:full")]
+		public void MonoAotOption (string option)
+		{
+			var task = CreateTask<CustomParseBundlerArguments> ();
+			task.ExtraArgs = option;
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The --aot option is not supported because Mono AOT compilation has been removed."));
+		}
+
 		[Test]
 		public void NoSymbolStrip ()
 		{

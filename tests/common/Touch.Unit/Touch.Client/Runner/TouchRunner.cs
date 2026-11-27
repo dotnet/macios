@@ -428,7 +428,7 @@ namespace MonoTouch.NUnit.UI {
 			writer.WriteLine ("[Runner executing:\t{0}]", message);
 			writer.WriteLine ("[MonoTouch Version:\t{0}]", Constants.Version);
 			writer.WriteLine ("[Assembly:\t{0}.dll ({1} bits)]", typeof (NSObject).Assembly.GetName ().Name, IntPtr.Size * 8);
-			writer.WriteLine ("[GC:\t{0}]", GC.MaxGeneration == 0 ? "Boehm" : "sgen");
+			writer.WriteLine ("[GC:\t{0}]", System.Runtime.GCSettings.IsServerGC ? "Server" : "Workstation");
 			WriteDeviceInformation (writer);
 			writer.WriteLine ("[Device Locale:\t{0}]", NSLocale.CurrentLocale.Identifier);
 			writer.WriteLine ("[Device Date/Time:\t{0}]", now); // to match earlier C.WL output

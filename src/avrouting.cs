@@ -14,11 +14,15 @@ using OS_nw_endpoint = ObjCRuntime.NativeHandle;
 
 namespace AVRouting {
 
+	/// <summary>Enumerates the reasons for a custom routing event.</summary>
 	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum AVCustomRoutingEventReason : long {
+		/// <summary>The user selected a route in the picker.</summary>
 		Activate = 0,
+		/// <summary>The user deselected a route in the picker.</summary>
 		Deactivate,
+		/// <summary>Reactivate a route that the user authorized earlier.</summary>
 		Reactivate,
 	}
 

@@ -211,21 +211,30 @@ namespace UserNotifications {
 		Never,
 	}
 
+	/// <summary>Enumerates how much a notification interrupts the user.</summary>
 	[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 	[Native]
 	public enum UNNotificationInterruptionLevel : long {
 #if XAMCORE_5_0
+		/// <summary>The system adds the notification to the notification list, without lighting up the screen or playing a sound.</summary>
 		Passive,
+		/// <summary>The system presents the notification immediately, lights up the screen, and can play a sound.</summary>
 		Active,
+		/// <summary>The system presents the notification immediately, lights up the screen, and can play a sound. The notification can be presented during Do Not Disturb.</summary>
 		TimeSensitive,
+		/// <summary>The system presents the notification immediately, lights up the screen, and plays a sound, even during Do Not Disturb or when the mute switch is on. If the notification has no sound, the system plays the default critical alert sound.</summary>
 		Critical,
 #else
+		/// <summary>This value has the wrong native value. Use <see cref="Active2" /> instead.</summary>
 		[Obsolete ("Use 'Active2'.")]
 		Active,
+		/// <summary>This value has the wrong native value. Use <see cref="Critical2" /> instead.</summary>
 		[Obsolete ("Use 'Critical2'.")]
 		Critical,
+		/// <summary>This value has the wrong native value. Use <see cref="Passive2" /> instead.</summary>
 		[Obsolete ("Use 'Passive2'.")]
 		Passive,
+		/// <summary>This value has the wrong native value. Use <see cref="TimeSensitive2" /> instead.</summary>
 		[Obsolete ("Use 'TimeSensitive2'.")]
 		TimeSensitive,
 #endif // XAMCORE_5_0
@@ -233,9 +242,13 @@ namespace UserNotifications {
 		// Additional enum values to fix reordering - to be at the end of the enum
 #if !XAMCORE_5_0
 #pragma warning disable 0618 // warning CS0618: 'UNNotificationInterruptionLevel.[field]' is obsolete: 'Use '[replacement]'.'
+		/// <summary>The system presents the notification immediately, lights up the screen, and can play a sound.</summary>
 		Active2 = Critical,
+		/// <summary>The system presents the notification immediately, lights up the screen, and plays a sound, even during Do Not Disturb or when the mute switch is on. If the notification has no sound, the system plays the default critical alert sound.</summary>
 		Critical2 = TimeSensitive,
+		/// <summary>The system adds the notification to the notification list, without lighting up the screen or playing a sound.</summary>
 		Passive2 = Active,
+		/// <summary>The system presents the notification immediately, lights up the screen, and can play a sound. The notification can be presented during Do Not Disturb.</summary>
 		TimeSensitive2 = Passive,
 #pragma warning restore
 #endif // !XAMCORE_5_0

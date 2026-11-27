@@ -103,5 +103,15 @@
 
 		<!-- Always enable trim analyzers. This will report problems in code that's compiled, but not in any referenced packages / NuGets / projects, etc. -->
 		<EnableTrimAnalyzer Condition="'$(EnableTrimAnalyzer)' == ''">true</EnableTrimAnalyzer>
+
+		<!--
+			StartupHookSupport is used for Hot Reload, so we enable it unless the Optimize flag is set.
+			This must be set before Microsoft.NET.ILLink.targets is imported, because it defaults StartupHookSupport to false
+			when PublishTrimmed=true (which is the case when PublishAot=true, even for non-publish builds).
+		-->
+		<!-- When we set StartupHookSupport=true ourselves, suppress the resulting trimmer warning (but not if the developer set it). -->
+		<_SuppressStartupHookSupportTrimWarning Condition="'$(StartupHookSupport)' == '' And '$(Optimize)' != 'true'">true</_SuppressStartupHookSupportTrimWarning>
+		<StartupHookSupport Condition="'$(StartupHookSupport)' == '' And '$(Optimize)' != 'true'">true</StartupHookSupport>
+		<StartupHookSupport Condition="'$(StartupHookSupport)' == ''">false</StartupHookSupport>
 	</PropertyGroup>
 </Project>

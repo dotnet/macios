@@ -447,11 +447,20 @@ namespace Foundation {
 		/// <typeparam name="TValue">The type of values in the stored dictionary.</typeparam>
 		/// <param name="key">The identifier of the value to get.</param>
 		/// <returns>The stored <see cref="NSDictionary{TKey,TValue}" /> if present in the dictionary, <see langword="null" /> otherwise.</returns>
+		/// <remarks>If the stored dictionary has an incompatible managed wrapper type, its entries are copied into a new typed dictionary.</remarks>
 		protected NSDictionary<TKey, TValue>? GetNSDictionary<TKey, TValue> (NSString key)
 			where TKey : class, INativeObject
 			where TValue : class, INativeObject
 		{
-			return GetNativeValue<NSDictionary<TKey, TValue>> (key);
+			var dictionary = GetNSDictionary (key);
+			if (dictionary is null)
+				return null;
+			if (dictionary is NSDictionary<TKey, TValue> typedDictionary)
+				return typedDictionary;
+
+			var keys = dictionary.Keys;
+			using var nativeKeys = NSArray.FromNSObjects (keys);
+			return NSDictionary<TKey, TValue>.FromObjectsAndKeys (dictionary.ObjectsForKeys (nativeKeys, NSNull.Null), keys);
 		}
 
 		/// <summary>Returns an <see cref="NSData" /> with the contents of a value type of type <typeparamref name="T" /> associated with <paramref name="key" />.</summary>

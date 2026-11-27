@@ -114,6 +114,7 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var bundle in CodesignBundle) {
 				var bundlePath = Path.Combine (Path.GetDirectoryName (Path.GetDirectoryName (appBundlePath)!)!, bundle.ItemSpec);
 				var filesToSign = FindFilesToSign (bundlePath);
+				ValidateHardenedRuntime (bundle, bundlePath, filesToSign);
 				foreach (var lib in filesToSign) {
 					if (Array.Find (CodesignItems, (v) => string.Equals (v.ItemSpec, lib, StringComparison.OrdinalIgnoreCase)) is not null)
 						continue;
@@ -186,6 +187,50 @@ namespace Xamarin.MacDev.Tasks {
 			OutputCodesignItems = output.ToArray ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		void ValidateHardenedRuntime (ITaskItem bundle, string bundlePath, IEnumerable<string> filesToSign)
+		{
+			if (Platform != ApplePlatform.MacOSX && Platform != ApplePlatform.MacCatalyst)
+				return;
+			if (!string.Equals (bundle.GetMetadata ("CodesignUseHardenedRuntime"), "true", StringComparison.OrdinalIgnoreCase) || bundle.GetMetadata ("CodesignSigningKey") != "-")
+				return;
+
+			bundlePath = PathUtils.ResolveSymbolicLinks (Path.GetFullPath (bundlePath));
+			var library = filesToSign.FirstOrDefault (v =>
+				(v.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase) || v.EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) &&
+				IsInBundle (v, bundlePath));
+			if (library is null)
+				return;
+
+			var entitlementsPath = bundle.GetMetadata ("CodesignEntitlements");
+			if (!string.IsNullOrEmpty (entitlementsPath)) {
+				PDictionary entitlements;
+				try {
+					entitlements = PDictionary.OpenFile (entitlementsPath);
+				} catch (Exception ex) {
+					Log.LogError (MSBStrings.E0113, entitlementsPath, ex.Message);
+					return;
+				}
+				if (entitlements.TryGetValue ("com.apple.security.cs.disable-library-validation", out PBoolean? disabled) && disabled.Value)
+					return;
+			}
+
+			Log.LogError (MSBStrings.E7201, bundle.ItemSpec, library); // The bundle '{0}' enables the hardened runtime with ad-hoc signing and contains bundled native code ('{1}'). Hardened-runtime library validation requires the app and bundled native code to have the same certificate-derived Team ID, which ad-hoc signatures do not provide. Set 'CodesignKey' to a valid Apple signing identity.
+		}
+
+		static bool IsInBundle (string path, string bundlePath)
+		{
+			for (var directory = Path.GetDirectoryName (path); directory is not null; directory = Path.GetDirectoryName (directory)) {
+				if (string.Equals (directory, bundlePath, StringComparison.OrdinalIgnoreCase))
+					return true;
+				// Nested executable bundles have their own library validation settings.
+				if (directory.EndsWith (".app", StringComparison.OrdinalIgnoreCase) ||
+					directory.EndsWith (".appex", StringComparison.OrdinalIgnoreCase) ||
+					directory.EndsWith (".xpc", StringComparison.OrdinalIgnoreCase))
+					return false;
+			}
+			return false;
 		}
 
 		string CodeSignatureRelativePath {

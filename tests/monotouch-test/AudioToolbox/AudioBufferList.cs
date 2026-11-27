@@ -7,6 +7,48 @@ namespace MonoTouchFixtures.AudioToolbox {
 	[Preserve (AllMembers = true)]
 	public class AudioBufferListTest {
 		[Test]
+		public unsafe void Spans ()
+		{
+			var memory = System.Runtime.InteropServices.Marshal.AllocHGlobal (IntPtr.Size + 3 * sizeof (AudioBuffer));
+			try {
+				var list = (AudioBufferList*) memory;
+				*(uint*) memory = 0;
+				Assert.That (list->AsSpan ().Length, Is.EqualTo (0), "Empty writable span");
+				Assert.That (list->AsReadOnlySpan ().Length, Is.EqualTo (0), "Empty read-only span");
+
+				*(uint*) memory = 3;
+				var writable = list->AsSpan ();
+				var readOnly = list->AsReadOnlySpan ();
+				Assert.That (writable.Length, Is.EqualTo (3), "Writable length");
+				Assert.That (readOnly.Length, Is.EqualTo (3), "Read-only length");
+				for (var i = 0; i < writable.Length; i++) {
+					writable [i] = new AudioBuffer {
+						NumberChannels = i + 1,
+						DataByteSize = (i + 1) * 100,
+						Data = (IntPtr) ((i + 1) * 1000),
+					};
+					Assert.That (readOnly [i].NumberChannels, Is.EqualTo (i + 1), $"Channels #{i}");
+					Assert.That (readOnly [i].DataByteSize, Is.EqualTo ((i + 1) * 100), $"Size #{i}");
+					Assert.That (readOnly [i].Data, Is.EqualTo ((IntPtr) ((i + 1) * 1000)), $"Data #{i}");
+					fixed (AudioBuffer* element = &writable [i])
+						Assert.That ((IntPtr) element, Is.EqualTo ((IntPtr) list->GetBuffer (i)), $"Address #{i}");
+				}
+				list->GetBuffer (1)->NumberChannels = 42;
+				Assert.That (readOnly [1].NumberChannels, Is.EqualTo (42), "Native mutation");
+				Assert.Throws<IndexOutOfRangeException> (() => { _ = list->AsSpan () [-1]; }, "Negative writable index");
+				Assert.Throws<IndexOutOfRangeException> (() => { _ = list->AsSpan () [3]; }, "Writable upper bound");
+				Assert.Throws<IndexOutOfRangeException> (() => { _ = list->AsReadOnlySpan () [-1]; }, "Negative read-only index");
+				Assert.Throws<IndexOutOfRangeException> (() => { _ = list->AsReadOnlySpan () [3]; }, "Read-only upper bound");
+
+				*(uint*) memory = uint.MaxValue;
+				Assert.Throws<OverflowException> (() => { _ = list->AsSpan (); }, "Writable count overflow");
+				Assert.Throws<OverflowException> (() => { _ = list->AsReadOnlySpan (); }, "Read-only count overflow");
+			} finally {
+				System.Runtime.InteropServices.Marshal.FreeHGlobal (memory);
+			}
+		}
+
+		[Test]
 		public unsafe void Usage ()
 		{
 			var buffer = new byte [1024];

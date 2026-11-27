@@ -647,4 +647,13 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0042Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+	internal static readonly DiagnosticDescriptor RBI0043 = new (
+		"RBI0043",
+		new LocalizableResourceString (nameof (Resources.RBI0043Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0043MessageFormat), Resources.ResourceManager, typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0043Description), Resources.ResourceManager, typeof (Resources))
+	);
 }

@@ -1568,6 +1568,81 @@ x_get_nsobject_data_with_association_lock (id object, void **data)
 	return result;
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+id objc_initWeak (id *location, id value);
+id objc_loadWeakRetained (id *location);
+void objc_destroyWeak (id *location);
+#ifdef __cplusplus
+}
+#endif
+
+struct x_weak_promoter {
+	id *slots;
+	id *promoted;
+	int count;
+	uint64_t interval_ns;
+	pthread_t thread;
+	dispatch_semaphore_t started;
+};
+
+static void *
+x_weak_promoter_thread (void *arg)
+{
+	struct x_weak_promoter *promoter = (struct x_weak_promoter *) arg;
+	dispatch_semaphore_signal (promoter->started);
+	uint64_t next = clock_gettime_nsec_np (CLOCK_UPTIME_RAW);
+	for (int i = 0; i < promoter->count; i++) {
+		// Spread the promotions out in time, so that some of them happen while the GC is running.
+		next += promoter->interval_ns;
+		while (clock_gettime_nsec_np (CLOCK_UPTIME_RAW) < next)
+			;
+		promoter->promoted [i] = objc_loadWeakRetained (&promoter->slots [i]);
+	}
+	return NULL;
+}
+
+void *
+x_weak_promoter_create (void **objects, int count, uint64_t interval_ns)
+{
+	struct x_weak_promoter *promoter = (struct x_weak_promoter *) calloc (1, sizeof (struct x_weak_promoter));
+	promoter->slots = (id *) calloc ((size_t) count, sizeof (id));
+	promoter->promoted = (id *) calloc ((size_t) count, sizeof (id));
+	promoter->count = count;
+	promoter->interval_ns = interval_ns;
+	for (int i = 0; i < count; i++)
+		objc_initWeak (&promoter->slots [i], (id) objects [i]);
+	return promoter;
+}
+
+void
+x_weak_promoter_start (void *promoter)
+{
+	struct x_weak_promoter *p = (struct x_weak_promoter *) promoter;
+	p->started = dispatch_semaphore_create (0);
+	if (pthread_create (&p->thread, NULL, x_weak_promoter_thread, p) != 0)
+		abort ();
+	// Make sure the thread is running before the caller starts a GC.
+	dispatch_semaphore_wait (p->started, DISPATCH_TIME_FOREVER);
+}
+
+// The caller owns the returned (retained) objects.
+void
+x_weak_promoter_join (void *promoter, void **promoted)
+{
+	struct x_weak_promoter *p = (struct x_weak_promoter *) promoter;
+	pthread_join (p->thread, NULL);
+	for (int i = 0; i < p->count; i++) {
+		promoted [i] = p->promoted [i];
+		objc_destroyWeak (&p->slots [i]);
+	}
+	dispatch_release (p->started);
+	free (p->slots);
+	free (p->promoted);
+	free (p);
+}
+
 @implementation WeakReferenceHolder : NSObject
 -(id) init
 {

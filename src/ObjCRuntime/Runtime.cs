@@ -199,6 +199,7 @@ namespace ObjCRuntime {
 			public IntPtr reference_tracking_begin_end_callback;
 			public IntPtr reference_tracking_is_referenced_callback;
 			public IntPtr reference_tracking_tracked_object_entered_finalization;
+			public IntPtr reference_tracking_have_references_changed_callback;
 
 			public bool IsSimulator {
 				get {

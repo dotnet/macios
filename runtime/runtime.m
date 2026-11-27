@@ -162,6 +162,7 @@ struct InitializationOptions {
 	void *reference_tracking_begin_end_callback;
 	void *reference_tracking_is_referenced_callback;
 	void *reference_tracking_tracked_object_entered_finalization;
+	void *reference_tracking_have_references_changed_callback;
 };
 
 static struct Trampolines trampolines = {
@@ -967,6 +968,7 @@ xamarin_initialize ()
 	options.reference_tracking_begin_end_callback = (void *) &xamarin_coreclr_reference_tracking_begin_end_callback;
 	options.reference_tracking_is_referenced_callback = (void *) &xamarin_coreclr_reference_tracking_is_referenced_callback;
 	options.reference_tracking_tracked_object_entered_finalization = (void *) &xamarin_coreclr_reference_tracking_tracked_object_entered_finalization;
+	options.reference_tracking_have_references_changed_callback = (void *) &xamarin_coreclr_reference_tracking_have_references_changed_callback;
 #endif // defined(CORECLR_RUNTIME)
 
 	xamarin_bridge_call_runtime_initialize (&options, &exception_gchandle);

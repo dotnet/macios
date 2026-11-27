@@ -36,6 +36,7 @@
 #include "product.h"
 #include "delegates.h"
 #include "xamarin/xamarin.h"
+#include "xamarin/coreclr-bridge.h"
 #include "slinked-list.h"
 #include "trampolines-internal.h"
 #include "runtime-internal.h"
@@ -863,11 +864,16 @@ xamarin_retain_trampoline (id self, SEL sel)
  *
  * For this reason, the managed wrapper's flags that say whether the manager wrapper is in the finalization
  * queue or not, is stored in native memory - and that's all we do here, we fetch the flag and return
- * FALSE if we're in the finalization queue.
+ * FALSE if we're in the finalization queue. Before that, we coordinate with the GC (without calling
+ * managed code), so that the GC doesn't finalize a managed wrapper after we've resolved the weak
+ * reference (see xamarin_coreclr_reference_tracking_synchronize_with_gc).
  */
 BOOL
 xamarin_retainWeakReference_trampoline (id self, SEL sel)
 {
+	// This may wait until the GC has decided whether to finalize the managed wrapper.
+	xamarin_coreclr_reference_tracking_synchronize_with_gc ();
+
 	uint32_t flags = xamarin_get_nsobject_id_flags (self);
 	bool isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
 
@@ -880,11 +886,15 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 
 	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
 	// all kinds of bad things happen when native code tries to use such an object.
-	if (isInFinalizerQueue)
-		return FALSE;
+	BOOL rv = FALSE;
+	if (!isInFinalizerQueue) {
+		/* Invoke the real retainWeakReference method */
+		rv = xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
+	}
 
-	/* Invoke the real release method */
-	return xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
+	xamarin_coreclr_reference_tracking_synchronize_with_gc_end ();
+
+	return rv;
 }
 
 static const char *associated_key = "x"; // the string value doesn't matter, only the pointer value.

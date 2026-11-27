@@ -263,6 +263,40 @@ xamarin_bridge_shutdown ()
 
 static bool reference_tracking_end = false;
 
+/*
+ * Native code can turn a weak reference into a strong one (objc_loadWeakRetained -> -retainWeakReference)
+ * on any thread at any time, including while the GC is running. If that happens after the GC asked us
+ * whether an object is referenced (and we said no), but before the GC decides to finalize the object,
+ * native code ends up with an object whose managed peer is finalized (https://github.com/dotnet/macios/issues/27374).
+ *
+ * To fix this, every weak load lands on one side of a single decision point (the
+ * HaveReferencesChanged callback, which the GC calls once after the last IsReferenced call):
+ *
+ * - Before it: -retainWeakReference succeeds and sets 'WeakReferenceGateChanged', and
+ *   the GC keeps all tracked objects alive for this collection (unless we told the GC that
+ *   all tracked objects are referenced, in which case they're all alive anyway). The GC does the
+ *   same if a -retainWeakReference call is still in progress (it may not have retained the object
+ *   yet, so -retainCount might not show it).
+ * - After it: -retainWeakReference waits until the GC is done (the 'end' callback), and then fails if
+ *   the object's managed peer was queued for finalization.
+ *
+ * Waiting in -retainWeakReference (which runs with an Objective-C side table lock held) is safe at
+ * that point, because the GC won't call IsReferenced (which calls -retainCount, which takes side table
+ * locks) again during the current collection.
+ */
+enum {
+	WeakReferenceGateClosed = 1,
+	WeakReferenceGateChanged = 2,
+	// The remaining bits count the -retainWeakReference calls in progress.
+	WeakReferenceGateInProgressUnit = 4,
+};
+static uint32_t weak_reference_gate_state;
+static pthread_mutex_t weak_reference_gate_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t weak_reference_gate_condition = PTHREAD_COND_INITIALIZER;
+// Whether xamarin_coreclr_reference_tracking_is_referenced_callback returned 0 for any object in the current GC.
+// Only accessed from the GC thread.
+static bool reference_tracking_found_unreferenced;
+
 // This callback will be called once before the GC starts calling xamarin_coreclr_reference_tracking_is_referenced_callback,
 // and once the GC is done. We keep track of which case we're in in the 'reference_tracking_end' variable, and raise the
 // corresponding GC event. It will only be called once for each GC, both the begin and the end on the same thread.
@@ -271,11 +305,75 @@ xamarin_coreclr_reference_tracking_begin_end_callback ()
 {
 	LOG_CORECLR (stderr, "%s () reference_tracking_end: %i\n", __func__, reference_tracking_end);
 	if (reference_tracking_end) {
+		pthread_mutex_lock (&weak_reference_gate_lock);
+		__atomic_and_fetch (&weak_reference_gate_state, ~(uint32_t) WeakReferenceGateClosed, __ATOMIC_SEQ_CST);
+		pthread_cond_broadcast (&weak_reference_gate_condition);
+		pthread_mutex_unlock (&weak_reference_gate_lock);
+
 		xamarin_gc_event (MONO_GC_EVENT_POST_START_WORLD);
 	} else {
 		xamarin_gc_event (MONO_GC_EVENT_PRE_STOP_WORLD);
+
+		reference_tracking_found_unreferenced = false;
+		__atomic_and_fetch (&weak_reference_gate_state, ~(uint32_t) WeakReferenceGateChanged, __ATOMIC_SEQ_CST);
 	}
 	reference_tracking_end = !reference_tracking_end;
+}
+
+// This callback is called once per GC, after the last call to xamarin_coreclr_reference_tracking_is_referenced_callback.
+// Returns 1 if any weak reference was turned into a strong one since the GC started, in which case the GC keeps all
+// tracked objects alive for this collection. If we said every tracked object we were asked about is referenced, they're
+// all alive anyway (the GC only asks about objects it hasn't found to be alive in other ways), so return 0 to avoid
+// making the GC scan all tracked objects again.
+int
+xamarin_coreclr_reference_tracking_have_references_changed_callback ()
+{
+	uint32_t state = __atomic_fetch_or (&weak_reference_gate_state, (uint32_t) WeakReferenceGateClosed, __ATOMIC_SEQ_CST);
+	bool changed = (state & WeakReferenceGateChanged) == WeakReferenceGateChanged || state >= WeakReferenceGateInProgressUnit;
+	int rv = changed && reference_tracking_found_unreferenced ? 1 : 0;
+	LOG_CORECLR (stderr, "%s () changed: %i found_unreferenced: %i => %i\n", __func__, changed, reference_tracking_found_unreferenced, rv);
+	return rv;
+}
+
+// This is called by -retainWeakReference before it checks whether the managed peer is queued for finalization,
+// and must be followed by a call to xamarin_coreclr_reference_tracking_synchronize_with_gc_end once the object
+// has been retained (or not).
+// It can't call managed code, nor take any lock the GC might hold while calling xamarin_coreclr_reference_tracking_is_referenced_callback.
+void
+xamarin_coreclr_reference_tracking_synchronize_with_gc ()
+{
+	uint32_t state = __atomic_load_n (&weak_reference_gate_state, __ATOMIC_SEQ_CST);
+	while (true) {
+		if ((state & WeakReferenceGateClosed) == 0) {
+			// On failure, 'state' is updated with the current value, and we try again.
+			if (__atomic_compare_exchange_n (&weak_reference_gate_state, &state, (state | WeakReferenceGateChanged) + WeakReferenceGateInProgressUnit, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+				return;
+			continue;
+		}
+
+		// The GC has made its decisions, but it hasn't told us which objects it'll finalize yet, so wait until it's done.
+		// pthread_cond_wait is a cancellation point, and if this thread were cancelled while waiting, it would
+		// never release the gate lock (nor the Objective-C runtime's lock), so disable cancellation while waiting.
+		int cancel_state;
+		pthread_setcancelstate (PTHREAD_CANCEL_DISABLE, &cancel_state);
+		pthread_mutex_lock (&weak_reference_gate_lock);
+		while ((__atomic_load_n (&weak_reference_gate_state, __ATOMIC_SEQ_CST) & WeakReferenceGateClosed) == WeakReferenceGateClosed)
+			pthread_cond_wait (&weak_reference_gate_condition, &weak_reference_gate_lock);
+		pthread_mutex_unlock (&weak_reference_gate_lock);
+		pthread_setcancelstate (cancel_state, NULL);
+		state = __atomic_load_n (&weak_reference_gate_state, __ATOMIC_SEQ_CST);
+	}
+}
+
+void
+xamarin_coreclr_reference_tracking_synchronize_with_gc_end ()
+{
+	// A GC may have started (and cleared 'WeakReferenceGateChanged') while this call was in progress, so set it again.
+	// This must happen in the same atomic operation as decrementing the count, so that the GC sees at least one of them.
+	uint32_t state = __atomic_load_n (&weak_reference_gate_state, __ATOMIC_SEQ_CST);
+	// On failure, 'state' is updated with the current value, and we try again.
+	while (!__atomic_compare_exchange_n (&weak_reference_gate_state, &state, (state - WeakReferenceGateInProgressUnit) | WeakReferenceGateChanged, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+		;
 }
 
 // This callback is called by the GC to check whether a given managed object
@@ -300,6 +398,14 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 	id handle = data->handle;
 	MonoToggleRefStatus res = (MonoToggleRefStatus) 0;
 
+	if ((__atomic_load_n (&weak_reference_gate_state, __ATOMIC_SEQ_CST) & WeakReferenceGateClosed) == WeakReferenceGateClosed) {
+		// The GC has already made its decisions, so this is a diagnostic call (for instance a heap walk
+		// for a profiler). -retainWeakReference may be waiting for the GC while holding a lock -retainCount
+		// needs, so don't call -retainCount (that could deadlock). The answer doesn't matter anymore anyway.
+		LOG_CORECLR (stderr, "%s (%p -> handle: %p flags: 0x%x) => 1 (the GC has made its decisions)\n", __func__, ptr, handle, (unsigned) flags);
+		return 1;
+	}
+
 	if (isToggleRef && handle != NULL) {
 		res = xamarin_gc_toggleref_callback (flags, handle, NULL, NULL);
 
@@ -320,6 +426,9 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 		// A non-toggle ref or an object without a handle is effectively a weak gchandle.
 		rv = 0;
 	}
+
+	if (rv == 0)
+		reference_tracking_found_unreferenced = true;
 
 	LOG_CORECLR (stderr, "%s (%p -> handle: %p flags: 0x%x) => %i (res: %i) isToggleRef: %i\n", __func__, ptr, handle, (unsigned) flags, rv, res, isToggleRef);
 

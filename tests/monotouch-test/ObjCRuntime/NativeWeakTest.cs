@@ -181,6 +181,64 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
+		[DllImport ("__Internal")]
+		static extern IntPtr x_weak_promoter_create (IntPtr [] objects, int count, ulong interval_ns);
+
+		[DllImport ("__Internal")]
+		static extern void x_weak_promoter_start (IntPtr promoter);
+
+		[DllImport ("__Internal")]
+		static extern void x_weak_promoter_join (IntPtr promoter, [Out] IntPtr [] promoted);
+
+		// https://github.com/dotnet/macios/issues/27374
+		// A native thread (which the GC doesn't suspend) turns weak references into strong ones
+		// while the GC runs. Any object it gets back must still have its original managed peer.
+		[Test]
+		public void WeakPromotionDuringCollectionKeepsPeer ()
+		{
+			const int objectCount = 10000;
+			const int rounds = 5;
+			var promotedCount = 0;
+			var lostCount = 0;
+
+			var promoted = new IntPtr [objectCount];
+			for (var round = 0; round < rounds; round++) {
+				var promoter = CreatePromoter (objectCount);
+				x_weak_promoter_start (promoter);
+				GC.Collect ();
+				x_weak_promoter_join (promoter, promoted);
+				CollectAndDrain ();
+
+				for (var i = 0; i < objectCount; i++) {
+					if (promoted [i] == IntPtr.Zero)
+						continue;
+					promotedCount++;
+					var peer = Runtime.GetNSObject (promoted [i]) as CustomPeer;
+					if (peer?.State != i + 1)
+						lostCount++;
+					objc_release (promoted [i]);
+				}
+			}
+
+			Assert.That (promotedCount, Is.GreaterThan (0), "Promoted objects");
+			Assert.That (lostCount, Is.EqualTo (0), $"Lost peers ({promotedCount} objects promoted in {rounds} rounds)");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static IntPtr CreatePromoter (int objectCount)
+		{
+			var peers = new CustomPeer [objectCount];
+			var handles = new IntPtr [objectCount];
+			for (var i = 0; i < objectCount; i++) {
+				peers [i] = new CustomPeer ();
+				peers [i].State = i + 1;
+				handles [i] = peers [i].Handle;
+			}
+			var promoter = x_weak_promoter_create (handles, objectCount, 2000);
+			GC.KeepAlive (peers);
+			return promoter;
+		}
+
 		[Preserve (AllMembers = true)]
 		class CustomPeer : NSObject {
 			public int State;

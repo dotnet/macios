@@ -229,6 +229,8 @@ partial class BGenFrameworks {
 		"ImageKit",
 		"Intents",
 		"IntentsUI",
+		"IOBluetooth",
+		"IOBluetoothUI",
 		"IOSurface",
 		"iTunesLibrary",
 		"JavaScriptCore",
@@ -634,6 +636,8 @@ partial class BGenFrameworks {
 	bool? _ImageKit;
 	bool? _Intents;
 	bool? _IntentsUI;
+	bool? _IOBluetooth;
+	bool? _IOBluetoothUI;
 	bool? _IOSurface;
 	bool? _iTunesLibrary;
 	bool? _JavaScriptCore;
@@ -814,6 +818,8 @@ partial class BGenFrameworks {
 	public bool HaveImageKit { get { if (!_ImageKit.HasValue) _ImageKit = GetValue ("ImageKit"); return _ImageKit.Value; } }
 	public bool HaveIntents { get { if (!_Intents.HasValue) _Intents = GetValue ("Intents"); return _Intents.Value; } }
 	public bool HaveIntentsUI { get { if (!_IntentsUI.HasValue) _IntentsUI = GetValue ("IntentsUI"); return _IntentsUI.Value; } }
+	public bool HaveIOBluetooth { get { if (!_IOBluetooth.HasValue) _IOBluetooth = GetValue ("IOBluetooth"); return _IOBluetooth.Value; } }
+	public bool HaveIOBluetoothUI { get { if (!_IOBluetoothUI.HasValue) _IOBluetoothUI = GetValue ("IOBluetoothUI"); return _IOBluetoothUI.Value; } }
 	public bool HaveIOSurface { get { if (!_IOSurface.HasValue) _IOSurface = GetValue ("IOSurface"); return _IOSurface.Value; } }
 	public bool HaveiTunesLibrary { get { if (!_iTunesLibrary.HasValue) _iTunesLibrary = GetValue ("iTunesLibrary"); return _iTunesLibrary.Value; } }
 	public bool HaveJavaScriptCore { get { if (!_JavaScriptCore.HasValue) _JavaScriptCore = GetValue ("JavaScriptCore"); return _JavaScriptCore.Value; } }

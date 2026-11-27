@@ -182,8 +182,10 @@ namespace SoundAnalysis {
 		void DidComplete (ISNRequest request);
 	}
 
+	/// <summary>Enumerates the identifiers of the sound classifiers that Apple provides.</summary>
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 	enum SNClassifierIdentifier {
+		/// <summary>The first edition of the Apple-provided sound classifier.</summary>
 		[Field ("SNClassifierIdentifierVersion1")]
 		Version1,
 	}

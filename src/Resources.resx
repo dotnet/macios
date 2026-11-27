@@ -644,4 +644,8 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+
+	<data name="BI1130" xml:space="preserve">
+		<value>The availability attributes on '{0}' are contradictory: it is both introduced and unavailable on '{1}'. Remove one of the conflicting attributes.</value>
+	</data>
 </root>

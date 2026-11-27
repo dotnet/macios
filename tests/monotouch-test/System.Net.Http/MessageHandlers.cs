@@ -981,9 +981,15 @@ namespace MonoTests.System.Net.Http {
 			{
 				try {
 					using (client) {
-						client.ReceiveTimeout = (int) RedirectRequestTimeout.TotalMilliseconds;
-						client.SendTimeout = (int) RedirectRequestTimeout.TotalMilliseconds;
-						using var stream = client.GetStream ();
+						NetworkStream clientStream;
+						lock (clients) {
+							if (disposed)
+								return;
+							client.ReceiveTimeout = (int) RedirectRequestTimeout.TotalMilliseconds;
+							client.SendTimeout = (int) RedirectRequestTimeout.TotalMilliseconds;
+							clientStream = client.GetStream ();
+						}
+						using var stream = clientStream;
 						using var reader = new StreamReader (stream, Encoding.ASCII, false, 1024, leaveOpen: true);
 
 						// Request line: "GET /path HTTP/1.1"

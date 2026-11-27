@@ -233,7 +233,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// compressed framework
 			if (name.EndsWith (".framework.zip", StringComparison.OrdinalIgnoreCase)) {
-				if (!CompressionHelper.TryDecompress (this, name, Path.GetFileNameWithoutExtension (name), GetIntermediateDecompressionDir (item), createdFiles, cancellationToken, out var frameworkPath))
+				if (!TryDecompressFramework (name, GetIntermediateDecompressionDir (item), createdFiles, cancellationToken, out var frameworkPath))
 					return;
 				var nr = new TaskItem (item);
 				nr.ItemSpec = GetActualLibrary (frameworkPath);
@@ -257,6 +257,24 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			Log.LogWarning (MSBStrings.W7109 /* Unable to process the item '{0}' as a native reference: unknown type.* */, item.ItemSpec);
+		}
+
+		bool TryDecompressFramework (string zip, string decompressionDirectory, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? frameworkPath)
+		{
+			var framework = Path.GetFileNameWithoutExtension (zip);
+			if (!CompressionHelper.TryDecompress (this, zip, framework, decompressionDirectory, createdFiles, cancellationToken, out frameworkPath))
+				return false;
+			return TryDecompressDebugSymbols (zip, framework + ".dSYM", decompressionDirectory, createdFiles, cancellationToken);
+		}
+
+		bool TryDecompressDebugSymbols (string resources, string debugSymbols, string decompressionDirectory, List<string> createdFiles, CancellationToken? cancellationToken)
+		{
+			using var archive = ZipFile.OpenRead (resources);
+			var prefix = debugSymbols.Replace ('\\', '/').TrimEnd ('/') + "/";
+			if (!archive.Entries.Any (v => v.FullName.Replace ('\\', '/').StartsWith (prefix, StringComparison.Ordinal)))
+				return true;
+
+			return CompressionHelper.TryDecompress (this, resources, debugSymbols, decompressionDirectory, createdFiles, cancellationToken, out var _);
 		}
 
 		/// <summary>
@@ -389,13 +407,15 @@ namespace Xamarin.MacDev.Tasks {
 					if (!TryResolveXCFramework (this, TargetFrameworkMoniker, SdkIsSimulator, Architectures, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out var nativeLibraryPath))
 						continue;
 					SetMetadataNativeLibrary (t, nativeLibraryPath);
-				} else if (name.EndsWith (".framework", StringComparison.Ordinal)) {
+				} else if (name.EndsWith (".framework", StringComparison.Ordinal) || name.EndsWith (".framework.zip", StringComparison.Ordinal)) {
 					string? frameworkPath;
 					if (!isCompressed) {
 						frameworkPath = Path.Combine (resources, name);
 					} else if (!CompressionHelper.TryDecompress (this, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out frameworkPath)) {
 						continue;
 					}
+					if (CompressionHelper.IsCompressed (frameworkPath) && !TryDecompressFramework (frameworkPath, GetIntermediateDecompressionDir (frameworkPath), createdFiles, cancellationToken, out frameworkPath))
+						continue;
 					t.ItemSpec = GetActualLibrary (frameworkPath);
 					t.SetMetadata ("Kind", "Framework");
 					t.SetMetadata ("PublishFolderType", "AppleFramework");
@@ -425,6 +445,11 @@ namespace Xamarin.MacDev.Tasks {
 				} else {
 					Log.LogWarning (MSBStrings.W7105 /* Unexpected extension '{0}' for native reference '{1}' in binding resource package '{2}'. */, Path.GetExtension (name), name, r.ItemSpec);
 					t = r;
+				}
+
+				if (isCompressed && !name.EndsWith (".xcframework", StringComparison.Ordinal) && !name.EndsWith (".xcframework.zip", StringComparison.Ordinal)) {
+					if (!TryDecompressDebugSymbols (resources, name + ".dSYM", GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken))
+						continue;
 				}
 
 				// defaults
@@ -501,30 +526,30 @@ namespace Xamarin.MacDev.Tasks {
 			nativeLibraryPath = null;
 
 			try {
+				var isCompressed = CompressionHelper.IsCompressed (resourcePath);
+				if (CompressionHelper.IsCompressed (xcframework)) {
+					var zipPath = Path.Combine (resourcePath, xcframework);
+					if (isCompressed && !CompressionHelper.TryDecompress (task, resourcePath, xcframework, intermediateDecompressionDir, createdFiles, cancellationToken, out zipPath))
+						return false;
+					return TryResolveXCFramework (task, targetFrameworkMoniker, isSimulator, architectures, zipPath, Path.GetFileNameWithoutExtension (xcframework), intermediateDecompressionDir, createdFiles, cancellationToken, out nativeLibraryPath);
+				}
+
 				if (!TryGetInfoPlist (log, resourcePath, xcframework, out var plist))
 					return false;
 
-				var isCompressed = CompressionHelper.IsCompressed (resourcePath);
 				var xcframeworkPath = isCompressed ? resourcePath : Path.Combine (resourcePath, xcframework);
 				if (!TryResolveXCFramework (log, plist, xcframeworkPath, targetFrameworkMoniker, isSimulator, architectures!, cancellationToken, out var nativeLibraryRelativePath))
 					return false;
-
-				if (!isCompressed && CompressionHelper.IsCompressed (xcframework)) {
-					var zipPath = Path.Combine (resourcePath, xcframework);
-					var xcframeworkName = Path.GetFileNameWithoutExtension (xcframework);
-					if (!CompressionHelper.TryDecompress (task, zipPath, xcframeworkName, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedXcframeworkPath))
-						return false;
-
-					nativeLibraryPath = Path.Combine (intermediateDecompressionDir, xcframeworkName, nativeLibraryRelativePath);
-					return true;
-				}
 
 				if (!isCompressed) {
 					nativeLibraryPath = Path.Combine (resourcePath, xcframework, nativeLibraryRelativePath);
 					return true;
 				}
 
-				var zipResource = Path.Combine (xcframework, Path.GetDirectoryName (nativeLibraryRelativePath)!);
+				var libraryDirectory = Path.GetDirectoryName (nativeLibraryRelativePath)!;
+				if (libraryDirectory.EndsWith (".framework", StringComparison.OrdinalIgnoreCase))
+					libraryDirectory = Path.GetDirectoryName (libraryDirectory)!;
+				var zipResource = Path.Combine (xcframework, libraryDirectory);
 				if (!CompressionHelper.TryDecompress (task, resourcePath, zipResource, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedPath))
 					return false;
 

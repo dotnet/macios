@@ -322,6 +322,21 @@ Other capitalization, such as `.Framework` or `.FRAMEWORK`, produces warning
 `MT7200` because the framework may not be linked or bundled
 correctly. Rename the directory and update the reference to use `.framework`.
 
+Vendor-provided debug symbols can be placed next to a native reference (for
+example, `MyLibrary.framework.dSYM` next to `MyLibrary.framework`, or
+`libMyLibrary.dylib.dSYM` next to `libMyLibrary.dylib`). Binding projects include
+these directories in their binding resource package, whether compressed or
+uncompressed. For a zipped framework, include the `.dSYM` alongside the framework
+inside the zip.
+
+For XCFrameworks, include the debug symbols in the selected platform slice's
+`dSYMs` directory. These symbols are preserved when extracting compressed
+XCFrameworks and binding resource packages.
+
+When building an app, the supplied symbols for bundled native frameworks and
+dynamic libraries are copied next to the app's dSYM and included when archiving.
+Supplying symbols does not require running `dsymutil` on the native reference.
+
 ## ObjcBindingApiDefinition
 
 An item group that lists all the API definitions for binding projects.

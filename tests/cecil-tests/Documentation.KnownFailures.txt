@@ -5860,8 +5860,6 @@ F:ShazamKit.SHMediaItemProperty.Title
 F:ShazamKit.SHMediaItemProperty.VideoUrl
 F:ShazamKit.SHMediaItemProperty.WebUrl
 F:SoundAnalysis.SNClassifierIdentifier.Version1
-F:SoundAnalysis.SNTimeDurationConstraintType.Enumerated
-F:SoundAnalysis.SNTimeDurationConstraintType.Range
 F:Speech.SFSpeechErrorCode.AudioReadFailed
 F:Speech.SFSpeechErrorCode.InternalServiceError
 F:Speech.SFSpeechErrorCode.MalformedSupplementalModel
@@ -58443,7 +58441,6 @@ T:SoundAnalysis.SNClassificationResult
 T:SoundAnalysis.SNClassifierIdentifier
 T:SoundAnalysis.SNClassifySoundRequest
 T:SoundAnalysis.SNTimeDurationConstraint
-T:SoundAnalysis.SNTimeDurationConstraintType
 T:Speech.SFAcousticFeature
 T:Speech.SFSpeechErrorCode
 T:Speech.SFSpeechLanguageModel

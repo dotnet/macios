@@ -30,10 +30,13 @@ namespace SoundAnalysis {
 		InvalidFile,
 	}
 
+	/// <summary>Enumerates the types of a time duration constraint.</summary>
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	[Native]
 	public enum SNTimeDurationConstraintType : long {
+		/// <summary>A duration must be one of a set of discrete permitted values.</summary>
 		Enumerated = 1,
+		/// <summary>A duration must be within a continuous range of permitted values.</summary>
 		Range = 2,
 	}
 

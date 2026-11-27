@@ -3123,13 +3123,6 @@ F:GameKit.GKPeerConnectionState.ConnectedRelay
 F:GameKit.GKReleaseState.Prereleased
 F:GameKit.GKReleaseState.Released
 F:GameKit.GKReleaseState.Unknown
-F:GameSave.GSSyncState.Closed
-F:GameSave.GSSyncState.Conflicted
-F:GameSave.GSSyncState.Error
-F:GameSave.GSSyncState.Local
-F:GameSave.GSSyncState.Offline
-F:GameSave.GSSyncState.Ready
-F:GameSave.GSSyncState.Syncing
 F:HealthKit.HKActivityMoveMode.ActiveEnergy
 F:HealthKit.HKActivityMoveMode.AppleMoveTime
 F:HealthKit.HKAppleEcgAlgorithmVersion.Version1
@@ -56252,7 +56245,6 @@ T:GameplayKit.SKNode_GameplayKit
 T:GameSave.GSSyncedDirectory
 T:GameSave.GSSyncedDirectoryState
 T:GameSave.GSSyncedDirectoryVersion
-T:GameSave.GSSyncState
 T:HealthKit.HKActivityMoveMode
 T:HealthKit.HKActivityMoveModeObject
 T:HealthKit.HKAnchoredObjectUpdateHandler

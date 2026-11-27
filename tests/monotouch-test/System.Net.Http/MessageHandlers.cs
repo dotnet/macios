@@ -299,7 +299,7 @@ namespace MonoTests.System.Net.Http {
 
 			// Use a TcpListener instead of an HttpListener, because adding a prefix to an HttpListener does a DNS lookup
 			// of the machine's host name (System.Net.ServiceNameStore.BuildServiceNames), which takes 5 seconds on the CI bots.
-			var serverCancellationTokenSource = new CancellationTokenSource ();
+			using var serverCancellationTokenSource = new CancellationTokenSource ();
 			var serverCancellationToken = serverCancellationTokenSource.Token;
 			var listener = new TcpListener (IPAddress.Loopback, 0);
 			listener.Start ();
@@ -309,7 +309,7 @@ namespace MonoTests.System.Net.Http {
 			var config = NSUrlSessionConfiguration.DefaultSessionConfiguration;
 			config.TimeoutIntervalForResource = 3;
 
-			Task.Run (async () => {
+			var serverTask = Task.Run (async () => {
 				try {
 					while (true) {
 						using var client = await listener.AcceptTcpClientAsync (serverCancellationToken);
@@ -364,6 +364,7 @@ namespace MonoTests.System.Net.Http {
 			} finally {
 				serverCancellationTokenSource.Cancel ();
 				listener.Stop ();
+				Assert.That (serverTask.Wait (TimeSpan.FromSeconds (5)), Is.True, "Server did not stop.");
 			}
 
 			if (!done) {
@@ -898,10 +899,12 @@ namespace MonoTests.System.Net.Http {
 			readonly TcpListener? targetListener;
 			readonly Task originTask;
 			readonly Task? targetTask;
+			readonly HashSet<TcpClient> clients = new HashSet<TcpClient> ();
 			readonly object targetAuthorizationHeadersLock = new object ();
 			readonly List<string> targetAuthorizationHeaders = new List<string> ();
 			readonly string expectedBasicAuth;
 			int targetRequestCount;
+			bool disposed;
 
 			public Uri OriginUri { get; }
 			public Uri TargetUri { get; }
@@ -956,6 +959,13 @@ namespace MonoTests.System.Net.Http {
 					} catch (InvalidOperationException) {
 						return;
 					}
+					lock (clients) {
+						if (disposed) {
+							client.Dispose ();
+							return;
+						}
+						clients.Add (client);
+					}
 					_ = Task.Run (() => HandleClient (client, isTarget));
 				}
 			}
@@ -994,6 +1004,9 @@ namespace MonoTests.System.Net.Http {
 					}
 				} catch (Exception e) when (e is IOException || e is SocketException || e is ObjectDisposedException) {
 					LogRedirectTest (log, $"RedirectBasicAuthServer failed to handle a request: {e.Message}");
+				} finally {
+					lock (clients)
+						clients.Remove (client);
 				}
 			}
 
@@ -1014,17 +1027,21 @@ namespace MonoTests.System.Net.Http {
 			public void Dispose ()
 			{
 				LogRedirectTest (log, $"RedirectBasicAuthServer stopping origin {OriginUri} and target {TargetUri}.");
-				originListener.Stop ();
-				targetListener?.Stop ();
-
-				try {
-					if (targetTask is null)
-						Task.WaitAll (new [] { originTask }, TimeSpan.FromSeconds (1));
-					else
-						Task.WaitAll (new [] { originTask, targetTask }, TimeSpan.FromSeconds (1));
-				} catch {
-					// Stopping the listeners wakes the accept loops.
+				lock (clients) {
+					if (disposed)
+						return;
+					disposed = true;
+					originListener.Stop ();
+					targetListener?.Stop ();
+					foreach (var client in clients)
+						client.Dispose ();
+					clients.Clear ();
 				}
+				var stopped = targetTask is null
+					? Task.WaitAll (new [] { originTask }, TimeSpan.FromSeconds (1))
+					: Task.WaitAll (new [] { originTask, targetTask }, TimeSpan.FromSeconds (1));
+				if (!stopped)
+					throw new TimeoutException ("RedirectBasicAuthServer did not stop.");
 				LogRedirectTest (log, $"RedirectBasicAuthServer stopped origin {OriginUri} and target {TargetUri}.");
 			}
 		}

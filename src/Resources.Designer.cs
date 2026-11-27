@@ -1208,5 +1208,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The return value of &apos;{0}.{1}&apos; uses [AlwaysReturnNewInstance], but is not a concrete NSObject binding type..
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
     }
 }

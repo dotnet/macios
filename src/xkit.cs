@@ -19,6 +19,10 @@ using WebPreferences = Foundation.NSObject;
 #if !MONOMAC
 using NSColor = UIKit.UIColor;
 using NSFont = UIKit.UIFont;
+using NSControlSize = System.Int32;
+using NSFontRenderingMode = System.UInt64;
+using NSGraphicsContext = Foundation.NSObject;
+using XFontDescriptor = UIKit.UIFontDescriptor;
 #endif
 
 // dummy types to simplify build
@@ -44,9 +48,13 @@ using UICollectionLayoutListConfiguration = System.Object;
 using UIContentInsetsReference = System.Object;
 using UIEdgeInsets = System.Object;
 using UITraitCollection = System.Object;
+using UIFontWeight = System.Int32;
+using UIFontWidth = System.Int32;
+using UIFontTextStyle = System.Int32;
 #endif // !MONOMAC
 
 #if MONOMAC
+using XFontDescriptor = AppKit.NSFontDescriptor;
 using BezierPath = AppKit.NSBezierPath;
 using Image = AppKit.NSImage;
 using TextAlignment = AppKit.NSTextAlignment;
@@ -126,6 +134,1222 @@ namespace AppKit {
 #else
 namespace UIKit {
 #endif
+
+#nullable enable
+
+	[BaseType (typeof (NSObject))]
+	[ThreadSafe]
+	[DisableDefaultCtor]
+#if __MACOS__
+	interface NSFont : NSCopying, NSSecureCoding {
+#else
+	interface UIFont : NSCopying, NSSecureCoding {
+#endif
+		/// <summary>Creates a system font of the specified size.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[Static]
+		[Export ("systemFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateSystemFont (nfloat size);
+
+		/// <summary>Creates a system font. Use <see cref="CreateSystemFont(nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if __MACOS__ && !XAMCORE_5_0
+		[Wrap ("CreateSystemFont (fontSize)")]
+		NSFont SystemFontOfSize (nfloat fontSize);
+#else
+		[Wrap ("CreateSystemFont (size)")]
+		NSFont SystemFontOfSize (nfloat size);
+#endif
+
+		/// <summary>Creates the default system font in the specified size and weight.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <param name="weight">The font weight.</param>
+		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("systemFontOfSize:weight:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateSystemFont (nfloat size, nfloat weight);
+
+		/// <summary>Creates a weighted system font. Use <see cref="CreateSystemFont(nfloat, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if __MACOS__ && !XAMCORE_5_0
+		[Wrap ("CreateSystemFont (fontSize, weight)")]
+		NSFont SystemFontOfSize (nfloat fontSize, nfloat weight);
+#else
+		[Wrap ("CreateSystemFont (size, weight)")]
+		NSFont SystemFontOfSize (nfloat size, nfloat weight);
+#endif
+
+		/// <summary>Creates a system font with the specified size and weight.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <param name="weight">The font weight.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoMac]
+		[Static]
+		[Wrap ("CreateSystemFont (size, weight.GetWeight ())")]
+		NSFont CreateSystemFont (nfloat size, UIFontWeight weight);
+
+		/// <summary>Creates a weighted system font. Use <see cref="CreateSystemFont(nfloat, UIFontWeight)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateSystemFont (size, weight)")]
+		NSFont SystemFontOfSize (nfloat size, UIFontWeight weight);
+
+		/// <summary>Creates the system monospaced font specialized for digits, in the specified size and weight.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <param name="weight">The font weight.</param>
+		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("monospacedDigitSystemFontOfSize:weight:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateMonospacedDigitSystemFont (nfloat size, nfloat weight);
+
+		/// <summary>Creates a monospaced digit font. Use <see cref="CreateMonospacedDigitSystemFont(nfloat, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if __MACOS__ && !XAMCORE_5_0
+		[Wrap ("CreateMonospacedDigitSystemFont (fontSize, weight)")]
+		NSFont MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight);
+#else
+		[Wrap ("CreateMonospacedDigitSystemFont (size, weight)")]
+		NSFont MonospacedDigitSystemFontOfSize (nfloat size, nfloat weight);
+#endif
+
+		/// <summary>Creates a monospaced digit font with the specified size and weight.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <param name="weight">The font weight.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoMac]
+		[Static]
+		[Wrap ("CreateMonospacedDigitSystemFont (size, weight.GetWeight ())")]
+		NSFont CreateMonospacedDigitSystemFont (nfloat size, UIFontWeight weight);
+
+		/// <summary>Creates a monospaced digit font. Use <see cref="CreateMonospacedDigitSystemFont(nfloat, UIFontWeight)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if !XAMCORE_5_0
+		[Wrap ("CreateMonospacedDigitSystemFont (fontSize, weight)")]
+		NSFont MonospacedDigitSystemFontOfSize (nfloat fontSize, UIFontWeight weight);
+#else
+		[Wrap ("CreateMonospacedDigitSystemFont (size, weight)")]
+		NSFont MonospacedDigitSystemFontOfSize (nfloat size, UIFontWeight weight);
+#endif
+
+		/// <summary>Creates a bold system font of the specified size.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[Static]
+		[Export ("boldSystemFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateBoldSystemFont (nfloat size);
+
+		/// <summary>Creates a bold system font. Use <see cref="CreateBoldSystemFont(nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if __MACOS__ && !XAMCORE_5_0
+		[Wrap ("CreateBoldSystemFont (fontSize)")]
+		NSFont BoldSystemFontOfSize (nfloat fontSize);
+#else
+		[Wrap ("CreateBoldSystemFont (size)")]
+		NSFont BoldSystemFontOfSize (nfloat size);
+#endif
+
+		/// <summary>Creates a font with the specified name and size.</summary>
+		/// <param name="name">The name of the font to create.</param>
+		/// <param name="size">The size of the font in points.</param>
+		/// <returns>A new <see cref="NSFont" /> with the specified name and size, or <see langword="null" /> if the font could not be found.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[Static]
+		[Export ("fontWithName:size:")]
+		[return: AlwaysReturnNewInstance, NullAllowed]
+		NSFont CreateFromName (string name, nfloat size);
+
+		/// <summary>Creates a named font. Use <see cref="CreateFromName(string, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateFromName (name, size)")]
+		[return: NullAllowed]
+		NSFont FromName (string name, nfloat size);
+
+		/// <summary>Creates a named font. Use <see cref="CreateFromName(string, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateFromName (fontName ?? throw new ArgumentNullException (nameof (fontName)), fontSize)")]
+		[return: NullAllowed]
+		NSFont FromFontName (string fontName, nfloat fontSize);
+
+		/// <summary>Gets the monospaced system font of the specified size and weight.</summary>
+		/// <param name="size">The size of the font in points.</param>
+		/// <param name="weight">The weight of the font.</param>
+		/// <returns>The monospaced system font.</returns>
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("monospacedSystemFontOfSize:weight:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateMonospacedSystemFont (nfloat size, nfloat weight);
+
+		/// <summary>Creates a monospaced system font. Use <see cref="CreateMonospacedSystemFont(nfloat, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateMonospacedSystemFont (size, weight)")]
+		NSFont GetMonospacedSystemFont (nfloat size, nfloat weight);
+
+		/// <summary>Creates a monospaced system font. Use <see cref="CreateMonospacedSystemFont(nfloat, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateMonospacedSystemFont (fontSize, weight)")]
+		NSFont MonospacedSystemFont (nfloat fontSize, nfloat weight);
+
+		/// <summary>Creates a monospaced system font with the specified size and weight.</summary>
+		/// <param name="size">The font size in points.</param>
+		/// <param name="weight">The font weight.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoMac]
+		[Static]
+		[Wrap ("CreateMonospacedSystemFont (size, weight.GetWeight ())")]
+		NSFont CreateMonospacedSystemFont (nfloat size, UIFontWeight weight);
+
+		/// <summary>Creates a monospaced system font. Use <see cref="CreateMonospacedSystemFont(nfloat, UIFontWeight)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateMonospacedSystemFont (size, weight)")]
+		NSFont GetMonospacedSystemFont (nfloat size, UIFontWeight weight);
+
+		/// <summary>Creates a font with the same characteristics and a different size.</summary>
+		/// <param name="size">The new size in points.</param>
+		/// <returns>An independently disposable wrapper for the resized font.</returns>
+		[Export ("fontWithSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateWithSize (nfloat size);
+
+		/// <summary>Creates a resized font. Use <see cref="CreateWithSize(nfloat)" /> instead.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateWithSize (size)", IsVirtual = true)]
+		NSFont WithSize (nfloat size);
+
+		/// <summary>Creates a resized font. Use <see cref="CreateWithSize(nfloat)" /> instead.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if __MACOS__ && !XAMCORE_5_0
+		[Wrap ("CreateWithSize (fontSize)", IsVirtual = true)]
+		NSFont GetFont (nfloat fontSize);
+#else
+		[Wrap ("CreateWithSize (size)", IsVirtual = true)]
+		NSFont GetFont (nfloat size);
+#endif
+
+		/// <summary>Gets the font size in points.</summary>
+		[Export ("pointSize")]
+		nfloat PointSize { get; }
+
+		/// <summary>Gets the distance from the baseline to the highest ascender, in points.</summary>
+		[Export ("ascender")]
+		nfloat Ascender { get; }
+
+		/// <summary>Gets the distance from the baseline to the lowest descender, in points.</summary>
+		[Export ("descender")]
+		nfloat Descender { get; }
+
+		/// <summary>Gets the additional spacing between lines, in points.</summary>
+		[Export ("leading")]
+		nfloat Leading { get; }
+
+		/// <summary>Gets the height of capital letters, in points.</summary>
+		[Export ("capHeight")]
+		nfloat CapHeight { get; }
+
+		/// <summary>Gets the height of lowercase letters without ascenders, in points.</summary>
+		[Export ("xHeight")]
+		nfloat XHeight { get; }
+
+		/// <summary>Gets the descriptor containing the font's attributes.</summary>
+		[Export ("fontDescriptor")]
+		XFontDescriptor FontDescriptor { get; }
+
+		[Static, Export ("fontWithDescriptor:size:")]
+		[Internal]
+		[return: AlwaysReturnNewInstance]
+#if __MACOS__
+		[return: NullAllowed]
+#endif
+		NSFont _CreateFromDescriptor (XFontDescriptor descriptor, nfloat pointSize);
+
+		/// <summary>Creates a font matching a font descriptor.</summary>
+		/// <param name="descriptor">The descriptor to match.</param>
+		/// <param name="pointSize">The font size in points, or zero to use the descriptor's size.</param>
+		/// <returns>An independently disposable wrapper, or <see langword="null" /> if no matching font exists.</returns>
+		[Static]
+		[Wrap ("_CreateFromDescriptor (descriptor, pointSize)")]
+		[return: NullAllowed]
+		NSFont CreateFromDescriptor (XFontDescriptor descriptor, nfloat pointSize);
+
+		/// <summary>Creates a font from a descriptor. Use <see cref="CreateFromDescriptor(XFontDescriptor, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateFromDescriptor (descriptor, pointSize)")]
+		[return: NullAllowed]
+		NSFont FromDescriptor (XFontDescriptor descriptor, nfloat pointSize);
+
+		/// <summary>Creates a font from a descriptor. Use <see cref="CreateFromDescriptor(XFontDescriptor, nfloat)" /> instead.</summary>
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateFromDescriptor (fontDescriptor ?? throw new ArgumentNullException (nameof (fontDescriptor)), fontSize)")]
+		[return: NullAllowed]
+		NSFont FromDescription (XFontDescriptor fontDescriptor, nfloat fontSize);
+
+		/// <summary>Creates a system font with the specified size, weight, and width.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <param name="weight">The native font weight.</param>
+		/// <param name="width">The native font width.</param>
+		/// <returns>A newly allocated managed wrapper for the system font.</returns>
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[Static]
+		[Export ("systemFontOfSize:weight:width:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateSystemFont (nfloat fontSize, nfloat weight, nfloat width);
+
+		/// <summary>Creates a system font with a weight and width. Use <see cref="CreateSystemFont(nfloat, nfloat, nfloat)" /> instead.</summary>
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateSystemFont (fontSize, weight, width)")]
+		NSFont SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width);
+
+		/// <summary>Creates a system font with the specified size, weight, and width.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <param name="weight">The font weight.</param>
+		/// <param name="width">The font width.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoMac, iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Static]
+		[Wrap ("CreateSystemFont (fontSize, weight.GetWeight (), width.GetConstant () ?? throw new ArgumentException (width.ToString ()))")]
+		NSFont CreateSystemFont (nfloat fontSize, UIFontWeight weight, UIFontWidth width);
+
+		/// <summary>Creates a system font with a weight and width. Use <see cref="CreateSystemFont(nfloat, UIFontWeight, UIFontWidth)" /> instead.</summary>
+		[NoMac, iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateSystemFont (fontSize, weight, width)")]
+		NSFont SystemFontOfSize (nfloat fontSize, UIFontWeight weight, UIFontWidth width);
+
+		/// <summary>Gets the PostScript name of the font.</summary>
+		[Export ("fontName")]
+		string FontName { get; }
+
+		/// <summary>Gets the font name. Use <see cref="FontName" /> instead.</summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+#if __MACOS__ || XAMCORE_5_0
+		[Wrap ("FontName")]
+#else
+		[Wrap ("FontName", IsVirtual = true)]
+#endif
+		string Name { get; }
+
+		/// <summary>Gets the font family name.</summary>
+#if __MACOS__ || XAMCORE_5_0
+		[NullAllowed]
+#endif
+		[Export ("familyName")]
+		string FamilyName { get; }
+
+		/// <summary>Gets the standard system font size, in points.</summary>
+		[NoTV]
+		[Static]
+		[Export ("systemFontSize")]
+		nfloat SystemFontSize { get; }
+
+		/// <summary>Gets the small system font size, in points.</summary>
+		[NoTV]
+		[Static]
+		[Export ("smallSystemFontSize")]
+		nfloat SmallSystemFontSize { get; }
+
+		/// <summary>Gets the standard label font size, in points.</summary>
+		[NoTV]
+		[Static]
+		[Export ("labelFontSize")]
+		nfloat LabelFontSize { get; }
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Internal]
+		[Export ("fontWithName:matrix:")]
+		[return: AlwaysReturnNewInstance, NullAllowed]
+		NSFont _CreateFromName (string name, IntPtr matrix);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Internal]
+		[Export ("matrix")]
+		IntPtr _Matrix { get; }
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Internal]
+		[Field ("NSFontIdentityMatrix")]
+		IntPtr _IdentityMatrix { get; }
+
+		/// <summary>Creates a font from a Core Text font. Use <see cref="CreateFromCTFont(CoreText.CTFont)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateFromCTFont (font)")]
+		[return: NullAllowed]
+		NSFont FromCTFont ([NullAllowed] CTFont font);
+
+		/// <summary>Creates a font matching a descriptor and an optional text transform.</summary>
+		/// <param name="fontDescriptor">The font descriptor to match.</param>
+		/// <param name="textTransform">The text transform, or <see langword="null" /> to use the descriptor's transform.</param>
+		/// <returns>A new font wrapper, or <see langword="null" /> if no matching font exists.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("fontWithDescriptor:textTransform:")]
+		[return: AlwaysReturnNewInstance, NullAllowed]
+		NSFont CreateFromDescriptor (XFontDescriptor fontDescriptor, [NullAllowed] NSAffineTransform textTransform);
+
+		/// <summary>Creates a font from a descriptor and transform. Use <see cref="CreateFromDescriptor(XFontDescriptor, NSAffineTransform)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateFromDescriptor (fontDescriptor, textTransform)")]
+		[return: NullAllowed]
+		NSFont FromDescription (XFontDescriptor fontDescriptor, [NullAllowed] NSAffineTransform textTransform);
+
+		/// <summary>Creates the user's preferred application font at the specified size.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper, or null if unavailable.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("userFontOfSize:")]
+		[return: AlwaysReturnNewInstance, NullAllowed]
+		NSFont CreateUserFont (nfloat fontSize);
+
+		/// <summary>Creates the user's preferred font. Use <see cref="CreateUserFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateUserFont (fontSize)")]
+		[return: NullAllowed]
+		NSFont UserFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the user's preferred fixed-pitch font at the specified size.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper, or null if unavailable.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("userFixedPitchFontOfSize:")]
+		[return: AlwaysReturnNewInstance, NullAllowed]
+		NSFont CreateUserFixedPitchFont (nfloat fontSize);
+
+		/// <summary>Creates the user's fixed-pitch font. Use <see cref="CreateUserFixedPitchFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateUserFixedPitchFont (fontSize)")]
+		[return: NullAllowed]
+		NSFont UserFixedPitchFontOfSize (nfloat fontSize);
+
+		/// <summary>Sets the user's preferred application font.</summary>
+		/// <param name="aFont">The font to use, or null to restore the default font.</param>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("setUserFont:")]
+		void SetUserFont ([NullAllowed] NSFont aFont);
+
+		/// <summary>Sets the user's preferred fixed-pitch font.</summary>
+		/// <param name="aFont">The font to use, or null to restore the default font.</param>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("setUserFixedPitchFont:")]
+		void SetUserFixedPitchFont ([NullAllowed] NSFont aFont);
+
+		/// <summary>Creates the system label font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("labelFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateLabelFont (nfloat fontSize);
+
+		/// <summary>Creates a label font. Use <see cref="CreateLabelFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateLabelFont (fontSize)")]
+		NSFont LabelFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system title-bar font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("titleBarFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateTitleBarFont (nfloat fontSize);
+
+		/// <summary>Creates a title-bar font. Use <see cref="CreateTitleBarFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateTitleBarFont (fontSize)")]
+		NSFont TitleBarFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system menu font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("menuFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateMenuFont (nfloat fontSize);
+
+		/// <summary>Creates a menu font. Use <see cref="CreateMenuFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateMenuFont (fontSize)")]
+		NSFont MenuFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system menu-bar font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("menuBarFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateMenuBarFont (nfloat fontSize);
+
+		/// <summary>Creates a menu-bar font. Use <see cref="CreateMenuBarFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateMenuBarFont (fontSize)")]
+		NSFont MenuBarFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system message font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("messageFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateMessageFont (nfloat fontSize);
+
+		/// <summary>Creates a message font. Use <see cref="CreateMessageFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateMessageFont (fontSize)")]
+		NSFont MessageFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system palette font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("paletteFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreatePaletteFont (nfloat fontSize);
+
+		/// <summary>Creates a palette font. Use <see cref="CreatePaletteFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePaletteFont (fontSize)")]
+		NSFont PaletteFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system tooltip font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("toolTipsFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateToolTipsFont (nfloat fontSize);
+
+		/// <summary>Creates a tooltip font. Use <see cref="CreateToolTipsFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateToolTipsFont (fontSize)")]
+		NSFont ToolTipsFontOfSize (nfloat fontSize);
+
+		/// <summary>Creates the system control-content font.</summary>
+		/// <param name="fontSize">The font size in points.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("controlContentFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateControlContentFont (nfloat fontSize);
+
+		/// <summary>Creates a control-content font. Use <see cref="CreateControlContentFont(nfloat)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateControlContentFont (fontSize)")]
+		NSFont ControlContentFontOfSize (nfloat fontSize);
+
+		/// <summary>Gets the system font size for the specified control size.</summary>
+		/// <param name="controlSize">The control size.</param>
+		/// <returns>The font size in points.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("systemFontSizeForControlSize:")]
+		nfloat GetSystemFontSize (NSControlSize controlSize);
+
+		/// <summary>Gets a control's font size. Use <see cref="GetSystemFontSize(NSControlSize)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("GetSystemFontSize (controlSize)")]
+		nfloat SystemFontSizeForControlSize (NSControlSize controlSize);
+
+		/// <summary>Gets the localized display name, or null if unavailable.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[NullAllowed]
+		[Export ("displayName")]
+		string DisplayName { get; }
+
+		/// <summary>Gets the affine transform applied to the font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("textTransform")]
+		NSAffineTransform TextTransform { get; }
+
+		/// <summary>Gets the number of glyphs in the font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("numberOfGlyphs")]
+		nint GlyphCount { get; }
+
+		/// <summary>Gets the string encoding that best matches the font's coverage.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("mostCompatibleStringEncoding")]
+		NSStringEncoding MostCompatibleStringEncoding { get; }
+
+		/// <summary>Gets the glyph identifier for a glyph name.</summary>
+		/// <param name="aName">The glyph name.</param>
+		/// <returns>The glyph identifier, or zero if the glyph does not exist.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("glyphWithName:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		uint GetGlyphWithName (string aName); /* NSGlyph = unsigned int */
+
+		/// <summary>Gets a glyph identifier. Use <see cref="GetGlyphWithName(string)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		[Wrap ("GetGlyphWithName (aName)", IsVirtual = true)]
+		uint GlyphWithName (string aName);
+
+		/// <summary>Gets the character set supported by the font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("coveredCharacterSet")]
+		NSCharacterSet CoveredCharacterSet { get; }
+
+		/// <summary>Gets the bounding rectangle enclosing all glyphs in the font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("boundingRectForFont")]
+		CGRect BoundingRectForFont { get; }
+
+		/// <summary>Gets the largest glyph advancement in the font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("maximumAdvancement")]
+		CGSize MaximumAdvancement { get; }
+
+		/// <summary>Gets the position of the underline relative to the baseline, in points.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("underlinePosition")]
+		nfloat UnderlinePosition { get; }
+
+		/// <summary>Gets the thickness of the underline, in points.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("underlineThickness")]
+		nfloat UnderlineThickness { get; }
+
+		/// <summary>Gets the angle of the font's italic slant, in degrees.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("italicAngle")]
+		nfloat ItalicAngle { get; }
+
+		/// <summary>Gets whether the font uses the same advancement for every glyph.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("isFixedPitch")]
+		bool IsFixedPitch { get; }
+
+		/// <summary>Gets the bounding rectangle of a legacy glyph.</summary>
+		/// <param name="aGlyph">The legacy glyph identifier.</param>
+		/// <returns>The glyph's bounding rectangle.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("boundingRectForGlyph:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		CGRect GetBoundingRect (uint /* NSGlyph = unsigned int */ aGlyph);
+
+		/// <summary>Gets a glyph's bounding rectangle. Use <see cref="GetBoundingRect(uint)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		[Wrap ("GetBoundingRect (aGlyph)", IsVirtual = true)]
+		CGRect BoundingRectForGlyph (uint aGlyph);
+
+		/// <summary>Gets the advancement of a legacy glyph.</summary>
+		/// <param name="aGlyph">The legacy glyph identifier.</param>
+		/// <returns>The glyph's advancement.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("advancementForGlyph:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		CGSize GetAdvancement (uint /* NSGlyph = unsigned int */ aGlyph);
+
+		/// <summary>Gets a glyph's advancement. Use <see cref="GetAdvancement(uint)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		[Wrap ("GetAdvancement (aGlyph)", IsVirtual = true)]
+		CGSize AdvancementForGlyph (uint aGlyph);
+
+		/// <summary>Sets this font in the current graphics context.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("set")]
+		void Set ();
+
+		/// <summary>Sets this font in the specified graphics context.</summary>
+		/// <param name="graphicsContext">The graphics context in which to set the font.</param>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("setInContext:")]
+		void SetInContext (NSGraphicsContext graphicsContext);
+
+		/// <summary>Gets an independently disposable wrapper for the printer font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("printerFont")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[AlwaysReturnNewInstance]
+		NSFont PrinterFont { get; }
+
+		/// <summary>Gets an independently disposable wrapper for the screen font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("screenFont")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[AlwaysReturnNewInstance]
+		NSFont ScreenFont { get; }
+
+		/// <summary>Creates a screen font using the specified rendering mode.</summary>
+		/// <param name="renderingMode">The rendering mode to use.</param>
+		/// <returns>A new managed font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("screenFontWithRenderingMode:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateScreenFont (NSFontRenderingMode renderingMode);
+
+		/// <summary>Creates a screen font. Use <see cref="CreateScreenFont(NSFontRenderingMode)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[Wrap ("CreateScreenFont (renderingMode)", IsVirtual = true)]
+		NSFont ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode);
+
+		/// <summary>Gets the rendering mode used by the font.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("renderingMode")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		NSFontRenderingMode RenderingMode { get; }
+
+		/// <summary>Gets whether the font uses vertical glyph variants and metrics.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("isVertical")]
+		bool IsVertical { get; }
+
+		/// <summary>Creates a vertical version of this font.</summary>
+		/// <returns>A new managed font wrapper.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("verticalFont")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateVerticalFont ();
+
+		/// <summary>Creates a vertical font. Use <see cref="CreateVerticalFont" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateVerticalFont ()", IsVirtual = true)]
+		NSFont GetVerticalFont ();
+
+		/// <summary>Gets the dictionary key for the font family.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontFamilyAttribute")]
+		NSString FamilyAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the PostScript font name.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontNameAttribute")]
+		NSString NameAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the typeface name.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontFaceAttribute")]
+		NSString FaceAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the font size in points.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontSizeAttribute")]
+		NSString SizeAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the localized font name.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVisibleNameAttribute")]
+		NSString VisibleNameAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the font transformation matrix.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontMatrixAttribute")]
+		NSString MatrixAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the variation-axis values.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVariationAttribute")]
+		NSString VariationAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the supported character set.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontCharacterSetAttribute")]
+		NSString CharacterSetAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the fallback font descriptors.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontCascadeListAttribute")]
+		NSString CascadeListAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the font traits dictionary.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontTraitsAttribute")]
+		NSString TraitsAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the fixed glyph advancement.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontFixedAdvanceAttribute")]
+		NSString FixedAdvanceAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the typographic feature settings.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontFeatureSettingsAttribute")]
+		NSString FeatureSettingsAttribute { get; }
+
+		/// <summary>Gets the dictionary key for the symbolic font traits.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontSymbolicTrait")]
+		NSString SymbolicTrait { get; }
+
+		/// <summary>Gets the dictionary key for the font weight.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontWeightTrait")]
+		NSString WeightTrait { get; }
+
+		/// <summary>Gets the dictionary key for the relative font width.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontWidthTrait")]
+		NSString WidthTrait { get; }
+
+		/// <summary>Gets the dictionary key for the font slant.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontSlantTrait")]
+		NSString SlantTrait { get; }
+
+		/// <summary>Gets the dictionary key for the variation-axis identifier.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVariationAxisIdentifierKey")]
+		NSString VariationAxisIdentifierKey { get; }
+
+		/// <summary>Gets the dictionary key for the minimum variation-axis value.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVariationAxisMinimumValueKey")]
+		NSString VariationAxisMinimumValueKey { get; }
+
+		/// <summary>Gets the dictionary key for the maximum variation-axis value.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVariationAxisMaximumValueKey")]
+		NSString VariationAxisMaximumValueKey { get; }
+
+		/// <summary>Gets the dictionary key for the default variation-axis value.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVariationAxisDefaultValueKey")]
+		NSString VariationAxisDefaultValueKey { get; }
+
+		/// <summary>Gets the dictionary key for the localized variation-axis name.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontVariationAxisNameKey")]
+		NSString VariationAxisNameKey { get; }
+
+		/// <summary>Gets the dictionary key for the typographic feature type identifier.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontFeatureTypeIdentifierKey")]
+		NSString FeatureTypeIdentifierKey { get; }
+
+		/// <summary>Gets the dictionary key for the typographic feature selector identifier.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Field ("NSFontFeatureSelectorIdentifierKey")]
+		NSString FeatureSelectorIdentifierKey { get; }
+
+		/// <summary>Gets the bounding rectangle of a Core Graphics glyph.</summary>
+		/// <param name="glyph">The glyph identifier.</param>
+		/// <returns>The glyph's bounding rectangle.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("boundingRectForCGGlyph:")]
+		CGRect GetBoundingRect (CGGlyph glyph);
+
+		/// <summary>Gets the advancement of a Core Graphics glyph.</summary>
+		/// <param name="glyph">The glyph identifier.</param>
+		/// <returns>The glyph's advancement.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("advancementForCGGlyph:")]
+		CGSize GetAdvancement (CGGlyph glyph);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Internal]
+		[Export ("getBoundingRects:forCGGlyphs:count:")]
+		void _GetBoundingRects (IntPtr bounds, IntPtr glyphs, nuint glyphCount);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Internal]
+		[Export ("getAdvancements:forCGGlyphs:count:")]
+		void _GetAdvancements (IntPtr advancements, IntPtr glyphs, nuint glyphCount);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Internal]
+		[Export ("getBoundingRects:forGlyphs:count:")]
+		void _GetBoundingRectsForGlyphs (IntPtr bounds, IntPtr glyphs, nuint glyphCount);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Internal]
+		[Export ("getAdvancements:forGlyphs:count:")]
+		void _GetAdvancementsForGlyphs (IntPtr advancements, IntPtr glyphs, nuint glyphCount);
+
+		/// <summary>Writes the advancements of packed legacy glyphs to an unmanaged buffer.</summary>
+		/// <param name="advancements">A buffer large enough to hold one size for each packed glyph.</param>
+		/// <param name="packedGlyphs">A buffer of glyphs in the native short glyph-packing format.</param>
+		/// <param name="length">The size of the packed glyph buffer in bytes.</param>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetAdvancements' with Core Graphics glyphs instead.")]
+		[Export ("getAdvancements:forPackedGlyphs:length:")]
+		void GetAdvancementsForPackedGlyphs (IntPtr advancements, IntPtr packedGlyphs, nuint length);
+
+		/// <summary>Creates a font for the specified text style and options.</summary>
+		/// <param name="textStyle">The text style to use.</param>
+		/// <param name="options">The options used to select the font.</param>
+		/// <returns>A newly allocated managed wrapper for the preferred font.</returns>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("preferredFontForTextStyle:options:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreatePreferredFont (string textStyle, NSDictionary options);
+
+		/// <summary>Creates a preferred font. Use <see cref="CreatePreferredFont(string, NSDictionary)" /> instead.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (textStyle, options)")]
+		NSFont GetPreferredFont (string textStyle, NSDictionary options);
+
+		/// <summary>Gets the notification posted when the user changes the font antialiasing threshold.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Notification, Field ("NSAntialiasThresholdChangedNotification")]
+		NSString AntialiasThresholdChangedNotification { get; }
+
+		/// <summary>Gets the notification posted when fonts are activated or deactivated.</summary>
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Notification, Field ("NSFontSetChangedNotification")]
+		NSString FontSetChangedNotification { get; }
+
+		/// <summary>Creates an italicized system font of the specified size.</summary>
+		/// <param name="size">The size of the font in points.</param>
+		/// <returns>A new italic system <see cref="UIFont" /> of the specified size.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[Export ("italicSystemFontOfSize:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreateItalicSystemFont (nfloat size);
+
+		/// <summary>Creates an italic system font. Use <see cref="CreateItalicSystemFont(nfloat)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreateItalicSystemFont (size)")]
+		NSFont ItalicSystemFontOfSize (nfloat size);
+
+		/// <summary>Gets the standard button font size, in points.</summary>
+		[NoMac]
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("buttonFontSize")]
+		nfloat ButtonFontSize { get; }
+
+
+
+
+
+#if !XAMCORE_5_0
+		/// <summary>Gets the lowercase x-height. Use <see cref="XHeight" /> instead.</summary>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use the 'XHeight' property instead.")]
+		[Wrap ("XHeight", IsVirtual = true)]
+		nfloat xHeight { get; }
+#endif
+
+		/// <summary>Gets the default line height, in points.</summary>
+		[NoMac]
+		[Export ("lineHeight")]
+		nfloat LineHeight { get; }
+
+		/// <summary>Gets the names of all available font families.</summary>
+		[NoMac]
+		[Static]
+		[Export ("familyNames")]
+		string [] FamilyNames { get; }
+
+		/// <summary>Gets the names of the fonts in a font family.</summary>
+		/// <param name="familyName">The font family name.</param>
+		/// <returns>The names of the fonts in the specified family.</returns>
+		[NoMac]
+		[Static]
+		[Export ("fontNamesForFamilyName:")]
+		string [] GetFontNames (string familyName);
+
+		/// <summary>Gets a family's font names. Use <see cref="GetFontNames(string)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("GetFontNames (familyName)")]
+		string [] FontNamesForFamilyName (string familyName);
+
+		/// <summary>Gets the preferred font for the specified text style.</summary>
+		/// <param name="uiFontTextStyle">Name of one of the built-in system text styles.</param>
+		/// <returns>The preferred <see cref="UIFont" /> for the specified text style.</returns>
+		/// <remarks>
+		///   <para>You can instead use the <see cref="PreferredBody" />, <see cref="PreferredCaption1" />, <see cref="PreferredCaption2" />, <see cref="PreferredHeadline" />, <see cref="PreferredSubheadline" /> properties to get this information.</para>
+		///   <para>Using these methods to obtain an initial font during view initialization is not sufficient to implement dynamic type. After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" />. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that should be resized. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {
+		/// 	SetDynamicTypeFonts();
+		/// });
+		///
+		/// //Call this when initializing, and also in response to ObserveContentSizeCategoryChanged notifications
+		/// private void SetDynamicTypeFonts()
+		/// {
+		/// 	headlineLabel.Font = UIFont.GetPreferredFontForTextStyle(UIFontTextStyle.Headline);
+		/// 	bodyText.Font = UIFont.GetPreferredFontForTextStyle(UIFontTextStyle.Body);
+		///   //...etc...
+		/// }
+		///     ]]></code>
+		///   </example>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static, Export ("preferredFontForTextStyle:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreatePreferredFont (NSString uiFontTextStyle);
+
+		/// <summary>Creates a preferred font. Use <see cref="CreatePreferredFont(NSString)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (uiFontTextStyle)")]
+		NSFont GetPreferredFontForTextStyle (NSString uiFontTextStyle);
+
+		/// <summary>Creates the preferred font for a built-in text style.</summary>
+		/// <param name="uiFontTextStyle">The text style.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoMac]
+		[Static]
+		[Wrap ("CreatePreferredFont (uiFontTextStyle.GetConstant () ?? throw new ArgumentOutOfRangeException (nameof (uiFontTextStyle)))")]
+		NSFont CreatePreferredFont (UIFontTextStyle uiFontTextStyle);
+
+		/// <summary>Creates a preferred font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (uiFontTextStyle)")]
+		NSFont GetPreferredFontForTextStyle (UIFontTextStyle uiFontTextStyle);
+
+		/// <summary>Gets the preferred font for the specified text style and trait collection.</summary>
+		/// <param name="uiFontTextStyle">The style for which to get the preferred font.</param>
+		/// <param name="traitCollection">The trait collection, or <see langword="null" /> to use the current traits.</param>
+		/// <returns>The preferred <see cref="UIFont" /> for the specified text style and trait collection.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("preferredFontForTextStyle:compatibleWithTraitCollection:")]
+		[return: AlwaysReturnNewInstance]
+		NSFont CreatePreferredFont (NSString uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
+
+		/// <summary>Creates a preferred font. Use <see cref="CreatePreferredFont(NSString, UITraitCollection)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (uiFontTextStyle, traitCollection)")]
+		NSFont GetPreferredFontForTextStyle (NSString uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
+
+		/// <summary>Creates the preferred font for a built-in text style and trait collection.</summary>
+		/// <param name="uiFontTextStyle">The text style.</param>
+		/// <param name="traitCollection">The traits, or null to use the current traits.</param>
+		/// <returns>An independently disposable font wrapper.</returns>
+		[NoMac]
+		[Static]
+		[Wrap ("CreatePreferredFont (uiFontTextStyle.GetConstant () ?? throw new ArgumentOutOfRangeException (nameof (uiFontTextStyle)), traitCollection)")]
+		NSFont CreatePreferredFont (UIFontTextStyle uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
+
+		/// <summary>Creates a preferred font. Use <see cref="CreatePreferredFont(UIFontTextStyle, UITraitCollection)" /> instead.</summary>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (uiFontTextStyle, traitCollection)")]
+		NSFont GetPreferredFontForTextStyle (UIFontTextStyle uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
+
+		/// <summary>The preferred headline font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for headline text.</value>
+		/// <remarks>
+		///   <para>To implement dynamic type, application developers must act in reaction to <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" /> (see remarks and example at <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />).</para>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Headline)")]
+		NSFont PreferredHeadline { get; }
+
+		/// <summary>The preferred body font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for body text.</value>
+		/// <remarks>
+		///   <para>To implement dynamic type, application developers must act in reaction to <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" /> (see remarks and example at <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />).</para>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Body)")]
+		NSFont PreferredBody { get; }
+
+		/// <summary>The preferred subheadline font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for subheadline text.</value>
+		/// <remarks>
+		///   <para>To implement dynamic type, application developers must act in reaction to <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" /> (see remarks and example at <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />).</para>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Subheadline)")]
+		NSFont PreferredSubheadline { get; }
+
+		/// <summary>The preferred footnote font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for footnote text.</value>
+		/// <remarks>
+		///   <para>To implement dynamic type, application developers must act in reaction to <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" /> (see remarks and example at <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />).</para>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Footnote)")]
+		NSFont PreferredFootnote { get; }
+
+		/// <summary>The preferred primary caption font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for primary caption text.</value>
+		/// <remarks>
+		///   <para>To implement dynamic type, application developers must act in reaction to <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" /> (see remarks and example at <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />).</para>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Caption1)")]
+		NSFont PreferredCaption1 { get; }
+
+		/// <summary>The preferred secondary caption font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for secondary caption text.</value>
+		/// <remarks>
+		///   <para>To implement dynamic type, application developers must act in reaction to <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" /> (see remarks and example at <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />).</para>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Caption2)")]
+		NSFont PreferredCaption2 { get; }
+
+		/// <summary>The preferred primary title font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for primary title text.</value>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Title1)")]
+		NSFont PreferredTitle1 { get; }
+
+		/// <summary>The preferred secondary title font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for secondary title text.</value>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Title2)")]
+		NSFont PreferredTitle2 { get; }
+
+		/// <summary>The preferred tertiary title font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for tertiary title text.</value>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Title3)")]
+		NSFont PreferredTitle3 { get; }
+
+		/// <summary>The preferred callout font. Use <see cref="CreatePreferredFont(UIFontTextStyle)" /> instead.</summary>
+		/// <value>The preferred font for callout text.</value>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[NoMac]
+		[Static]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("CreatePreferredFont (UIFontTextStyle.Callout)")]
+		NSFont PreferredCallout { get; }
+	}
+#nullable restore
 
 	/// <summary>A delegate used as the callback in <see cref="NSLayoutManager.EnumerateLineFragments(NSRange,NSTextLayoutEnumerateLineFragments)" />.</summary>
 	delegate void NSTextLayoutEnumerateLineFragments (CGRect rect, CGRect usedRectangle, NSTextContainer textContainer, NSRange glyphRange, out bool stop);

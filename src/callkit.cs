@@ -938,10 +938,13 @@ namespace CallKit {
 		void Fulfill (CXTranslationEngine translationEngine);
 	}
 
+	/// <summary>Enumerates the translation engines that can translate a call.</summary>
 	[iOS (26, 0), NoMacCatalyst, NoMac]
 	[Native]
 	public enum CXTranslationEngine : long {
+		/// <summary>The system's translation engine translates the call.</summary>
 		Default,
+		/// <summary>The app's own translation engine translates the call.</summary>
 		Custom,
 	}
 }

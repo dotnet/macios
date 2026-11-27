@@ -1445,8 +1445,6 @@ F:CallKit.CXErrorCodeIncomingCallError.CallIsProtected
 F:CallKit.CXErrorCodeIncomingCallError.FilteredBySensitiveParticipants
 F:CallKit.CXErrorCodeIncomingCallError.FilteredDuringRestrictedSharingMode
 F:CallKit.CXErrorCodeRequestTransactionError.CallIsProtected
-F:CallKit.CXTranslationEngine.Custom
-F:CallKit.CXTranslationEngine.Default
 F:CarPlay.CPAssistantCellActionType.PlayMedia
 F:CarPlay.CPAssistantCellActionType.StartCall
 F:CarPlay.CPAssistantCellPosition.Bottom
@@ -54828,7 +54826,6 @@ T:BusinessChat.BCChatButton
 T:BusinessChat.BCChatButtonStyle
 T:BusinessChat.BCParameterName
 T:CallKit.CXSetTranslatingCallAction
-T:CallKit.CXTranslationEngine
 T:CarPlay.CPActionSheetTemplate
 T:CarPlay.CPAlertTemplate
 T:CarPlay.CPAssistantCellActionType

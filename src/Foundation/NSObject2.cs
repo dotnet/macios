@@ -188,6 +188,7 @@ namespace Foundation {
 #if !COREBUILD
 		, IEquatable<NSObject>
 		, IDisposable
+		, IReleaseOnMainThread
 #endif
 		, INSObjectFactory {
 #if !COREBUILD
@@ -1378,11 +1379,16 @@ namespace Foundation {
 			}
 		}
 
+		void IReleaseOnMainThread.ReleaseOnMainThread ()
+		{
+			ReleaseManagedRef ();
+		}
+
 		[Register ("__NSObject_Disposer")]
 		internal class NSObject_Disposer : NSObject {
-			static readonly List<NSObject> drainList1 = new List<NSObject> ();
-			static readonly List<NSObject> drainList2 = new List<NSObject> ();
-			static List<NSObject> handles = drainList1;
+			static readonly List<IReleaseOnMainThread> drainList1 = new List<IReleaseOnMainThread> ();
+			static readonly List<IReleaseOnMainThread> drainList2 = new List<IReleaseOnMainThread> ();
+			static List<IReleaseOnMainThread> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
 
@@ -1394,7 +1400,7 @@ namespace Foundation {
 				// Can't make the class static, because it has to subclass NSObject.
 			}
 
-			static internal void Add (NSObject handle)
+			static internal void Add (IReleaseOnMainThread handle)
 			{
 				bool call_drain;
 				lock (lock_obj) {
@@ -1417,11 +1423,11 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
-				List<NSObject> drainList;
+				List<IReleaseOnMainThread> drainList;
 
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
-					// see where this function would be re-entrant, is if in the call to ReleaseManagedRef below,
+					// see where this function would be re-entrant, is if in the call to a release below,
 					// the native dealloc method for a type ended up executing the run loop, and that runloop
 					// processed a drain request, ending up in this method (again).
 					if (draining) {
@@ -1437,8 +1443,8 @@ namespace Foundation {
 						handles = drainList1;
 				}
 
-				foreach (NSObject x in drainList)
-					x.ReleaseManagedRef ();
+				foreach (var entry in drainList)
+					entry.ReleaseOnMainThread ();
 				drainList.Clear ();
 
 				lock (lock_obj) {

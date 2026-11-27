@@ -553,11 +553,11 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 			/>
 
 		<RemoveDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false'" Directories="$(IpaPackageDir)\OnDemandResources\" />
-		<MakeDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false'" Directories="$(IpaPackageDir)\OnDemandResources\" />
+		<MakeDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false' And '@(_AssetPack)' != ''" Directories="$(IpaPackageDir)\OnDemandResources\" />
 
 		<CreateAssetPack
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false' And '@(_AssetPack)' != ''"
 			Source="%(_AssetPack.Identity)"
 			OutputFile="$(IpaPackageDir)OnDemandResources\%(_AssetPack.DirectoryName)"
 			ZipPath="$(ZipPath)"
@@ -565,7 +565,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 
 		<Copy
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(EmbedOnDemandResources)' == 'false' And '@(_AssetPack)' != ''"
 			SourceFiles="$(_IpaAppBundleDir)AssetPackManifest.plist"
 			DestinationFolder="$(IpaPackageDir)\OnDemandResources\"
 			/>

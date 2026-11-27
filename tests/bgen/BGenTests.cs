@@ -721,7 +721,8 @@ namespace Test {
 		[Test]
 		public void BindAsTests ()
 		{
-			BuildFile (Profile.iOS, "bindastests.cs");
+			var bgen = BuildFile (Profile.iOS, "bindastests.cs");
+			bgen.AssertNoWarnings ();
 		}
 
 		[Test]

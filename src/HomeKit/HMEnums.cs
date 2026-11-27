@@ -1633,7 +1633,7 @@ namespace HomeKit {
 	[Flags]
 	[Native]
 	public enum HMHomeManagerAuthorizationStatus : ulong {
-		/// <summary>The user has made a choice about the app accessing home data.</summary>
+		/// <summary>The user hasn't yet decided whether the app can access home data.</summary>
 		Determined = 1 << 0,
 		/// <summary>The system currently restricts access to home data.</summary>
 		Restricted = 1 << 1,

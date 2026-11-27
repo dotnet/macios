@@ -353,6 +353,11 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The indexer '\*.\*' must be an instance member with [Wrap] on each accessor (or [NotImplemented] on the setter), and must not have [Export], [Field], or property-level [Wrap] attributes.
+
+Bind the underlying Objective-C methods separately and use accessor-level
+`[Wrap]` attributes to expose them through an instance indexer.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

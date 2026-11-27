@@ -100,6 +100,7 @@ Microsoft.tvOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.AllocIfNeeded()
+Microsoft.tvOS.dll:Foundation.NSObject.ClearFlags(Foundation.NSObject/Flags)
 Microsoft.tvOS.dll:Foundation.NSObject.ClearHandle()
 Microsoft.tvOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
@@ -144,6 +145,8 @@ Microsoft.tvOS.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags)
 Microsoft.tvOS.dll:Foundation.NSObject.ToString()
 Microsoft.tvOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.tvOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
@@ -153,6 +156,7 @@ Microsoft.tvOS.dll:Foundation.NSObject/Flags
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
@@ -11119,6 +11123,8 @@ System.Private.CoreLib.dll:System.Threading.IAsyncLocalValueMap System.Threading
 System.Private.CoreLib.dll:System.Threading.IAsyncLocalValueMap.TryGetValue(System.Threading.IAsyncLocal, out System.Object&)
 System.Private.CoreLib.dll:System.Threading.Interlocked
 System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Byte&, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int32&, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int64&, System.Int64, System.Int64)

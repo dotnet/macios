@@ -73,6 +73,9 @@
     <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\HttpbinTestServer.cs">
       <Link>HttpbinTestServer.cs</Link>
     </Compile>
+    <Compile Include="$(RootTestsDirectory)\monotouch-test\System.Net.Http\LoopbackHttpServer.cs">
+      <Link>LoopbackHttpServer.cs</Link>
+    </Compile>
     <Compile Include="$(RootTestsDirectory)\common\TestRuntime.cs">
       <Link>TestRuntime.cs</Link>
     </Compile>

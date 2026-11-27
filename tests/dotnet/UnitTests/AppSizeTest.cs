@@ -9,6 +9,7 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	[NonParallelizable]
+	[Ignore ("This test is not so relevant on release branches, and it causes a fair amount of conflicts, so skip it on release branches.")]
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]

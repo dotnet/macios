@@ -94,6 +94,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_ethernet_channel_send (OS_nw_ethernet_channel ethernet_channel, OS_dispatch_data content, ushort vlan_tag, IntPtr remote_address, BlockLiteral* completion);
 
+		[UserDelegateType (typeof (Action<NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineSendCompletion (IntPtr block, IntPtr error)
 		{
@@ -123,6 +124,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_ethernet_channel_set_receive_handler (OS_nw_ethernet_channel ethernet_channel, /* [NullAllowed] */ BlockLiteral* handler);
 
+		[UserDelegateType (typeof (Action<CoreFoundation.DispatchData, ushort, IntPtr, IntPtr>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineReceiveHandler (IntPtr block, OS_dispatch_data content, ushort vlanTag, IntPtr localAddressArray, IntPtr remoteAddressArray)
 		{
@@ -157,6 +159,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_ethernet_channel_set_state_changed_handler (OS_nw_ethernet_channel ethernet_channel, /* [NullAllowed] */ BlockLiteral* handler);
 
+		[UserDelegateType (typeof (Action<NWEthernetChannelState, NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineStateChangesHandler (IntPtr block, NWEthernetChannelState state, IntPtr error)
 		{

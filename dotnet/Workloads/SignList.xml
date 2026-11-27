@@ -77,7 +77,6 @@
 
   <ItemGroup>
     <FirstParty Include="bgen.dll" />
-    <FirstParty Include="dotnet-linker.dll" />
     <!-- assembly-preparer tool (replaces pre-mark custom linker steps) + localized satellites -->
     <FirstParty Include="assembly-preparer.dll" />
     <FirstParty Include="assembly-preparer.resources.dll" />
@@ -161,6 +160,7 @@
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />
     <!-- Our new Microsoft.* product dlls -->
+    <FirstParty Include="Microsoft.Apple.Tools.MaciOS.dll" />
     <FirstParty Include="Microsoft.iOS.dll" />
     <FirstParty Include="Microsoft.MacCatalyst.dll" />
     <FirstParty Include="Microsoft.macOS.dll" />

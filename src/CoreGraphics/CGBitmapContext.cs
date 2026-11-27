@@ -301,6 +301,7 @@ namespace CoreGraphics {
 
 		public delegate bool OnResolveCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
+		[UserDelegateType (typeof (OnResolveCallback))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("tvos26.0")]
@@ -318,6 +319,7 @@ namespace CoreGraphics {
 
 		public delegate CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ OnAllocateCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
+		[UserDelegateType (typeof (OnAllocateCallback))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("tvos26.0")]
@@ -335,6 +337,7 @@ namespace CoreGraphics {
 
 		public delegate void OnFreeCallback (CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
+		[UserDelegateType (typeof (OnFreeCallback))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("tvos26.0")]
@@ -351,6 +354,7 @@ namespace CoreGraphics {
 
 		public delegate void OnErrorCallback (NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
+		[UserDelegateType (typeof (OnErrorCallback))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("ios26.0")]
 		[SupportedOSPlatform ("tvos26.0")]

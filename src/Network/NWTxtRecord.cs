@@ -129,6 +129,7 @@ namespace Network {
 
 		public delegate bool NWTxtRecordApplyDelegate (string? key, NWTxtRecordFindKey result, ReadOnlySpan<byte> value);
 
+		[UserDelegateType (typeof (Func<IntPtr, NWTxtRecordFindKey, IntPtr, ulong, bool>))]
 		[UnmanagedCallersOnly]
 		unsafe static byte TrampolineApplyHandler (IntPtr block, IntPtr keyPointer, NWTxtRecordFindKey found, IntPtr value, nuint valueLen)
 		{
@@ -161,6 +162,7 @@ namespace Network {
 
 		public delegate void NWTxtRecordGetValueDelegete (string? key, NWTxtRecordFindKey result, ReadOnlySpan<byte> value);
 
+		[UserDelegateType (typeof (Func<IntPtr, NWTxtRecordFindKey, IntPtr, ulong, bool>))]
 		[UnmanagedCallersOnly]
 		unsafe static void TrampolineAccessKeyHandler (IntPtr block, IntPtr keyPointer, NWTxtRecordFindKey found, IntPtr value, nuint valueLen)
 		{
@@ -197,6 +199,7 @@ namespace Network {
 
 		public delegate void NWTxtRecordGetRawByteDelegate (ReadOnlySpan<byte> value);
 
+		[UserDelegateType (typeof (Func<IntPtr, ulong, bool>))]
 		[UnmanagedCallersOnly]
 		unsafe static void TrampolineRawBytesHandler (IntPtr block, IntPtr value, nuint valueLen)
 		{

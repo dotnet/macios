@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.IO;
-
 using Mono.Cecil;
 using Mono.Linker;
 
@@ -12,8 +10,8 @@ using Xamarin.Linker;
 
 namespace MonoTouch.Tuner {
 	// Populate Application.Assemblies with the loaded assemblies.
-	// This is needed so that steps like ExtractBindingLibrariesStep, ComputeAOTArguments and
-	// GatherFrameworksStep can find the assemblies they need to process.
+	// This is needed so that steps like ExtractBindingLibrariesStep and GatherFrameworksStep
+	// can find the assemblies they need to process.
 	// This is equivalent to LoadNonSkippedAssembliesStep in the ILLink path (and runs at the
 	// same point in the sequence of steps).
 	public class PopulateApplicationAssembliesStep : ConfigurationAwareStep {
@@ -35,7 +33,6 @@ namespace MonoTouch.Tuner {
 					break;
 				default:
 					var ad = Configuration.Application.AddAssembly (assemblyDefinition);
-					ad.IsDedupAssembly = Path.GetFileName (Configuration.DedupAssembly).Equals (Path.GetFileName (assembly.OutputPath), StringComparison.OrdinalIgnoreCase);
 					ad.FullPath = assembly.OutputPath;
 					break;
 				}

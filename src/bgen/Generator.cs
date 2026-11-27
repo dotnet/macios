@@ -52,6 +52,7 @@ using System.Reflection;
 using System.Xml;
 
 using ObjCBindings;
+using Assembly = System.Reflection.Assembly;
 using Xamarin.Utils;
 
 #nullable enable
@@ -60,7 +61,7 @@ public partial class Generator : IMemberGatherer {
 	internal bool IsPublicMode;
 	internal const string NativeHandleType = "NativeHandle";
 	BindingTouch BindingTouch;
-	Frameworks Frameworks { get { return BindingTouch.Frameworks!; } }
+	BGenFrameworks Frameworks { get { return BindingTouch.Frameworks!; } }
 	public TypeManager TypeManager { get { return BindingTouch.TypeManager; } }
 	public AttributeManager AttributeManager { get { return BindingTouch.AttributeManager; } }
 	NamespaceCache NamespaceCache { get { return BindingTouch.NamespaceCache; } }
@@ -2947,7 +2948,7 @@ public partial class Generator : IMemberGatherer {
 			// Format nicely the type, as succinctly as possible
 			Type parType = pi.ParameterType;
 			if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
-				if (!AttributeManager.HasAttribute<WrapAttribute> (mi)) {
+				if (!AttributeManager.HasAttribute<WrapAttribute> (mi) || AttributeManager.HasAttribute<ExportAttribute> (mi)) {
 					var ti = MakeTrampoline (parType);
 					sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
 				} else {
@@ -3216,8 +3217,11 @@ public partial class Generator : IMemberGatherer {
 			// if this is a extension of any kind, ensure that we keep alive the this parameter
 			// so that it is not collected before the msg send call has completed.
 			print ("GC.KeepAlive (This);");
-		} else if (supercall) {
-			print ("GC.KeepAlive ({0});", target_name);
+		} else if (!minfo.is_static && !(minfo.is_protocol_member && mi.Name == "Constructor")) {
+			print ("GC.KeepAlive (this);");
+		}
+
+		if (supercall && !minfo.is_static) {
 			indent--;
 			print ("}"); // close unsafe block
 		}
@@ -4122,7 +4126,12 @@ public partial class Generator : IMemberGatherer {
 						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap, nullable ? "" : "!");
 					else if (pi.PropertyType.IsValueType)
 						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes), wrap);
-					else
+					else if (!IsModel (pi.PropertyType) && IsProtocolInterface (pi.PropertyType, false)) {
+						print ("var wrapped = {0};", wrap);
+						print ("var ret = wrapped as {0} ?? Runtime.GetINativeObject<{0}> (wrapped.GetHandle (), false);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
+						print ("GC.KeepAlive (wrapped);");
+						print ("return ret{0};", nullable ? "" : "!");
+					} else
 						print ("return ({0} as {1})!;", wrap, TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
 				}
 				indent--;
@@ -4138,7 +4147,7 @@ public partial class Generator : IMemberGatherer {
 				if (is_protocol_wrapper) {
 					print ("var rvalue = value as NSObject;");
 					print ("if (!(value is null) && rvalue is null)");
-					print ("\tthrow new ArgumentException (\"The object passed of type \" + value.GetType () + \" does not derive from NSObject\");");
+					print ("\trvalue = Runtime.GetNSObject (value.GetHandle ());");
 				}
 
 				if (TypeManager.IsDictionaryContainerType (pi.PropertyType))
@@ -4149,6 +4158,8 @@ public partial class Generator : IMemberGatherer {
 					else
 						print ("{0} = {1}value;", wrap, is_protocol_wrapper ? "r" : "");
 				}
+				if (is_protocol_wrapper)
+					print ("GC.KeepAlive (value);");
 				indent--;
 				print ("}");
 			}
@@ -4704,6 +4715,8 @@ public partial class Generator : IMemberGatherer {
 			do_not_call_base = false;
 		} else if (minfo.is_protocol_implementation_method) {
 			do_not_call_base = false;
+		} else if (minfo.is_protocol_member && minfo.wrap_method is not null) {
+			do_not_call_base = false;
 		} else if (minfo.is_abstract || minfo.is_model) {
 			do_not_call_base = true;
 		} else {
@@ -4751,7 +4764,11 @@ public partial class Generator : IMemberGatherer {
 					indent++;
 
 					var ret = mi.ReturnType == TypeCache.System_Void ? null : "return ";
-					print ("{0}{1}{2};", ret, minfo.is_extension_method ? "This." : "", minfo.wrap_method);
+					if (minfo.is_extension_method && AttributeManager.HasAttribute<ExportAttribute> (mi)) {
+						print ("{0}This.{1} ({2});", ret, GetMethodName (minfo, false), RenderArgs (mi.GetParameters ()));
+					} else {
+						print ("{0}{1}{2};", ret, minfo.is_extension_method ? "This." : "", minfo.wrap_method);
+					}
 					indent--;
 				}
 			} else {
@@ -5267,7 +5284,7 @@ public partial class Generator : IMemberGatherer {
 
 		foreach (var mi in allProtocolMethods) {
 			var minfo = new MemberInformation (this, this, mi, type, null);
-			var useSeparateImplementationMethod = !minfo.is_static;
+			var useSeparateImplementationMethod = !minfo.is_static && minfo.wrap_method is null;
 			minfo.is_protocol_member = true;
 			minfo.is_protocol_member_required = IsRequired (mi);
 			minfo.call_protocol_implementation_method = useSeparateImplementationMethod;
@@ -5914,6 +5931,7 @@ public partial class Generator : IMemberGatherer {
 
 	public bool TryComputeLibraryName (string? attributeLibraryName, Type type, [NotNullWhen (true)] out string? library_name, out string? library_path)
 	{
+		// Keep the pseudo-library mappings in sync with Frameworks.GetFrameworkFromLibraryName.
 		library_path = null;
 
 		if (attributeLibraryName is not null) {
@@ -6255,6 +6273,9 @@ public partial class Generator : IMemberGatherer {
 				   where_list);
 
 			indent++;
+
+			if (is_category_class)
+				print ("internal const bool __IsBindingCategory = true;");
 
 			if (!is_model && !is_partial) {
 				foreach (var ea in selectors [type].OrderBy (s => s, StringComparer.Ordinal)) {

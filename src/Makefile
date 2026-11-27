@@ -377,7 +377,7 @@ $($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig: | $($(2)_DOT
 $($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml: $(TOP)/src/ILLink.LinkAttributes.xml.in | $($(2)_DOTNET_BUILD_DIR)
 	$$(call Q_PROF_GEN,$(3)) sed < $$< > $$@ 's|@PRODUCT_NAME@|Microsoft.$(1)|g;'
 
-$($(2)_DOTNET_BUILD_DIR)/SourceLink.json: $($(2)_DOTNET_BUILD_DIR) $(GENERATE_SOURCELINK_JSON)
+$($(2)_DOTNET_BUILD_DIR)/SourceLink.json: $(GENERATE_SOURCELINK_JSON) | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) $(GENERATE_SOURCELINK_JSON_EXEC) "$(PACKAGE_HEAD_REV)" "$(abspath $(TOP)/src)" "$$@"
 
 $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp: $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources $($(2)_DOTNET_SOURCES) $(TOP)/src/generate-embed-files.sh
@@ -451,13 +451,22 @@ $$(PLATFORM_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp Makefile $
 
 rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
-$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
+# The .NET analyzers and the .editorconfig are only used for the platform assembly (the one we ship), not for the
+# intermediate core and apidefinition assemblies. scripts/rsp-to-csproj ignores them, because MSBuild adds them to the
+# generated project files by itself.
+# The path to .editorconfig must be relative, just like the paths to the source files: csc matches the .editorconfig
+# sections against the full path of each source file, and that silently doesn't match if the two are spelled differently
+# (for instance if only one of them goes through a symlink, such as /tmp on macOS).
+$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(TOP)/.editorconfig $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) rm -f $$@
 	$$(Q) echo \
 		$(DOTNET_FLAGS) \
 		/analyzer:$(ROSLYN_GENERATOR_COMMON) \
 		/analyzer:$(ROSLYN_GENERATOR) \
 		/analyzer:$(ROSLYN_ANALYZER) \
+		/analyzer:$(DOTNET_ANALYZERS_DIR)/Microsoft.CodeAnalysis.NetAnalyzers.dll \
+		/analyzer:$(DOTNET_ANALYZERS_DIR)/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll \
+		/analyzerconfig:$(TOP)/.editorconfig \
 		/generatedfilesout:$($(2)_DOTNET_BUILD_DIR)/generated-sources \
 		$$(if $(V),/reportanalyzer:$(ROSLYN_GENERATOR),) \
 		$$(if $(V),/reportanalyzer:$(ROSLYN_ANALYZER),) \
@@ -598,7 +607,7 @@ stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call u
 csproj:: $(CSPROJECTS)
 ALL_TARGETS += $(CSPROJECTS)
 
-install-local:: $(INSTALL_TARGETS)
+install-local:: $(INSTALL_TARGETS) $(DOTNET_TARGETS)
 all-local:: $(ALL_TARGETS)
 
 $(DOTNET_TARGETS_DIRS):

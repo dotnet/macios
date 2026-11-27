@@ -37,13 +37,5 @@ create_linked_away_exception (const char *func)
 }
 
 <# foreach (var d in delegates) { #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#if defined (CORECLR_RUNTIME)\n");
-#>
 <#= d.Function #>
-<#
-		if (d.OnlyCoreCLR)
-			Write ("#endif // CORECLR_RUNTIME\n");
-#>
 <# } #>

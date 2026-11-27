@@ -53,22 +53,10 @@ jobs:
       INCLUDE_DOTNET_MACCATALYST: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_MACCATALYST'] ]
       INCLUDE_DOTNET_MACOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_MACOS'] ]
       INCLUDE_DOTNET_TVOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_TVOS'] ]
-      # add all the variables that have been parsed by the configuration step. Could we have a less verbose way??
-      #
-      # build-package
-      # skip-packages
-      # skip-nugets
-      # skip-signing
-      BuildPackage: $[ stageDependencies.configure_build.configure.outputs['labels.build_package'] ]
-      SkipPackages: $[ stageDependencies.configure_build.configure.outputs['labels.skip_packages'] ]
-      SkipNugets: $[ stageDependencies.configure_build.configure.outputs['labels.skip_nugets'] ]
-      SkipSigning: $[ stageDependencies.configure_build.configure.outputs['labels.skip_signing'] ]
-      SkipApiComparison: $[ stageDependencies.configure_build.configure.outputs['labels.skip_api_comparison'] ]
       # old and ugly env var use by jenkins, we do have parts of the code that use it, contains the PR number
-      PR_ID: $[ stageDependencies.configure_build.configure.outputs['labels.pr_number'] ]
+      PR_ID: $[ stageDependencies.configure_build.configure.outputs['build_configuration.pr_number'] ]
       # set the branch variable name, this is required by jenkins and we have a lot of scripts that depend on it
       BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
-      XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
       RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
     ${{ if parameters.useACES }}:
       pool:

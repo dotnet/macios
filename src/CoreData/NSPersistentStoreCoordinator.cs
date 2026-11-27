@@ -10,8 +10,8 @@ namespace CoreData {
 		[UnsupportedOSPlatform ("tvos")]
 		public NSManagedObjectID GetManagedObjectId (string value)
 		{
-			using var str = new TransientString (value);
-			return GetManagedObjectId ((IntPtr) str, (nuint) value.Length);
+			using var str = new TransientString (value, out var byteCount);
+			return GetManagedObjectId ((IntPtr) str, (nuint) byteCount);
 		}
 #endif // !__TVOS__
 	}

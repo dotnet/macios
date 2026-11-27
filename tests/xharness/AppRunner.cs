@@ -388,20 +388,20 @@ namespace Xharness {
 			if (!isSimulator && listenerFactory.UseTunnel)
 				await listenerFactory.TunnelBore.Close (deviceName);
 
-			if (springBoardFailure is not null) {
+			if ((attempt.StopFailure ?? springBoardFailure) is string failureMessage) {
 				await crashReporter.EndCaptureAsync (TimeSpan.FromSeconds (5));
-				Result = TestExecutingResult.Crashed;
-				FailureMessage = springBoardFailure;
-				MainLog.WriteLine (springBoardFailure);
-				WrenchLog.WriteLine ($"AddSummary: <b><i>{runMode}: {springBoardFailure}</i></b><br/>");
+				Result = attempt.StopFailure is not null ? TestExecutingResult.HarnessException : TestExecutingResult.Crashed;
+				FailureMessage = failureMessage;
+				MainLog.WriteLine (failureMessage);
+				WrenchLog.WriteLine ($"AddSummary: <b><i>{runMode}: {System.Net.WebUtility.HtmlEncode (failureMessage)}</i></b><br/>");
 				if (harness.XmlJargon != XmlResultJargon.Missing) {
 					new XmlResultParser ().GenerateFailure (
 						Logs,
-						"springboard-crash",
+						attempt.StopFailure is not null ? "simulator-stop-failure" : "springboard-crash",
 						AppInformation.AppName,
 						AppInformation.Variation,
-						$"SpringBoard crash {AppInformation.AppName} {AppInformation.Variation} on {simulator!.UDID}",
-						springBoardFailure,
+						$"{(attempt.StopFailure is not null ? "Simulator stop failure" : "SpringBoard crash")} {AppInformation.AppName} {AppInformation.Variation} on {simulator!.UDID}",
+						failureMessage,
 						MainLog.FullPath,
 						harness.XmlJargon);
 				}
@@ -453,6 +453,7 @@ namespace Xharness {
 			public required List<string> AttemptLogs { get; init; }
 			public bool ListenerStopped { get; set; }
 			public string? FailureWhileStopping { get; set; }
+			public string? StopFailure { get; set; }
 		}
 
 		LaunchAttempt CreateLaunchAttempt (MlaunchArguments baseArgs, int attemptNumber, bool useXmlOutput, TimeSpan testReporterTimeout)
@@ -597,12 +598,22 @@ namespace Xharness {
 							stoppedResult = await execution;
 						} catch (Exception e) {
 							MainLog.WriteLine ($"Failed to stop the test app: {e}");
-							throw;
+							attempt.StopFailure = $"The simulator launch process failed while stopping the test app: {e.Message}";
+							stoppedResult = new ProcessExecutionResult { ExitCode = 1 };
 						}
 						// Make sure the app isn't still running when it's launched again.
-						await processManager.ExecuteXcodeCommandAsync ("simctl", new string [] { "terminate", udid, AppInformation.BundleIdentifier }, MainLog, TimeSpan.FromMinutes (1));
+						try {
+							await TerminateSimulatorAppAsync ();
+						} catch (Exception e) {
+							MainLog.WriteLine ($"Failed to terminate the simulator test app: {e}");
+							attempt.StopFailure ??= $"Could not stop the simulator test app after a SpringBoard crash: {e.Message}";
+						}
 						StopListener (attempt.Listener);
 						attempt.ListenerStopped = true;
+						if (attempt.StopFailure is not null) {
+							attempt.LaunchCallbackCancellation.Cancel ();
+							return false;
+						}
 						if (SimulatorAttemptController.HasTestResults (MainLog, out var failure, attempt.ProgressLogs)) {
 							attempt.FailureWhileStopping = failure;
 							MainLog.WriteLine ("Test results arrived while stopping the app; reporting this attempt instead of relaunching.");
@@ -632,6 +643,19 @@ namespace Xharness {
 				await testReporter.CollectSimulatorResult (await execution);
 			}
 			return false;
+		}
+
+		async Task TerminateSimulatorAppAsync ()
+		{
+			using var output = new MemoryLog () { Timestamp = false };
+			var log = Log.CreateAggregatedLog (MainLog, output);
+			var result = await processManager.ExecuteXcodeCommandAsync ("simctl", new string [] { "terminate", simulator!.UDID, AppInformation.BundleIdentifier }, log, TimeSpan.FromMinutes (1));
+			var text = output.ToString ();
+			// simctl reports ESRCH when the app has already exited.
+			var alreadyStopped = result.ExitCode == 3 && (text.Contains ("found nothing to terminate", StringComparison.Ordinal) || text.Contains ("the app is not currently running", StringComparison.Ordinal));
+			if (!result.TimedOut && (result.Succeeded || alreadyStopped))
+				return;
+			throw new InvalidOperationException ($"simctl terminate failed (exit code {result.ExitCode}, timed out: {result.TimedOut}): {text}");
 		}
 
 		async Task DiscardSimulatorAttemptAsync (int attemptNumber, LaunchAttempt attempt)

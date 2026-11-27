@@ -21,9 +21,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWWebSocketMetadata : NWProtocolMetadata {
+	public class NWWebSocketMetadata : NWProtocolMetadata, ICreatableNativeObject<NWWebSocketMetadata> {
 
-		[Preserve (Conditional = true)]
+		static NWWebSocketMetadata ICreatableNativeObject<NWWebSocketMetadata>.Create (NativeHandle handle, bool owns) => new NWWebSocketMetadata (handle, owns);
+
 		internal NWWebSocketMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

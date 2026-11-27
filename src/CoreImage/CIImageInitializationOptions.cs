@@ -37,7 +37,7 @@ namespace CoreImage {
 		/// <summary>Gets or sets the color space.</summary>
 		public CGColorSpace? ColorSpace {
 			get {
-				return GetNativeValue<CGColorSpace> (CIImageInitializationOptionsKeys.ColorSpaceKey);
+				return TryGetNativeValue (CIImageInitializationOptionsKeys.ColorSpaceKey, out var handle) ? Runtime.GetCreatableNativeObject<CGColorSpace> (handle, false) : null;
 			}
 			set {
 				SetNativeValue (CIImageInitializationOptionsKeys.ColorSpaceKey, value);

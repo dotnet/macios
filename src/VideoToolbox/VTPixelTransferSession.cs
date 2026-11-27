@@ -18,13 +18,14 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos16.0")]
-	public class VTPixelTransferSession : VTSession {
+	public class VTPixelTransferSession : VTSession, ICreatableNativeObject<VTPixelTransferSession> {
 
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* CFTypeID */ nint VTPixelTransferSessionGetTypeID ();
 		public static nint GetTypeID () => VTPixelTransferSessionGetTypeID ();
 
-		[Preserve (Conditional = true)]
+		static VTPixelTransferSession ICreatableNativeObject<VTPixelTransferSession>.Create (NativeHandle handle, bool owns) => new VTPixelTransferSession (handle, owns);
+
 		internal VTPixelTransferSession (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

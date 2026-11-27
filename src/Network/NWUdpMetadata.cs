@@ -17,9 +17,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWUdpMetadata : NWProtocolMetadata {
+	public class NWUdpMetadata : NWProtocolMetadata, ICreatableNativeObject<NWUdpMetadata> {
 
-		[Preserve (Conditional = true)]
+		static NWUdpMetadata ICreatableNativeObject<NWUdpMetadata>.Create (NativeHandle handle, bool owns) => new NWUdpMetadata (handle, owns);
+
 		internal NWUdpMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWUdpMetadata () : this (nw_udp_create_metadata (), owns: true) { }

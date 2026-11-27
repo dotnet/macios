@@ -38,7 +38,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGFunction.h
-	public class CGFunction : NativeObject {
+	public class CGFunction : NativeObject, ICreatableNativeObject<CGFunction> {
 		CGFunctionEvaluate? evaluate;
 
 		unsafe static CGFunctionCallbacks cbacks = new CGFunctionCallbacks {
@@ -47,7 +47,8 @@ namespace CoreGraphics {
 			release = &ReleaseCallback,
 		};
 
-		[Preserve (Conditional = true)]
+		static CGFunction ICreatableNativeObject<CGFunction>.Create (NativeHandle handle, bool owns) => new CGFunction (handle, owns);
+
 		internal CGFunction (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -509,7 +509,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public VTMultiPassStorage? MultiPassStorage {
 			get {
-				return GetNativeValue<VTMultiPassStorage> (VTCompressionPropertyKey.MultiPassStorage);
+				return TryGetNativeValue (VTCompressionPropertyKey.MultiPassStorage, out var handle) ? Runtime.GetCreatableNativeObject<VTMultiPassStorage> (handle, false) : null;
 			}
 			set {
 				SetNativeValue (VTCompressionPropertyKey.MultiPassStorage, value);

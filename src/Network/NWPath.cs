@@ -20,8 +20,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWPath : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWPath : NativeObject, ICreatableNativeObject<NWPath> {
+		static NWPath ICreatableNativeObject<NWPath>.Create (NativeHandle handle, bool owns) => new NWPath (handle, owns);
+
 		internal NWPath (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

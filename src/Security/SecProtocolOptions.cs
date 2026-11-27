@@ -23,11 +23,12 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class SecProtocolOptions : NativeObject {
+	public class SecProtocolOptions : NativeObject, ICreatableNativeObject<SecProtocolOptions> {
 #if !COREBUILD
 		// This type is only ever surfaced in response to callbacks in TLS/Network and documented as read-only
 		// if this ever changes, make this public
-		[Preserve (Conditional = true)]
+		static SecProtocolOptions ICreatableNativeObject<SecProtocolOptions>.Create (NativeHandle handle, bool owns) => new SecProtocolOptions (handle, owns);
+
 		internal SecProtocolOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.SecurityLibrary)]

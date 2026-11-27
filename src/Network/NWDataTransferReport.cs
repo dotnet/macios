@@ -22,9 +22,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWDataTransferReport : NativeObject {
+	public class NWDataTransferReport : NativeObject, ICreatableNativeObject<NWDataTransferReport> {
 
-		[Preserve (Conditional = true)]
+		static NWDataTransferReport ICreatableNativeObject<NWDataTransferReport>.Create (NativeHandle handle, bool owns) => new NWDataTransferReport (handle, owns);
+
 		internal NWDataTransferReport (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

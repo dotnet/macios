@@ -35,9 +35,10 @@ namespace CoreFoundation {
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
-	public partial class DispatchData : DispatchObject {
+	public partial class DispatchData : DispatchObject, ICreatableNativeObject<DispatchData> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static DispatchData ICreatableNativeObject<DispatchData>.Create (NativeHandle handle, bool owns) => new DispatchData (handle, owns);
+
 		internal DispatchData (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

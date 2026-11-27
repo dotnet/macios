@@ -17,9 +17,10 @@ namespace VideoToolbox;
 [SupportedOSPlatform ("tvos26.0")]
 [SupportedOSPlatform ("macos26.0")]
 [SupportedOSPlatform ("maccatalyst26.0")]
-public class VTMotionEstimationSession : VTSession {
+public class VTMotionEstimationSession : VTSession, ICreatableNativeObject<VTMotionEstimationSession> {
 
-	[Preserve (Conditional = true)]
+	static VTMotionEstimationSession ICreatableNativeObject<VTMotionEstimationSession>.Create (NativeHandle handle, bool owns) => new VTMotionEstimationSession (handle, owns);
+
 	internal VTMotionEstimationSession (NativeHandle handle, bool owns)
 		: base (handle, owns)
 	{

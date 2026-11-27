@@ -33,8 +33,9 @@ using CoreFoundation;
 namespace CoreGraphics {
 	// CGDataConsumer.h
 	/// <summary>Data sink for <see cref="CoreGraphics.CGContextPDF" /> or <see cref="ImageIO.CGImageDestination" /> to store data on.</summary>
-	public partial class CGDataConsumer : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class CGDataConsumer : NativeObject, ICreatableNativeObject<CGDataConsumer> {
+		static CGDataConsumer ICreatableNativeObject<CGDataConsumer>.Create (NativeHandle handle, bool owns) => new CGDataConsumer (handle, owns);
+
 		internal CGDataConsumer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

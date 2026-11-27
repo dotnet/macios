@@ -55,7 +55,7 @@ namespace CoreFoundation {
 
 				var rv = settings.LowlevelObjectForKey (key.GetHandle ());
 				GC.KeepAlive (key);
-				return Runtime.GetINativeObject<CFHTTPMessage> (rv, false);
+				return Runtime.GetCreatableNativeObject<CFHTTPMessage> (rv, false);
 			}
 		}
 

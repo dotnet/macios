@@ -37,10 +37,11 @@ namespace CoreVideo {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class CVDisplayLink : NativeObject {
+	public class CVDisplayLink : NativeObject, ICreatableNativeObject<CVDisplayLink> {
 		GCHandle callbackHandle;
 
-		[Preserve (Conditional = true)]
+		static CVDisplayLink ICreatableNativeObject<CVDisplayLink>.Create (NativeHandle handle, bool owns) => new CVDisplayLink (handle, owns);
+
 		internal CVDisplayLink (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -20,7 +20,7 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CVPixelBuffer : CVImageBuffer {
+	public partial class CVPixelBuffer : CVImageBuffer, ICreatableNativeObject<CVPixelBuffer> {
 #if !COREBUILD
 		/// <summary>Type identifier for the CoreVideo.CVPixelBuffer type.</summary>
 		///         <returns>To be added.</returns>
@@ -35,7 +35,8 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVPixelBufferGetTypeID")]
 		public extern static /* CFTypeID */ nint GetTypeID ();
 
-		[Preserve (Conditional = true)]
+		static CVPixelBuffer ICreatableNativeObject<CVPixelBuffer>.Create (NativeHandle handle, bool owns) => new CVPixelBuffer (handle, owns);
+
 		internal CVPixelBuffer (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

@@ -108,7 +108,7 @@ namespace CoreVideo {
 		///         <remarks>The property uses constant kCVPixelBufferMemoryAllocatorKey value to access the underlying dictionary.</remarks>
 		public CFAllocator? MemoryAllocator {
 			get {
-				return GetNativeValue<CFAllocator> (CVPixelBuffer.MemoryAllocatorKey);
+				return TryGetNativeValue (CVPixelBuffer.MemoryAllocatorKey, out var handle) ? Runtime.GetCreatableNativeObject<CFAllocator> (handle, false) : null;
 			}
 			set {
 				SetNativeValue (CVPixelBuffer.MemoryAllocatorKey, value);

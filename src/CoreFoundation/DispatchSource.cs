@@ -69,11 +69,12 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class DispatchSource : DispatchObject {
+	public class DispatchSource : DispatchObject, ICreatableNativeObject<DispatchSource> {
 		DispatchQueue? queue;
 
 		// constructors for use in bindings
-		[Preserve (Conditional = true)]
+		static DispatchSource ICreatableNativeObject<DispatchSource>.Create (NativeHandle handle, bool owns) => new DispatchSource (handle, owns);
+
 		internal DispatchSource (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

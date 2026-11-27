@@ -29,8 +29,9 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMFormatDescription : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CMFormatDescription : NativeObject, ICreatableNativeObject<CMFormatDescription> {
+		static CMFormatDescription ICreatableNativeObject<CMFormatDescription>.Create (NativeHandle handle, bool owns) => new CMFormatDescription (handle, owns);
+
 		internal CMFormatDescription (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -432,8 +433,9 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMAudioFormatDescription : CMFormatDescription {
-		[Preserve (Conditional = true)]
+	public class CMAudioFormatDescription : CMFormatDescription, ICreatableNativeObject<CMAudioFormatDescription> {
+		static CMAudioFormatDescription ICreatableNativeObject<CMAudioFormatDescription>.Create (NativeHandle handle, bool owns) => new CMAudioFormatDescription (handle, owns);
+
 		internal CMAudioFormatDescription (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -448,8 +450,9 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CMVideoFormatDescription : CMFormatDescription {
-		[Preserve (Conditional = true)]
+	public partial class CMVideoFormatDescription : CMFormatDescription, ICreatableNativeObject<CMVideoFormatDescription> {
+		static CMVideoFormatDescription ICreatableNativeObject<CMVideoFormatDescription>.Create (NativeHandle handle, bool owns) => new CMVideoFormatDescription (handle, owns);
+
 		internal CMVideoFormatDescription (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

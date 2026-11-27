@@ -2485,8 +2485,9 @@ namespace CoreText {
 	///       </para>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
-	public partial class CTFont : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class CTFont : NativeObject, ICreatableNativeObject<CTFont> {
+		static CTFont ICreatableNativeObject<CTFont>.Create (NativeHandle handle, bool owns) => new CTFont (handle, owns);
+
 		internal CTFont (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

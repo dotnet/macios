@@ -18,9 +18,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWBrowserDescriptor : NativeObject {
+	public class NWBrowserDescriptor : NativeObject, ICreatableNativeObject<NWBrowserDescriptor> {
 
-		[Preserve (Conditional = true)]
+		static NWBrowserDescriptor ICreatableNativeObject<NWBrowserDescriptor>.Create (NativeHandle handle, bool owns) => new NWBrowserDescriptor (handle, owns);
+
 		internal NWBrowserDescriptor (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

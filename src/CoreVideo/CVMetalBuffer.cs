@@ -13,9 +13,10 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-	public class CVMetalBuffer : CVBuffer {
+	public class CVMetalBuffer : CVBuffer, ICreatableNativeObject<CVMetalBuffer> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CVMetalBuffer ICreatableNativeObject<CVMetalBuffer>.Create (NativeHandle handle, bool owns) => new CVMetalBuffer (handle, owns);
+
 		internal CVMetalBuffer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

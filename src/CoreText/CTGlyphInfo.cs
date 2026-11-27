@@ -59,8 +59,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTGlyphInfo : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTGlyphInfo : NativeObject, ICreatableNativeObject<CTGlyphInfo> {
+		static CTGlyphInfo ICreatableNativeObject<CTGlyphInfo>.Create (NativeHandle handle, bool owns) => new CTGlyphInfo (handle, owns);
+
 		internal CTGlyphInfo (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

@@ -16,11 +16,11 @@
 #if COREBUILD
 using CoreFoundation;
 namespace AddressBook {
-	public class ABAddressBook : NativeObject {
+	public class ABAddressBook : NativeObject, ICreatableNativeObject<ABAddressBook> {
 	}
-	public class ABRecord : NativeObject {
+	public class ABRecord : NativeObject, ICreatableNativeObject<ABRecord> {
 	}
-	public class ABPerson : ABRecord {
+	public class ABPerson : ABRecord, ICreatableNativeObject<ABPerson> {
 	}
 }
 #endif

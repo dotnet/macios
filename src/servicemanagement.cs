@@ -1,11 +1,16 @@
 
 namespace ServiceManagement {
+	/// <summary>Enumerates the registration status of a service.</summary>
 	[Native]
 	[NoTV, NoiOS, MacCatalyst (16, 0)]
 	public enum SMAppServiceStatus : long {
+		/// <summary>The service hasn't been registered, or the app unregistered it.</summary>
 		NotRegistered,
+		/// <summary>The service is registered and enabled.</summary>
 		Enabled,
+		/// <summary>The service is registered, but the user must approve it in System Settings before it can run.</summary>
 		RequiresApproval,
+		/// <summary>An error occurred and the service couldn't be found.</summary>
 		NotFound,
 	}
 

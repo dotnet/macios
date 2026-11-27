@@ -5810,10 +5810,6 @@ F:SensorKit.SRWristTemperatureCondition.InMotion
 F:SensorKit.SRWristTemperatureCondition.None
 F:SensorKit.SRWristTemperatureCondition.OffWrist
 F:SensorKit.SRWristTemperatureCondition.OnCharger
-F:ServiceManagement.SMAppServiceStatus.Enabled
-F:ServiceManagement.SMAppServiceStatus.NotFound
-F:ServiceManagement.SMAppServiceStatus.NotRegistered
-F:ServiceManagement.SMAppServiceStatus.RequiresApproval
 F:SharedWithYou.SWAttributionViewBackgroundStyle.Color
 F:SharedWithYou.SWAttributionViewBackgroundStyle.Default
 F:SharedWithYou.SWAttributionViewBackgroundStyle.Material
@@ -58401,7 +58397,6 @@ T:SensorKit.SRWristTemperature
 T:SensorKit.SRWristTemperatureCondition
 T:SensorKit.SRWristTemperatureSession
 T:ServiceManagement.SMAppService
-T:ServiceManagement.SMAppServiceStatus
 T:SharedWithYou.SWAttributionView
 T:SharedWithYou.SWAttributionViewBackgroundStyle
 T:SharedWithYou.SWAttributionViewDisplayContext

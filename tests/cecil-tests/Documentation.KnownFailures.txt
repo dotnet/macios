@@ -1444,9 +1444,6 @@ F:CallKit.CXErrorCode.Unentitled
 F:CallKit.CXErrorCodeIncomingCallError.CallIsProtected
 F:CallKit.CXErrorCodeIncomingCallError.FilteredBySensitiveParticipants
 F:CallKit.CXErrorCodeIncomingCallError.FilteredDuringRestrictedSharingMode
-F:CallKit.CXErrorCodeNotificationServiceExtensionError.InvalidClientProcess
-F:CallKit.CXErrorCodeNotificationServiceExtensionError.MissingNotificationFilteringEntitlement
-F:CallKit.CXErrorCodeNotificationServiceExtensionError.Unknown
 F:CallKit.CXErrorCodeRequestTransactionError.CallIsProtected
 F:CallKit.CXTranslationEngine.Custom
 F:CallKit.CXTranslationEngine.Default
@@ -54830,7 +54827,6 @@ T:BrowserEngineKit.NSObject_BEAccessibility
 T:BusinessChat.BCChatButton
 T:BusinessChat.BCChatButtonStyle
 T:BusinessChat.BCParameterName
-T:CallKit.CXErrorCodeNotificationServiceExtensionError
 T:CallKit.CXSetTranslatingCallAction
 T:CallKit.CXTranslationEngine
 T:CarPlay.CPActionSheetTemplate

@@ -109,13 +109,17 @@ namespace CallKit {
 		UnexpectedIncrementalRemoval = 8,
 	}
 
+	/// <summary>Enumerates the errors that CallKit reports to a notification service extension.</summary>
 	[iOS (14, 5), NoTV, NoMac]
 	[Introduced (PlatformName.MacCatalyst, 14, 5)]
 	[ErrorDomain ("CXErrorDomainNotificationServiceExtension")]
 	[Native]
 	public enum CXErrorCodeNotificationServiceExtensionError : long {
+		/// <summary>An unknown error occurred.</summary>
 		Unknown = 0,
+		/// <summary>The request came from a process that isn't a valid client, such as one that isn't a notification service extension.</summary>
 		InvalidClientProcess = 1,
+		/// <summary>The extension doesn't have the notification filtering entitlement.</summary>
 		MissingNotificationFilteringEntitlement = 2,
 	}
 

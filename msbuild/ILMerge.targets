@@ -15,7 +15,7 @@
     <!-- The assemblies are in a very different place when building for netstandard2.0, which means we need different logic to find them too -->
     <ItemGroup Condition="$(TargetFramework.StartsWith ('netstandard'))">
       <!-- I don't like to have a hard-coded list of assemblies to merge, but I couldn't find a way to calculate it -->
-      <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Xamarin.Apple.Tools.MaciOS'" />
+      <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Microsoft.Apple.Tools.MaciOS'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'assembly-preparer'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'DotNetZip'" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'ILLink.Tasks'" />

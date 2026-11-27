@@ -11,6 +11,7 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
+	[MSBuildMultiThreadableTask]
 	public class ParseBundlerArguments : XamarinTask {
 		public string ExtraArgs { get; set; } = "";
 

@@ -36,6 +36,8 @@ namespace Linker.Shared {
 			Assert.That (counter, Is.EqualTo (2), "Counter");
 		}
 
+		// NativeAOT needs marshalling data for these block trampolines.
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void CustomDelegate (IntPtr block);
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -49,6 +51,7 @@ namespace Linker.Shared {
 		}
 
 		[UserDelegateType (typeof (Action))]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void CustomDelegateWithAttribute (IntPtr block);
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -65,6 +68,8 @@ namespace Linker.Shared {
 		public void SetupBlockPerfTest ()
 		{
 			IgnoreIfNotLinkAll ();
+			if (!global::ObjCRuntime.Runtime.DynamicRegistrationSupported)
+				Assert.Ignore ("Unoptimized SetupBlock requires the dynamic registrar.");
 
 			// If you ran this test locally and it failed, run it again. If it fails multiple times, file a bug.
 			TestRuntime.IgnoreInCI ("This test randomly fails, so ignore it when doing CI (https://github.com/xamarin/maccore/issues/649)");
@@ -148,6 +153,7 @@ namespace Linker.Shared {
 			Assert.That (counter, Is.EqualTo (19), "Counter");
 		}
 
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		public delegate void Action_IntPtr (IntPtr param);
 
 		[DllImport (Constants.libcLibrary)]
@@ -515,7 +521,7 @@ namespace Linker.Shared {
 			// and it evaluates the field as a constant when removing branches that depend on it
 			// (which is how the generated code uses the field). A plain read of the field is not
 			// rewritten - the field still holds the correct value at runtime.
-#if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
+#if DEBUG && !NATIVEAOT // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;
 			IEnumerable<ILInstruction> instructions;
 

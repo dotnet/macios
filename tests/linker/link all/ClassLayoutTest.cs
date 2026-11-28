@@ -7,6 +7,8 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
+using System.Linq;
+
 namespace LinkAll.Layout {
 
 	class DefaultClass {
@@ -51,8 +53,8 @@ namespace LinkAll.Layout {
 			// can't ask SizeOf on Auto
 			var t = c.GetType ();
 			var fields = t.GetFields ();
-			Assert.That (fields.Length, Is.EqualTo (1), "Length");
-			Assert.That (fields [0].Name, Is.EqualTo ("used"), "Name");
+			var expectedFields = TestRuntime.IsNativeAOT ? new [] { "used", "never_used" } : new [] { "used" };
+			Assert.That (fields.Select (v => v.Name), Is.EquivalentTo (expectedFields), "Fields");
 
 			Assert.That (t.IsAutoLayout, Is.True, "IsAutoLayout");
 			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
@@ -67,8 +69,8 @@ namespace LinkAll.Layout {
 			// can't ask SizeOf on Auto
 			var t = c.GetType ();
 			var fields = t.GetFields ();
-			Assert.That (fields.Length, Is.EqualTo (1), "Length");
-			Assert.That (fields [0].Name, Is.EqualTo ("used"), "Name");
+			var expectedFields = TestRuntime.IsNativeAOT ? new [] { "used", "never_used" } : new [] { "used" };
+			Assert.That (fields.Select (v => v.Name), Is.EquivalentTo (expectedFields), "Fields");
 
 			Assert.That (t.IsAutoLayout, Is.True, "IsAutoLayout");
 			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");

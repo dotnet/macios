@@ -26,7 +26,7 @@ namespace Linker.Shared.Reflection {
 			// dotnet has adopted (and adapted) the metadata reducer and runs it on it's own conditions
 			var optimized = false;
 #else
-			var optimized = TestRuntime.IsLinkAll;
+			var optimized = TestRuntime.IsLinkAll && !TestRuntime.IsNativeAOT;
 #endif
 
 			if (!optimized) {

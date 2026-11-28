@@ -60,6 +60,12 @@ namespace Xharness.Jenkins {
 			case "link all":
 				if (test.ProjectConfiguration == "Debug") {
 					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
+					var ignore_arm64 = ignore;
+					if (test.ProjectPlatform != "iPhone" && !Harness.CanRunArm64)
+						ignore_arm64 = true;
+					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore_arm64, RuntimeIdentifier = test.ProjectPlatform == "iPhoneSimulator" ? arm64_sim_runtime_identifier : arm64_runtime_identifier };
+					if (!string.IsNullOrEmpty (x64_runtime_identifier))
+						yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = !supports_x64 ? true : ignore, RuntimeIdentifier = x64_runtime_identifier };
 				}
 				break;
 			case "monotouch-test":
@@ -195,7 +201,7 @@ namespace Xharness.Jenkins {
 						await clone.CreateCopyAsync (jenkins.MainLog, processManager, task, HarnessConfiguration.RootDirectory);
 
 						if (!string.IsNullOrEmpty (runtime_identifer))
-							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer);
+							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer, last: false);
 						if (!string.IsNullOrEmpty (test_variation)) {
 							clone.Xml.SetProperty ("TestVariation", test_variation);
 							foreach (var pr in clone.ProjectReferences) {

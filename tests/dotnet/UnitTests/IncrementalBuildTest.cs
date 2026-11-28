@@ -5,6 +5,47 @@ using Microsoft.Build.Logging.StructuredLogger;
 namespace Xamarin.Tests {
 	public class IncrementalBuildTest : TestBaseClass {
 		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "maccatalyst-x64")]
+		public void UniversalAfterSingleArchitectureBuilds (ApplePlatform platform, string arm64, string x64)
+		{
+			Configuration.IgnoreIfNotOnMacOS ();
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var runtimeIdentifiers = $"{arm64};{x64}";
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GenerateProject (platform, TestName, runtimeIdentifiers, out _);
+			var projectDirectory = Path.GetDirectoryName (projectPath) ?? throw new InvalidOperationException ("Project path has no directory.");
+			var projectContents = File.ReadAllText (projectPath).Replace ("</Project>", "\t<ItemGroup>\n\t\t<BundleResource Include=\"resource.txt\" />\n\t</ItemGroup>\n</Project>");
+			File.WriteAllText (projectPath, projectContents);
+			File.WriteAllText (Path.Combine (projectDirectory, "Main.cs"), "class MainClass { static int Main () => 0; }");
+			var resourcePath = Path.Combine (projectDirectory, "resource.txt");
+
+			foreach (var rid in new [] { arm64, x64 }) {
+				File.WriteAllText (resourcePath, rid);
+				var properties = GetDefaultProperties (rid);
+				properties ["_IsAppSigned"] = "true";
+				DotNet.AssertBuild (projectPath, properties);
+			}
+
+			var signaturePath = Path.Combine ("Contents", "_CodeSignature", "CodeResources");
+			var arm64Signature = File.ReadAllText (Path.Combine (GetAppPath (projectPath, platform, arm64), signaturePath));
+			var x64Signature = File.ReadAllText (Path.Combine (GetAppPath (projectPath, platform, x64), signaturePath));
+			Assert.That (arm64Signature, Is.Not.EqualTo (x64Signature), "The single-architecture signatures differ");
+
+			// Make the resources match without updating the old signatures.
+			File.Copy (resourcePath, Path.Combine (GetAppPath (projectPath, platform, arm64), "Contents", "Resources", "resource.txt"), true);
+
+			var universalProperties = GetDefaultProperties (runtimeIdentifiers);
+			universalProperties ["_IsAppSigned"] = "true";
+			DotNet.AssertBuild (projectPath, universalProperties);
+
+			var appPath = GetAppPath (projectPath, platform, runtimeIdentifiers);
+			var result = ExecutionHelper.Execute ("codesign", new [] { "--verify", "--deep", "--strict", appPath }, out var output, TimeSpan.FromSeconds (15));
+			Assert.That (result, Is.EqualTo (0), output);
+		}
+
+		[Test]
 		// this test is fairly slow, so execute on one arch only
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void Link (ApplePlatform platform, string runtimeIdentifiers)

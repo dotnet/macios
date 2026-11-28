@@ -63,7 +63,7 @@ namespace LinkAll {
 		{
 			ObjCRuntime.Trampolines.SDInnerBlock_Misnamed.Invoke (IntPtr.Zero, 0);
 			var fields = Type.GetType ("ObjCRuntime.Trampolines+SDInnerBlock_Misnamed" + WorkAroundLinkerHeuristics)!.GetFields (BindingFlags.NonPublic | BindingFlags.Static);
-			Assert.That (fields.Length, Is.EqualTo (0), "zero");
+			Assert.That (fields.Length, Is.EqualTo (TestRuntime.IsNativeAOT ? 1 : 0), "Field count");
 		}
 
 		[Test]

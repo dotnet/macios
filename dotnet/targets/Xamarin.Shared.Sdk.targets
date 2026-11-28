@@ -488,10 +488,11 @@
 		Outputs="$(DeviceSpecificIntermediateOutputPath)$(_AppBundleName).mergestamp"
 		DependsOnTargets="_RunRidSpecificBuild"
 		>
+		<!-- The merged app is signed separately; ignore signatures left by earlier single-RID builds. -->
 		<MergeAppBundles
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			IgnoreFiles="$(_AppBundleManifestRelativePath)Info.plist"
+			IgnoreFiles="$(_AppBundleManifestRelativePath)Info.plist;$(_AppBundleManifestRelativePath)_CodeSignature/CodeResources"
 			InputAppBundles="@(_AssemblyPublishDirectories)"
 			OutputAppBundle="$(_AppBundlePath)"
 			SdkDevPath="$(_SdkDevPath)"

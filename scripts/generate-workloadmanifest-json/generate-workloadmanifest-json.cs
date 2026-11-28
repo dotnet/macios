@@ -23,6 +23,12 @@ var versionsPropsPath = args [argumentIndex++];
 var ridNoArch = args [argumentIndex++];
 
 var platformLowerCase = platform.ToLowerInvariant ();
+string [] runtimeWorkloadIdentifiers = platform switch {
+	"iOS" => ["ios-arm64", "iossimulator-arm64", "iossimulator-x64"],
+	"tvOS" => ["tvos-arm64", "tvossimulator-arm64", "tvossimulator-x64"],
+	"MacCatalyst" => ["maccatalyst-arm64", "maccatalyst-x64"],
+	_ => [],
+};
 
 var allApiVersions = new List<string> (supportedApiVersions);
 allApiVersions = allApiVersions.Select (v => v.Replace ('-', '_')).ToList ();
@@ -47,9 +53,6 @@ var sortedAllApiVersions = allApiVersions.
 				Distinct ().
 				OrderBy (v => v).
 				ToArray ();
-var earliestDotNetVersion = sortedAllApiVersions.First ().Major;
-var latestDotNetVersion = sortedAllApiVersions.Last ().Major;
-
 var failed = false;
 using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"{{");
@@ -71,22 +74,22 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	foreach (var rid in runtimeIdentifiers) {
 		writer.WriteLine ($"				\"Microsoft.{platform}.Runtime.{rid}.{currentApiVersion}\",");
 	}
-	writer.WriteLine ($"				\"Microsoft.{platform}.Templates.net9\"");
-	writer.WriteLine ($"			],");
-	writer.WriteLine ($"			\"extends\": [");
-	if (platform == "macOS") {
-		// Hopefully when https://github.com/dotnet/runtime/issues/122264 is done we can use the versioned workload for every version
-		writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling\",");
-		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++) {
-			writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling-net{i}\",");
+	foreach (var dotnetVersion in sortedAllApiVersions) {
+		writer.WriteLine ($"				\"Microsoft.NET.Runtime.MonoTargets.Sdk.net{dotnetVersion.Major}\",");
+		if (platform != "macOS") {
+			// Runtime targets import every compiler SDK on macOS, including for CoreCLR and arm64-only builds.
+			foreach (var rid in runtimeWorkloadIdentifiers) {
+				writer.WriteLine ($"				\"Microsoft.NETCore.App.Runtime.AOT.Cross.net{dotnetVersion.Major}.{rid}\",");
+			}
 		}
-	} else {
-		// Hopefully when https://github.com/dotnet/runtime/issues/122264 is done we can use the versioned workload for every version
-		writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}\",");
-		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++) {
-			writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}-net{i}\",");
+		if (platform != "macOS" && dotnetVersion.Major < 11) {
+			writer.WriteLine ($"				\"Microsoft.NET.Runtime.MonoAOTCompiler.Task.net{dotnetVersion.Major}\",");
+			foreach (var rid in runtimeWorkloadIdentifiers) {
+				writer.WriteLine ($"				\"Microsoft.NETCore.App.Runtime.Mono.net{dotnetVersion.Major}.{rid}\",");
+			}
 		}
 	}
+	writer.WriteLine ($"				\"Microsoft.{platform}.Templates.net9\"");
 	writer.WriteLine ($"			]");
 	writer.WriteLine ($"		}},");
 	writer.WriteLine ($"	}},");

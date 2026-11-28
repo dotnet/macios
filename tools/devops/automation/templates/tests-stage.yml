@@ -116,6 +116,14 @@ stages:
     commit: ${{ parameters.commit }}
     stageDisplayNamePrefix: ${{ parameters.stageDisplayNamePrefix }}
 
+- template: ./build/linux-compilation-tests.yml
+  parameters:
+    isPR: ${{ parameters.isPR }}
+    repositoryAlias: ${{ parameters.repositoryAlias }}
+    commit: ${{ parameters.commit }}
+    buildPackages: ${{ parameters.buildPackages }}
+    stageDisplayNamePrefix: ${{ parameters.stageDisplayNamePrefix }}
+
 - stage: configure_build
   displayName: '${{ parameters.stageDisplayNamePrefix }}Configure'
   dependsOn: ${{ parameters.dependsOn }}

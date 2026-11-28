@@ -8,11 +8,11 @@ namespace AssemblyPreparerTests;
 
 public class ApplyPreserveAttributeTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void ExplicitInterfaceMembers (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void ExplicitInterfaceMembers (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -33,7 +33,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
@@ -49,9 +49,9 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void GenericExplicitInterfaceMethods (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void GenericExplicitInterfaceMethods (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -78,7 +78,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var owner = assemblyDefinition.MainModule.Types.Single (v => v.Name == "Owner`1");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "Owner`1");
@@ -118,9 +118,9 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void PreserveIndividualExplicitInterfaceMethods (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void PreserveIndividualExplicitInterfaceMethods (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -147,7 +147,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
@@ -189,7 +189,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (ApplePlatform.MacOSX, true, code, out var assemblyDefinition);
+		AssertPrepare (ApplePlatform.MacOSX, code, out var assemblyDefinition);
 
 		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
@@ -255,7 +255,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 				}
 			")),
 		};
-		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraFiles: extraFiles, hotReloadCompatibleBuild: hotReloadCompatibleBuild);
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraFiles: extraFiles, hotReloadCompatibleBuild: hotReloadCompatibleBuild);
 		var testOutputDirectory = Path.GetDirectoryName (testInfo.InputPath)!;
 		var targetInputPath = Path.Combine (testOutputDirectory, targetFramework, "Target.dll");
 		var targetOutputPath = Path.Combine (testOutputDirectory, "out", "Target.dll");

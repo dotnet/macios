@@ -128,8 +128,6 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void Filter ()
 		{
-			TestRuntime.AssertNotInterpreter ("This test does not work in the interpreter: https://github.com/dotnet/runtime/issues/110649");
-
 			evaluator_count = 0;
 			using (var obj1 = new NSObject ())
 			using (var obj2 = new NSObject ())

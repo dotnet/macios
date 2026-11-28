@@ -19,13 +19,13 @@ public class ReproTest : BaseClass {
 		// this test can also be repurposed to run an existing repro by setting the _PrepareAssembliesMakeReproPath variable
 
 		var reproPath = Environment.GetEnvironmentVariable ("_PrepareAssembliesMakeReproPath");
-		var referenceAssemblies = Configuration.GetReferenceAssemblies (platform, true);
+		var referenceAssemblies = Configuration.GetReferenceAssemblies (platform);
 		if (string.IsNullOrEmpty (reproPath)) {
 			var code = @"public class SomeLibrary {}";
 
 			reproPath = Xamarin.Cache.CreateTemporaryDirectory ();
 			Directory.Delete (reproPath); // the repro path can't exist prior to Prepare
-			AssertPrepareCode (platform, true, (preparer) => {
+			AssertPrepareCode (platform, (preparer) => {
 				preparer.MakeReproPath = reproPath;
 				preparer.Registrar = RegistrarMode.Dynamic;
 			}, code, out string _);
@@ -46,12 +46,12 @@ public class ReproTest : BaseClass {
 		Assert.That (normalizedLines, Is.EqualTo (normalizedLines2), "Repro arguments match");
 	}
 
-	[TestCase (ApplePlatform.iOS, false, false)]
-	[TestCase (ApplePlatform.iOS, false, true)]
-	public void BindingResourcePackageRoundTrip (ApplePlatform platform, bool isCoreCLR, bool zipped)
+	[TestCase (ApplePlatform.iOS, false)]
+	[TestCase (ApplePlatform.iOS, true)]
+	public void BindingResourcePackageRoundTrip (ApplePlatform platform, bool zipped)
 	{
 		var code = @"public class SomeLibrary {}";
-		using var preparer = CreatePreparer (platform, isCoreCLR, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, testAssemblyHasOriginalInputPath: true);
+		using var preparer = CreatePreparer (platform, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, testAssemblyHasOriginalInputPath: true);
 		var originalInputPath = testInfo.OriginalInputPath;
 		if (originalInputPath is null) {
 			Assert.Fail ("Original input path is null.");

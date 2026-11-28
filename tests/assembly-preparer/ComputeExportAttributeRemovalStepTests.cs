@@ -13,7 +13,7 @@ public class ComputeExportAttributeRemovalStepTests : BaseClass {
 	[TestCase (true, false)]
 	public void NonTrimmableRegistrar (bool? trimExportAttributes, bool expectedSuccess)
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, preparer => {
+		using var preparer = CreatePreparer (ApplePlatform.iOS, preparer => {
 			preparer.Registrar = RegistrarMode.ManagedStatic;
 			preparer.TrimExportAttributes = trimExportAttributes;
 		}, "public class C {}", out _);
@@ -36,7 +36,7 @@ public class ComputeExportAttributeRemovalStepTests : BaseClass {
 	[TestCase (null, true, false)]
 	public void DynamicRegistration (bool? trimExportAttributes, bool dynamicRegistrationSupported, bool expectedRemoval)
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, preparer => {
+		using var preparer = CreatePreparer (ApplePlatform.iOS, preparer => {
 			preparer.Registrar = RegistrarMode.TrimmableStatic;
 			preparer.TrimExportAttributes = trimExportAttributes;
 			preparer.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported;
@@ -56,7 +56,7 @@ public class ComputeExportAttributeRemovalStepTests : BaseClass {
 	[TestCase (true, false, false)]
 	public void RequiredOptimizations (bool optimizeBlockLiteralSetupBlock, bool staticBlockToDelegateLookup, bool expectedRemoval)
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, preparer => {
+		using var preparer = CreatePreparer (ApplePlatform.iOS, preparer => {
 			preparer.Registrar = RegistrarMode.TrimmableStatic;
 			preparer.TrimExportAttributes = true;
 			preparer.Optimizations.RemoveDynamicRegistrar = true;
@@ -74,7 +74,7 @@ public class ComputeExportAttributeRemovalStepTests : BaseClass {
 	[Test]
 	public void ExplicitBlocker ()
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, preparer => {
+		using var preparer = CreatePreparer (ApplePlatform.iOS, preparer => {
 			preparer.Registrar = RegistrarMode.TrimmableStatic;
 			preparer.TrimExportAttributes = true;
 			preparer.Optimizations.RemoveDynamicRegistrar = true;
@@ -111,7 +111,7 @@ public class ComputeExportAttributeRemovalStepTests : BaseClass {
 			}
 			""";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, preparer => {
+		using var preparer = CreatePreparer (ApplePlatform.iOS, preparer => {
 			preparer.Registrar = RegistrarMode.TrimmableStatic;
 			preparer.TrimExportAttributes = true;
 			preparer.Optimizations.RemoveDynamicRegistrar = true;

@@ -7,11 +7,11 @@ namespace AssemblyPreparerTests;
 
 public class MarkIProtocolHandlerTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void DynamicRegistrar (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void DynamicRegistrar (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -26,7 +26,7 @@ public class MarkIProtocolHandlerTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition);
+		AssertPrepare (platform, RegistrarMode.Dynamic, code, out var assemblyDefinition);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var cctor = type.GetStaticConstructor ();
@@ -40,11 +40,11 @@ public class MarkIProtocolHandlerTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void ManagedStaticRegistrar (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void ManagedStaticRegistrar (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -61,7 +61,7 @@ public class MarkIProtocolHandlerTests : BaseClass {
 
 		// With ManagedStatic registrar, PreserveProtocolsStep doesn't run,
 		// so MyClass's cctor should not have any DDA for protocol preservation.
-		AssertPrepare (platform, isCoreCLR, RegistrarMode.ManagedStatic, code, out var assemblyDefinition);
+		AssertPrepare (platform, RegistrarMode.ManagedStatic, code, out var assemblyDefinition);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var cctor = type.GetStaticConstructor ();

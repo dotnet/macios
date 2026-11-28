@@ -23,7 +23,7 @@ public class GenerateNativeAOTResourceSubstitutionsStepTests : BaseClass {
 	[TestCase ("copy")]
 	public void OnlyNativeLibraryResourcesAreExcluded (string trimMode)
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, null, "class MyClass {}", out var testInfo, extraConfig: "XamarinRuntime=NativeAOT", testAssemblyTrimMode: trimMode);
+		using var preparer = CreatePreparer (ApplePlatform.iOS, null, "class MyClass {}", out var testInfo, extraConfig: "XamarinRuntime=NativeAOT", testAssemblyTrimMode: trimMode);
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
 		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
@@ -59,7 +59,7 @@ public class GenerateNativeAOTResourceSubstitutionsStepTests : BaseClass {
 	[TestCase (XamarinRuntime.CoreCLR)]
 	public void AssemblyWithoutNativeResources (XamarinRuntime runtime)
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, null, "class MyClass {}", out _, extraConfig: $"XamarinRuntime={runtime}");
+		using var preparer = CreatePreparer (ApplePlatform.iOS, null, "class MyClass {}", out _, extraConfig: $"XamarinRuntime={runtime}");
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
 		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");

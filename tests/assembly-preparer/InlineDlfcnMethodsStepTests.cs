@@ -8,11 +8,11 @@ namespace AssemblyPreparerTests;
 
 public class InlineDlfcnMethodsStepTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void MarkedTest (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void MarkedTest (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -27,7 +27,7 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 			}
 		}";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var platformReference = assemblyDefinition.MainModule.AssemblyReferences.Single (v => v.Name == $"Microsoft.{platform.AsString ()}");
@@ -53,11 +53,11 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void HotReloadCompatibleBuildLeavesReloadableAssemblyUnmodified (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void HotReloadCompatibleBuildLeavesReloadableAssemblyUnmodified (ApplePlatform platform)
 	{
 		// A [Field] symbol referenced via Dlfcn, exactly the shape that compatibility-mode inlining
 		// (the default for Debug builds) would normally collect as a native symbol.
@@ -77,7 +77,7 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 		// The test assembly is a reloadable (Copy) assembly, and we're building for Hot Reload compatibility,
 		// so the assembly must be left byte-unmodified: no inlining, no generated P/Invokes or helper members.
 		// Use compatibility mode (the Debug default) so the referenced [Field] symbol is eligible for collection.
-		var modified = AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, out var preparer, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", inlineDlfcnMethods: "compatibility");
+		var modified = AssertPrepare (platform, RegistrarMode.Dynamic, code, out var assemblyDefinition, out var preparer, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", inlineDlfcnMethods: "compatibility");
 		Assert.That (modified, Is.False, "The reloadable assembly must not be modified.");
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
@@ -114,7 +114,7 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 		}";
 
 		// Strict mode ensures the platform's Dlfcn calls would collect symbols if it were scanned.
-		var modified = AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.Dynamic, code, out _, out var preparer,
+		var modified = AssertPrepare (ApplePlatform.iOS, RegistrarMode.Dynamic, code, out _, out var preparer,
 			hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", inlineDlfcnMethods: "strict",
 			extraConfig: "AreAnyAssembliesTrimmed=false\nPublishTrimmed=false");
 
@@ -128,7 +128,7 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 	[Test]
 	public void HotReloadCompatibleBuildStillInlinesTrimmedPlatformAssembly ()
 	{
-		AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.Dynamic, "class MyClass {}", out _, out var preparer,
+		AssertPrepare (ApplePlatform.iOS, RegistrarMode.Dynamic, "class MyClass {}", out _, out var preparer,
 			hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", inlineDlfcnMethods: "strict");
 
 		Assert.That (preparer.Configuration.InlinedDlfcnFields.TryGetValue ("Microsoft.iOS", out var inlinedFields), Is.True);
@@ -138,7 +138,7 @@ public class InlineDlfcnMethodsStepTests : BaseClass {
 	[Test]
 	public void NonHotReloadBuildStillInlinesUntrimmedPlatformAssembly ()
 	{
-		AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.Dynamic, "class MyClass {}", out _, out var preparer,
+		AssertPrepare (ApplePlatform.iOS, RegistrarMode.Dynamic, "class MyClass {}", out _, out var preparer,
 			testAssemblyTrimMode: "copy", inlineDlfcnMethods: "strict",
 			extraConfig: "AreAnyAssembliesTrimmed=false\nPublishTrimmed=false");
 

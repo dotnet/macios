@@ -57,7 +57,7 @@ public class RegistrarTests : BaseClass {
 		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
 		";
-		using var preparer = CreatePreparer (platform, true, p => p.Registrar = RegistrarMode.TrimmableStatic,
+		using var preparer = CreatePreparer (platform, p => p.Registrar = RegistrarMode.TrimmableStatic,
 			code, out _, extraConfig: config, hotReloadCompatibleBuild: true);
 		AssertPrepare (preparer);
 
@@ -198,7 +198,7 @@ public class RegistrarTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.ManagedStatic, code, out _);
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.ManagedStatic, code, out _);
 		preparer.Prepare (out _);
 
 		var logger = (TestLogger) preparer.Configuration.Logger;
@@ -222,6 +222,6 @@ public class RegistrarTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.ManagedStatic, code, out _);
+		AssertPrepare (ApplePlatform.iOS, RegistrarMode.ManagedStatic, code, out _);
 	}
 }

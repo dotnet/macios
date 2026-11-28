@@ -9,11 +9,11 @@ namespace AssemblyPreparerTests;
 
 public class PreserveSmartEnumConversionsTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void MarkedTest (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void MarkedTest (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -42,7 +42,7 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 			public CAToneMapMode Method4 ([BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))] CAToneMapMode p1, [BindAs (typeof (CAToneMapMode), OriginalType = typeof (NSString))] CAToneMapMode p2) { return default;}
 		}";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var cctor = type.GetStaticConstructor ();
@@ -119,11 +119,11 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void HotReloadCompatibleBuildTest (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void HotReloadCompatibleBuildTest (ApplePlatform platform)
 	{
 		// When $(HotReloadCompatibleBuild) is enabled and the referencing assembly isn't trimmed, the step
 		// must not modify that (possibly user/reloadable) assembly - otherwise Hot Reload breaks. Instead it
@@ -147,7 +147,7 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 		var cacheDirectory = Xamarin.Cache.CreateTemporaryDirectory ();
 		var extraConfig = $"CacheDirectory={cacheDirectory}";
 
-		AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", extraConfig: extraConfig);
+		AssertPrepare (platform, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy", extraConfig: extraConfig);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 
@@ -180,11 +180,11 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void HotReloadCompatibleBuildTrimmedAssemblyTest (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void HotReloadCompatibleBuildTrimmedAssemblyTest (ApplePlatform platform)
 	{
 		// Assemblies that are trimmed can't be hot reloaded, so even when $(HotReloadCompatibleBuild) is
 		// enabled we must inject [DynamicDependency] attributes into them (instead of preserving the
@@ -208,7 +208,7 @@ public class PreserveSmartEnumConversionsTests : BaseClass {
 		var cacheDirectory = Xamarin.Cache.CreateTemporaryDirectory ();
 		var extraConfig = $"CacheDirectory={cacheDirectory}";
 
-		AssertPrepare (platform, isCoreCLR, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "link", extraConfig: extraConfig);
+		AssertPrepare (platform, RegistrarMode.Dynamic, code, out var assemblyDefinition, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "link", extraConfig: extraConfig);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var cctor = type.GetStaticConstructor ();

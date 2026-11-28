@@ -91,6 +91,12 @@ Use the project defaults for linking, i.e.
 
 # Common make targets
 
+Run `make devskim` from `tests/` to scan production sources for banned APIs without
+building the product. It installs the pinned DevSkim version and writes reports
+to `.devskim/reports/`, including `index.html`. The target fails if it finds banned
+APIs or scan errors. See [DevSkim guidance](../tools/devops/README.md#devskim-banned-api-analysis)
+for prerequisites, scan coverage, and exclusions.
+
 Each test project has a `dotnet` directory, with a subdirectory for each platform we support.
 
 Use the makefile in each of those subdirectories to run the corresponding test suite.

@@ -33,7 +33,7 @@
 static void
 dump_state (struct XamarinCallState *state, const char *prefix)
 {
-	fprintf (stderr, "DUMP %s type: %llu self: %p SEL: %s sp: 0x%llx\n"
+	xamarin_write_formatted (STDERR_FILENO, "DUMP %s type: %llu self: %p SEL: %s sp: 0x%llx\n"
 		"    x0: 0x%llx = %lld = (double) %f = (float,float) (%f, %f)\n"
 		"    x1: 0x%llx = %lld = (double) %f = (float,float) (%f, %f)\n"
 		"    x2: 0x%llx = %lld = (double) %f = (float,float) (%f, %f)\n"
@@ -311,7 +311,7 @@ marshal_return_value (void *context, const char *type, size_t size, void *vvalue
 			LOGZ ("        marshalling as %i doubles (struct name: %s)\n", (int) size / 8, struct_name);
 			double* ptr = (double *) mono_object_unbox (value);
 			for (size_t i = 0; i < size / 8; i++) {
-				LOGZ ("        #%i: %f\n", i, ptr [i]);
+				LOGZ ("        #%zu: %f\n", i, ptr [i]);
 				it->q [i].q = ptr [i];
 			}
 		} else if ((size == 16 && !strncmp (struct_name, "ffff", 4)) ||
@@ -321,7 +321,7 @@ marshal_return_value (void *context, const char *type, size_t size, void *vvalue
 			LOGZ ("        marshalling as %i floats (struct name: %s)\n", (int) size / 4, struct_name);
 			float* ptr = (float *) mono_object_unbox (value);
 			for (size_t i = 0; i < size / 4; i++) {
-				LOGZ ("        #%i: %f\n", i, ptr [i]);
+				LOGZ ("        #%zu: %f\n", i, ptr [i]);
 				it->q [i].f.f1 = ptr [i];
 			}
 		} else if (size > 16) {

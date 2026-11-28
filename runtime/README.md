@@ -34,3 +34,31 @@ xamarin/runtime.h
 xamarin/trampolines.h
 xamarin/main.h
 xamarin/xamarin.h
+
+Native diagnostics
+==================
+
+Use `PRINT`/`LOG` for normal runtime logging. For diagnostics that must preserve
+stdout/stderr output or cannot enter the Objective-C runtime, use
+`xamarin_write_formatted` from the internal `native-support.h` header. It uses
+libc formatting and descriptor writes, checks failures, and handles interrupted
+and partial writes without calling Cocoa. Pass trusted format strings and supply
+external text as arguments, not as the format.
+
+The low-level writer still allocates and uses standard-stream locks; it is not
+an async-signal-safe logger. Do not replace weak-reference/finalizer diagnostics
+with `NSLog`, `os_log`, or `PRINT`, which can re-enter Objective-C while its
+internal locks are held.
+
+Runtime failures
+================
+
+When managed code is available, report failures as managed exceptions rather
+than assertions. Trampolines must release their temporary storage before passing
+the exception to the existing exception-marshaling path. Diagnostic helpers should
+return whatever information is available instead of terminating the process.
+
+The registration map, command-line arguments, environment snapshots, assembly
+locations, and host runtime contract are also used before the managed runtime
+is initialized. Their fatal validation and allocation failures cannot rely on
+managed exceptions.

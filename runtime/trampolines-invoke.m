@@ -124,7 +124,7 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 	} else {
 		sig = [self methodSignatureForSelector: sel];
 	}
-	num_arg = [sig numberOfArguments] - 2;
+	unsigned long signature_arg_count = [sig numberOfArguments];
 
 	// prolog
 	MonoObject *mthis = NULL;
@@ -137,6 +137,7 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 
 	// setup callstack
 	unsigned long frame_length;
+	unsigned long implicit_frame_length;
 	void **arg_frame;
 	void **arg_ptrs;
 	void **arg_copy = NULL; // used to detect if ref/out parameters were changed.
@@ -145,10 +146,25 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 	gboolean needs_writeback = FALSE; // determines if there are any ref/out parameters.
 	MonoType *p;
 	unsigned long mofs = 0;
+	unsigned long desc_arg_count;
+	size_t desc_size;
 
-	unsigned long desc_arg_count = num_arg + 2; /* 1 for the return value + 1 if this is a category instance method */
-	size_t desc_size = desc_arg_count * sizeof (BindAsData) + sizeof (MethodDescription);
+	if (signature_arg_count < 2 || signature_arg_count > INT32_MAX) {
+		exception_gchandle = xamarin_get_exception_for_method (8040, INVALID_GCHANDLE, "Invalid method signature argument count.", sel, self);
+		goto exception_handling;
+	}
+	num_arg = signature_arg_count - 2;
+	desc_arg_count = num_arg + 2; /* 1 for the return value + 1 if this is a category instance method */
+	if (desc_arg_count > (SIZE_MAX - sizeof (MethodDescription)) / sizeof (BindAsData)) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
+	desc_size = desc_arg_count * sizeof (BindAsData) + sizeof (MethodDescription);
 	desc = (MethodDescription *) xamarin_calloc (desc_size);
+	if (desc == NULL) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
 	desc->bindas_count = (int32_t) desc_arg_count;
 	free_list = s_list_prepend (free_list, desc);
 
@@ -174,10 +190,30 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 	semantic = desc->semantic & ArgumentSemanticMask;
 	isCategoryInstance = (desc->semantic & ArgumentSemanticCategoryInstance) == ArgumentSemanticCategoryInstance;
 
-	frame_length = [sig frameLength] - (sizeof (void *) * (isCategoryInstance ? 1 : 2));
-	arg_frame = (void **) alloca (frame_length);
+	frame_length = [sig frameLength];
+	implicit_frame_length = sizeof (void *) * (isCategoryInstance ? 1ul : 2ul);
+	if (frame_length < implicit_frame_length) {
+		exception_gchandle = xamarin_get_exception_for_method (8040, INVALID_GCHANDLE, "Invalid method signature frame length.", sel, self);
+		goto exception_handling;
+	}
+	frame_length -= implicit_frame_length;
+	arg_frame = (void **) xamarin_calloc (frame_length == 0 ? 1 : frame_length);
+	if (arg_frame == NULL) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
+	free_list = s_list_prepend (free_list, arg_frame);
 	managed_arg_count = num_arg + (isCategoryInstance ? 1 : 0);
-	arg_ptrs = (void **) alloca (sizeof (void *) * managed_arg_count);
+	if (managed_arg_count > SIZE_MAX / sizeof (void *)) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
+	arg_ptrs = (void **) xamarin_calloc (managed_arg_count == 0 ? 1 : sizeof (void *) * managed_arg_count);
+	if (arg_ptrs == NULL) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
+	free_list = s_list_prepend (free_list, arg_ptrs);
 	
 #ifdef TRACE
 	memset (arg_ptrs, (int) 0xDEADF00D, num_arg * sizeof (void*));
@@ -599,21 +635,21 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 	} else {
 		
 #ifdef TRACE
-		fprintf (stderr, " calling managed method with %i arguments: ", (int) num_arg);
-		for (int i = 0; i < num_arg; i++)
-			fprintf (stderr, "%p ", arg_ptrs [i]);
-		fprintf (stderr, " writeback: %i", needs_writeback);
-		fprintf (stderr, "\n");
+		xamarin_write_formatted (STDERR_FILENO, " calling managed method with %i arguments: ", (int) num_arg);
+		for (unsigned long i = 0; i < num_arg; i++)
+			xamarin_write_formatted (STDERR_FILENO, "%p ", arg_ptrs [i]);
+		xamarin_write_formatted (STDERR_FILENO, " writeback: %i", needs_writeback);
+		xamarin_write_formatted (STDERR_FILENO, "\n");
 #endif
 
 		retval = mono_runtime_invoke (method, mthis, (void **) arg_ptrs, exception_ptr);
 
 #ifdef TRACE
-		fprintf (stderr, " called managed method with %i arguments: ", (int) num_arg);
-		for (int i = 0; i < num_arg; i++)
-			fprintf (stderr, "%p ", arg_ptrs [i]);
-		fprintf (stderr, " writeback: %i", needs_writeback);
-		fprintf (stderr, "\n");
+		xamarin_write_formatted (STDERR_FILENO, " called managed method with %i arguments: ", (int) num_arg);
+		for (unsigned long i = 0; i < num_arg; i++)
+			xamarin_write_formatted (STDERR_FILENO, "%p ", arg_ptrs [i]);
+		xamarin_write_formatted (STDERR_FILENO, " writeback: %i", needs_writeback);
+		xamarin_write_formatted (STDERR_FILENO, "\n");
 #endif
 
 		if (exception != NULL)

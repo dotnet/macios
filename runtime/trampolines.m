@@ -335,7 +335,7 @@ count_until (const char *desc, char start, char end)
 		desc++;
 	}
 
-	fprintf (stderr, PRODUCT ": Unexpected type encoding, did not find end character '%c' in '%s'.", end, desc);
+	xamarin_write_formatted (STDERR_FILENO, PRODUCT ": Unexpected type encoding, did not find end character '%c' in '%s'.", end, desc);
 
 	return i;
 }
@@ -602,7 +602,7 @@ xamarin_get_frame_length (id self, SEL sel)
 			length = [sig frameLength];
 		} @catch (NSException *ex) {
 			length = sizeof (void *) * 64; // some high-ish number.
-			fprintf (stderr, PRODUCT ": Failed to calculate the frame size for the method [%s %s] (%s). Using a value of %lu instead.\n", class_getName (cls), sel_getName (sel), [[ex description] UTF8String], length);
+			xamarin_write_formatted (STDERR_FILENO, PRODUCT ": Failed to calculate the frame size for the method [%s %s] (%s). Using a value of %lu instead.\n", class_getName (cls), sel_getName (sel), [[ex description] UTF8String], length);
 		}
 	} else {
 		// The format of the method type encoding is described here: http://stackoverflow.com/a/11492151/183422
@@ -874,7 +874,7 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 #if defined(DEBUG_REF_COUNTING)
 	struct NSObjectData *data = xamarin_get_nsobject_data (self);
 	// Don't use PRINT/NSLog/os_log here, because the process can end up aborting due to recursive locks inside the ObjC runtime. Luckily fprintf works fine.
-	fprintf (stderr, "xamarin_retainWeakReference_trampoline (Handle=%p) flags: %x isInFinalizerQueue: %i data: %p data->flags: %x data->handle: %p\n",
+	xamarin_write_formatted (STDERR_FILENO, "xamarin_retainWeakReference_trampoline (Handle=%p) flags: %x isInFinalizerQueue: %i data: %p data->flags: %x data->handle: %p\n",
 		self, flags, isInFinalizerQueue, data, (unsigned int) (data ? data->flags : 0), data ? data->handle : NULL);
 #endif
 
@@ -1001,7 +1001,7 @@ xamarin_get_nsobject_data_trampoline (id self, SEL sel)
 	pthread_mutex_unlock (&gchandle_hash_lock);
 
 #if defined(DEBUG_REF_COUNTING)
-	fprintf (stderr, "xamarin_get_nsobject_data_trampoline (Handle=%p) data: %p data->flags: %x data->handle: %p\n",
+	xamarin_write_formatted (STDERR_FILENO, "xamarin_get_nsobject_data_trampoline (Handle=%p) data: %p data->flags: %x data->handle: %p\n",
 		self, data, (unsigned int) (data ? data->flags : 0), data ? data->handle : NULL);
 #endif
 

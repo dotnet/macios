@@ -12,6 +12,7 @@
 #define __RUNTIME_INTERNAL_H__
 
 #include "xamarin/xamarin.h"
+#include "native-support.h"
 
 #define PRINT(...) do { xamarin_printf (__VA_ARGS__); } while (0);
 #define LOG(...) do { if (xamarin_log_level > 0) xamarin_printf (__VA_ARGS__); } while (0);
@@ -30,6 +31,9 @@ void xamarin_launch_time_print (const char *msg);
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+char *xamarin_copy_environment_variable (const char *name);
+bool xamarin_copy_path (NSString *candidate, char *path, size_t capacity);
 
 void *xamarin_marshal_return_value (SEL sel, MonoType *mtype, const char *type, MonoObject *retval, bool retain, MonoMethod *method, MethodDescription *desc, GCHandle *exception_gchandle);
 

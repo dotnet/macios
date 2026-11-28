@@ -1,6 +1,7 @@
 <Project>
   <!-- Do not sign files that already have a signature -->
   <ItemGroup>
+    <Skip Include="Microsoft.Apple.Tools.MaciOS.dll" />
     <Skip Include="System.Reflection.MetadataLoadContext.dll" />
     <!-- Microsoft.iOS.Windows.Sdk content -->
     <Skip Include="tools\msbuild\iOS\Microsoft.Win32.Registry.dll" />
@@ -153,13 +154,12 @@
     <!-- Build.zip -->
     <FirstParty Include="Build.dll" />
     <!-- The net12.0 SDK packs ship these task assemblies unsigned, so we sign them here. -->
-    <FirstParty Include="tools\msbuild\net12.0\AssemblyStripper.dll" />
     <FirstParty Include="tools\msbuild\net12.0\ILLink.Tasks.dll" />
-    <FirstParty Include="tools\msbuild\net12.0\MonoTargetsTasks.dll" />
     <FirstParty Include="Microsoft.Build*.dll" />
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />
     <!-- Our new Microsoft.* product dlls -->
+    <FirstParty Include="Microsoft.Apple.Tools.MaciOS.dll" />
     <FirstParty Include="Microsoft.iOS.dll" />
     <FirstParty Include="Microsoft.MacCatalyst.dll" />
     <FirstParty Include="Microsoft.macOS.dll" />

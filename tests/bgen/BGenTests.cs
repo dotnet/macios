@@ -115,6 +115,88 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		public void InstanceReceiverIsKeptAlive ()
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				Defines = BGenTool.GetDefaultDefines (Profile.iOS),
+			};
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+using ObjCRuntime;
+
+namespace Test {
+	[Protocol]
+	interface ProtocolWithConstructor {
+		[Export (""initWithValue:"")]
+		NativeHandle Constructor (int value);
+	}
+
+	[Sealed]
+	[BaseType (typeof (NSObject))]
+	interface SealedReceiver {
+		[Export (""perform"")]
+		void Perform ();
+	}
+
+	[BaseType (typeof (NSObject))]
+	interface Receiver {
+		[Export (""perform"")]
+		void Perform ();
+
+		[Export (""value"")]
+		int Value { get; set; }
+
+		[Export (""makeCopy"")]
+		[return: Release]
+		NSObject MakeCopy ();
+
+		[Static, Export (""shared"")]
+		Receiver Shared { get; }
+	}
+}");
+			bgen.AssertExecute ("build");
+			bgen.AssertNoWarnings ();
+
+			foreach (var (typeName, name, sendCount) in new [] {
+				("Receiver", "Perform", 2),
+				("Receiver", "get_Value", 2),
+				("Receiver", "set_Value", 2),
+				("Receiver", "MakeCopy", 2),
+				("SealedReceiver", "Perform", 1),
+			}) {
+				var type = bgen.ApiAssembly.MainModule.GetType ("Test", typeName);
+				var instructions = type.Methods.Single (v => v.Name == name).Body.Instructions;
+				var sends = instructions.Where (v => v.Operand is MethodReference method && method.DeclaringType.Name == "Messaging" && method.Name.Contains ("objc_msgSend")).ToArray ();
+				Assert.That (sends.Length, Is.EqualTo (sendCount), $"{typeName}.{name}: message sends");
+				foreach (var send in sends) {
+					var guarded = false;
+					for (var instruction = send.Next; instruction is not null;) {
+						if ((instruction.OpCode == OpCodes.Br || instruction.OpCode == OpCodes.Br_S) &&
+							instruction.Operand is Instruction target && target.Offset > instruction.Offset) {
+							instruction = target;
+							continue;
+						}
+
+						if (instruction.OpCode.FlowControl is FlowControl.Branch or FlowControl.Cond_Branch or FlowControl.Return or FlowControl.Throw)
+							break;
+
+						if (instruction.OpCode == OpCodes.Ldarg_0 && instruction.Next is { } call &&
+							call.OpCode == OpCodes.Call && call.Operand is MethodReference method &&
+							method.DeclaringType.FullName == "System.GC" && method.Name == "KeepAlive") {
+							guarded = true;
+							break;
+						}
+
+						instruction = instruction.Next;
+					}
+					Assert.That (guarded, Is.True, $"{typeName}.{name}: {send.Operand} does not keep the receiver alive");
+				}
+			}
+		}
+
+		[Test]
 		public void Bug27986 ()
 		{
 			var bgen = BuildFile (Profile.iOS, false, "bug27986.cs");
@@ -724,6 +806,52 @@ namespace GeneratorTests {
 			attribs = MethodAttributes.Public | MethodAttributes.HideBySig;
 			bgen.AssertMethod ("WrapTest.MyFooClass", "FromUrlN", attribs, null, "System.String");
 			bgen.AssertMethod ("WrapTest.MyFooClass", "get_FooNSStringN", attribs | MethodAttributes.SpecialName, "Foundation.NSString");
+		}
+
+		[Test]
+		public void ExportedWrap ()
+		{
+			var bgen = BuildFile (Profile.iOS, "virtualwrap.cs");
+			var types = bgen.ApiAssembly.MainModule.Types;
+			var foo = types.Single (v => v.FullName == "WrapTest.MyFooClass");
+			foreach (var name in new [] { "GetWrappedValue", "GetWrappedValueNonVirtual", "GetWrappedValueStatic" }) {
+				var method = foo.Methods.Single (v => v.Name == name);
+				var selector = name switch {
+					"GetWrappedValueNonVirtual" => "wrappedValueNonVirtual:",
+					"GetWrappedValueStatic" => "wrappedValueStatic:",
+					_ => "wrappedValue:",
+				};
+				Assert.That (method.CustomAttributes.Single (v => v.AttributeType.Name == "ExportAttribute").ConstructorArguments [0].Value, Is.EqualTo (selector), name);
+				Assert.That (method.IsVirtual, Is.EqualTo (name == "GetWrappedValue"), name);
+				Assert.That (method.IsStatic, Is.EqualTo (name == "GetWrappedValueStatic"), name);
+				Assert.That (method.Body.Instructions.Any (v => v.OpCode == OpCodes.Add), Is.True, $"Wrapped body: {name}");
+			}
+
+			foreach (var typeName in new [] { "IWrappedProtocol", "WrappedProtocolWrapper", "WrappedProtocolAdopter" }) {
+				var type = types.Single (v => v.FullName == $"WrapTest.{typeName}");
+				var method = type.Methods.Single (v => v.Name == "GetWrappedName");
+				Assert.That (method.CustomAttributes.Single (v => v.AttributeType.Name == "ExportAttribute").ConstructorArguments [0].Value, Is.EqualTo ("wrappedName"), typeName);
+				Assert.That (method.IsVirtual, Is.True, $"Protocol implementation: {typeName}");
+				bgen.AssertApiCallsMethod (method, "GetType", $"Instance wrapper: {typeName}");
+				bgen.AssertApiCallsMethod (type.Methods.Single (v => v.Name == "SetWrappedValue"), "WriteLine", $"Void wrapper: {typeName}");
+				var handler = type.Methods.Single (v => v.Name == "InvokeWrappedHandler").Parameters [0];
+				Assert.That (handler.CustomAttributes.Any (v => v.AttributeType.Name == "BlockProxyAttribute"), Is.True, $"Block conversion: {typeName}");
+			}
+
+			var protocol = types.Single (v => v.FullName == "WrapTest.IWrappedProtocol");
+			Assert.That (protocol.Methods.Single (v => v.Name == "GetWrappedValue").Body.Instructions.Any (v => v.OpCode == OpCodes.Add), Is.True, "Optional wrapper");
+			var metadata = protocol.CustomAttributes.Where (v => v.AttributeType.Name == "ProtocolMemberAttribute").ToArray ();
+			Assert.That (metadata.Length, Is.EqualTo (4), "Protocol metadata count");
+			Assert.That (metadata.Select (v => v.Properties.Single (p => p.Name == "Selector").Argument.Value), Is.EquivalentTo (new [] { "wrappedName", "wrappedValue:", "wrappedSetValue:", "wrappedHandler:" }), "Protocol selectors");
+
+			var extensions = types.Single (v => v.FullName == "WrapTest.WrappedProtocol_Extensions");
+			foreach (var name in new [] { "GetWrappedName", "GetWrappedValue", "SetWrappedValue", "InvokeWrappedHandler" }) {
+				var method = extensions.Methods.Single (v => v.Name == name);
+				var call = method.Body.Instructions.Single (v => v.OpCode == OpCodes.Callvirt);
+				Assert.That (((MethodReference) call.Operand).DeclaringType.FullName, Is.EqualTo ("WrapTest.IWrappedProtocol"), $"Extension receiver: {name}");
+				Assert.That (((MethodReference) call.Operand).Name, Is.EqualTo (name), $"Extension method: {name}");
+				Assert.That (method.CustomAttributes.Any (v => v.AttributeType.Name == "ExportAttribute"), Is.False, $"Extension export: {name}");
+			}
 		}
 
 		[Test]
@@ -1874,6 +2002,18 @@ namespace GeneratorTests {
 			var contents = File.ReadAllText (generatedFile);
 			Assert.That (contents, Does.Contain ("public static NSString? NullableString"), "Nullable field");
 			Assert.That (contents, Does.Contain ("public static NSString NonNullableString"), "Non-nullable field");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void OverloadResolutionPriority (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "overload-resolution-priority.cs");
+
+			var generatedFile = Path.Combine (bgen.TmpDirectory!, "NS", "PriorityClass.g.cs");
+			Assert.That (File.Exists (generatedFile), Is.True, "Generated file exists");
+			Assert.That (File.ReadAllText (generatedFile), Does.Contain ("[OverloadResolutionPriority (-1)]"), "Priority attribute");
 		}
 
 		[Test]

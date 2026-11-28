@@ -50,6 +50,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_ws_metadata_set_pong_handler (OS_nw_protocol_metadata metadata, dispatch_queue_t client_queue, BlockLiteral* pong_handler);
 
+		[UserDelegateType (typeof (Action<NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolinePongHandler (IntPtr block, IntPtr error)
 		{

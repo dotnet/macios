@@ -26,7 +26,6 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeRuntimeConfigFiles" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PostTrimmingProcessing" AssemblyFile="$(_TaskAssemblyName)" />
 
@@ -267,7 +266,6 @@
 		<!-- We re-use ComputeFilesToPublish & CopyFilesToPublishDirectory to copy files to the .app -->
 		<!-- ComputeFilesToPublish will run ILLink -->
 		<!-- single-rid build (either plain single, or inner build for multi-rid build) -->
-		<!-- Note - _ComputeStripAssemblyIL must be before _StripAssemblyIL as msbuild DependsOn do not execute before Conditions are evaluated -->
 		<CreateAppBundleDependsOn Condition="'$(RuntimeIdentifiers)' == ''">
 			$(CreateAppBundleDependsOn);
 			_CopyResourcesToBundle;
@@ -289,8 +287,6 @@
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
-			_ComputeStripAssemblyIL;
-			_StripAssemblyIL;
 			_LoadLinkerOutput;
 			_CompileNativeExecutable;
 			_LinkNativeExecutable;
@@ -492,17 +488,9 @@
 		Outputs="$(DeviceSpecificIntermediateOutputPath)$(_AppBundleName).mergestamp"
 		DependsOnTargets="_RunRidSpecificBuild"
 		>
-		<ItemGroup>
-			<!-- If we're creating a runtimeconfig.json file, then the resulting binary runtimeconfig.bin file can be put in the architecture-specific subdirectory.
-			     Only MonoVM ships this file; CoreCLR bakes the runtime configuration into the app as C code, and
-			     NativeAOT embeds it into the executable at publish time (neither reads runtimeconfig.bin). -->
-			<_ArchitectureSpecificFiles Include="$(_RuntimeConfigurationFile)" Condition="'$(GenerateRuntimeConfigurationFiles)' != '' And '$(_XamarinRuntime)' == 'MonoVM'" />
-		</ItemGroup>
-
 		<MergeAppBundles
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			ArchitectureSpecificFiles="@(_ArchitectureSpecificFiles)"
 			IgnoreFiles="$(_AppBundleManifestRelativePath)Info.plist"
 			InputAppBundles="@(_AssemblyPublishDirectories)"
 			OutputAppBundle="$(_AppBundlePath)"
@@ -518,27 +506,6 @@
 			>
 			<Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
 		</Touch>
-	</Target>
-
-	<Target Name="_ConfigureMonoComponents" DependsOnTargets="_ComputeVariables">
-		<!-- https://github.com/dotnet/runtime/blob/main/docs/design/mono/components.md -->
-		<ItemGroup>
-			<_MonoComponent Include="hot_reload" Condition="'$(MtouchInterpreter)' != ''" />
-			<_MonoComponent Include="debugger" Condition="'$(_BundlerDebug)' == 'true'" />
-			<_MonoComponent Include="diagnostics_tracing" Condition="'$(EnableDiagnostics)' == 'true'" />
-			<_MonoComponent Include="marshal-ilgen" Condition="'$(_AppleExcludeMarshalIlgenComponent)' != 'true'" />
-		</ItemGroup>
-	</Target>
-
-	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static'" DependsOnTargets="_ConfigureMonoComponents;_MonoSelectRuntimeComponents">
-		<!-- We only include any mono components when linking with mono statically. The components are already included in the dynamic versions of Mono (both the dylib and the framework) -->
-		<ItemGroup Condition="'$(_LibMonoLinkMode)' == 'static'">
-			<!-- Remove files mono told us not to link with -->
-			<_MonoLibrary Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPathNative)%(Identity)')" />
-
-			<!-- Add files mono told us to link with -->
-			<_MonoLibrary Include="@(_MonoRuntimeComponentLink -> '$(_MonoRuntimePackPathNative)%(Identity)')" />
-		</ItemGroup>
 	</Target>
 
 	<PropertyGroup>
@@ -858,11 +825,8 @@
 			<!-- Set default ValidateObjectPointers value -->
 			<_ValidateObjectPointers Condition="'$(_ValidateObjectPointers)' == ''">false</_ValidateObjectPointers>
 
-			<!-- Only MonoVM ships the binary runtimeconfig format and reads it at startup (locating it by name
-			     via RuntimeConfigurationFile). CoreCLR bakes the runtime configuration into the app as C code
-			     (from the merged json, handed to the linker via RuntimeConfigurationFilePath), and NativeAOT
-			     embeds it into the executable at publish time - neither ships nor reads a runtimeconfig file. -->
-			<_BundlerRuntimeConfigurationFile Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_RuntimeConfigurationFile)</_BundlerRuntimeConfigurationFile>
+			<!-- CoreCLR bakes the merged runtime configuration into the app as C code; NativeAOT
+			     embeds it into the executable at publish time. -->
 			<_BundlerRuntimeConfigurationFilePath Condition="'$(_XamarinRuntime)' == 'CoreCLR' And '$(GenerateRuntimeConfigurationFiles)' == 'true'">$(_MergedRuntimeConfigFilePath)</_BundlerRuntimeConfigurationFilePath>
 
 			<!--
@@ -923,7 +887,6 @@
 				@(ReferenceNativeSymbol -> 'ReferenceNativeSymbol=%(SymbolType):%(SymbolMode):%(Identity)')
 				RequireLinkWithAttributeForObjectiveCClassSearch=$(RequireLinkWithAttributeForObjectiveCClassSearch)
 				RequirePInvokeWrappers=$(_RequirePInvokeWrappers)
-				RuntimeConfigurationFile=$(_BundlerRuntimeConfigurationFile)
 				RuntimeConfigurationFilePath=$(_BundlerRuntimeConfigurationFilePath)
 				SdkDevPath=$(_SdkDevPath)
 				SdkRootDirectory=$(_XamarinSdkRootDirectory)
@@ -1014,8 +977,6 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsTrimmableStaticRegistrar" Value="$(_IsTrimmableStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
-			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
-			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls" Value="$(_CheckForIllegalCrossThreadCalls)" Trim="true" />
 
@@ -1252,61 +1213,13 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_ComputeStripAssemblyIL" Condition=" '$(EnableAssemblyILStripping)' == '' " DependsOnTargets="_ComputeVariables;ComputeFilesToPublish">
-		<PropertyGroup>
-			<!-- Don't strip IL by default -->
-			<EnableAssemblyILStripping>false</EnableAssemblyILStripping>
-
-			<!-- Don't strip if we are running the interpreter  -->
-			<EnableAssemblyILStripping Condition="'$(MtouchInterpreter)' != ''">false</EnableAssemblyILStripping>
-		</PropertyGroup>
-	</Target>
-
-	<!-- The DependsOnTargets here will not force EnableAssemblyILStripping to be calculated before the condition is evaulated. The order in CreateAppBundleDependsOn matters. -->
-	<Target Name="_StripAssemblyIL" Condition="'$(EnableAssemblyILStripping)' == 'true'" DependsOnTargets="_ComputeStripAssemblyIL">
-		<PropertyGroup>
-			<_StrippedAssemblyDirectory>$(DeviceSpecificIntermediateOutputPath)stripped</_StrippedAssemblyDirectory>
-		</PropertyGroup>
-		<ItemGroup>
-			<_AssembliesToBeStripped Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == ''">
-				<OutputPath>$(_StrippedAssemblyDirectory)\%(ResolvedFileToPublish.OriginalRelativePath)</OutputPath>
-			</_AssembliesToBeStripped>
-
-			<!-- Some assemblies added to ResolvedFileToPublish don't have OriginalRelativePath set (e.g. the
-			     TypeMap assemblies the trimmable-static registrar generates). Without it the OutputPath above
-			     collapses to the bare stripped directory, and ILStrip fails trying to write to a directory
-			     ("Access to the path '.../stripped/' is denied"). Fall back to the file name in that case. -->
-			<_AssembliesToBeStripped Condition="'%(_AssembliesToBeStripped.OriginalRelativePath)' == ''">
-				<OutputPath>$(_StrippedAssemblyDirectory)\%(Filename)%(Extension)</OutputPath>
-			</_AssembliesToBeStripped>
-
-			<!-- Use forward slashes in OutputPath, otherwise ILStrip will create filenames that resemble the part of
-				 the relative path of the item that uses backslashes, instead of writing the file to the location of the
-				 relative path. -->
-			<_AssembliesToBeStripped>
-				<OutputPath>$([System.String]::Copy('%(OutputPath)').Replace('\', '/'))</OutputPath>
-			</_AssembliesToBeStripped>
-		</ItemGroup>
-		<MobileILStrip
-			Assemblies="@(_AssembliesToBeStripped)"
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			>
-			<Output TaskParameter="StrippedAssemblies" ItemName="_StrippedAssemblies" />
-		</MobileILStrip>
-		<ItemGroup>
-			<ResolvedFileToPublish Remove="@(_AssembliesToBeStripped)" />
-			<ResolvedFileToPublish Include="@(_StrippedAssemblies)" />
-		</ItemGroup>
-	</Target>
-
-
 	<!--
 		When building for NativeAOT with the trimmable-static registrar, we generate
 		the native registrar code *after* the NativeAOT compiler (ILC) has run, instead of before. This lets
 		the registrar inspect ILC's output to see which UnmanagedCallersOnly trampolines survived trimming, and
 		avoid emitting direct native references to trampolines ILC trimmed away (which would be undefined symbols
-		at native link time). This is only possible because ILLink is skipped for NativeAOT,
+		at native link time). It also lets us gather framework dependencies from the native symbols that survived
+		ILC. This is only possible because ILLink is skipped for NativeAOT,
 		so ILC consumes the prepared (pre-postprocessing) assemblies and the postprocessing output no longer feeds
 		ILC. The gate is computed statically (all the properties are available at evaluation time) so it can be
 		used both in static target wiring and in runtime target conditions.
@@ -1390,13 +1303,14 @@
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
-			InputAssemblies="@(_AssembliesToPostProcess)"
 			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
+			InputAssemblies="@(_AssembliesToPostProcess)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			NativeAOTObjectFile="$(NativeObject)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
+			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
@@ -1431,11 +1345,9 @@
 
 	<Target Name="_ComputeFrameworkVariables" DependsOnTargets="ResolveRuntimePackAssets;ResolveFrameworkReferences">
 		<PropertyGroup>
-			<_XamarinRuntime Condition="'$(UseMonoRuntime)' == 'true'">MonoVM</_XamarinRuntime>
-			<_XamarinRuntime Condition="'$(UseMonoRuntime)' != 'true' And '$(_UseNativeAot)' != 'true'">CoreCLR</_XamarinRuntime>
-			<_XamarinRuntime Condition="'$(UseMonoRuntime)' != 'true' And '$(_UseNativeAot)' == 'true'">NativeAOT</_XamarinRuntime>
+			<_XamarinRuntime Condition="'$(_UseNativeAot)' != 'true'">CoreCLR</_XamarinRuntime>
+			<_XamarinRuntime Condition="'$(_UseNativeAot)' == 'true'">NativeAOT</_XamarinRuntime>
 
-			<_PackageIdInfix Condition="'$(_XamarinRuntime)' == 'MonoVM'">Mono.</_PackageIdInfix>
 			<_PackageIdInfix Condition="'$(_XamarinRuntime)' == 'NativeAOT'">NativeAOT.</_PackageIdInfix>
 
 			<_MonoNugetPackageId>Microsoft.NETCore.App.Runtime.$(_PackageIdInfix)$(RuntimeIdentifier)</_MonoNugetPackageId>
@@ -1445,7 +1357,6 @@
 		<ItemGroup>
 			<!-- Look in the ResolvedFrameworkReference for our Microsoft.* package. This should only find a single package. -->
 			<_XamarinFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.Identity)' == 'Microsoft.$(_PlatformName).Runtimes'" />
-			<_MonoFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.RuntimePackName)' == '$(_MonoNugetPackageId)'" />
 		</ItemGroup>
 		<PropertyGroup>
 			<_XamarinSdkRuntimePackDirectory>%(_XamarinFrameworkReference.RuntimePackPath)</_XamarinSdkRuntimePackDirectory>
@@ -1455,12 +1366,8 @@
 			<_XamarinRefAssemblyDirectory>$([MSBuild]::NormalizeDirectory('$(_XamarinRefPackageDirectory)/ref/$(_XamarinDotNetVersion)/'))</_XamarinRefAssemblyDirectory>
 			<_XamarinRefAssemblyPath>$(_XamarinRefAssemblyDirectory)$(_PlatformAssemblyName).dll</_XamarinRefAssemblyPath>
 
-			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'MonoVM'">$(_XamarinNativeLibraryDirectory)Microsoft.$(_PlatformName).registrar.a</_LibPartialStaticRegistrar>
 			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'CoreCLR'">$(_XamarinNativeLibraryDirectory)Microsoft.$(_PlatformName).registrar.coreclr.a</_LibPartialStaticRegistrar>
 			<_LibPartialStaticRegistrar Condition="'$(_XamarinRuntime)' == 'NativeAOT'">$(_XamarinNativeLibraryDirectory)Microsoft.$(_PlatformName).registrar.nativeaot.a</_LibPartialStaticRegistrar>
-
-			<_MonoRuntimePackPath>$([MSBuild]::NormalizeDirectory('%(_MonoFrameworkReference.RuntimePackPath)/runtimes/$(RuntimeIdentifier)/'))</_MonoRuntimePackPath>
-			<_MonoRuntimePackPathNative>$([MSBuild]::NormalizeDirectory('$(_MonoRuntimePackPath)native/'))</_MonoRuntimePackPathNative>
 		</PropertyGroup>
 	</Target>
 
@@ -1472,7 +1379,7 @@
 	</Target>
 
 	<Target Name="_VerifyValidRuntime">
-		<Error Text="Only CoreCLR is supported on macOS. Set 'UseMonoRuntime=false' to use CoreCLR." Condition="'$(_PlatformName)' == 'macOS' And '$(UseMonoRuntime)' != 'false'" />
+		<Error Text="The Mono runtime is no longer supported. Set 'UseMonoRuntime=false' to use CoreCLR or NativeAOT." Condition="'$(UseMonoRuntime)' != 'false'" />
 	</Target>
 
 	<Target Name="_VerifyValidProperties">
@@ -1577,7 +1484,8 @@
 			<_RelativePublishDir>$([MSBuild]::MakeRelative($(MSBuildProjectDirectory),$(_AbsolutePublishDir)))</_RelativePublishDir>
 			<_RelativePublishDir>$([MSBuild]::EnsureTrailingSlash($(_RelativePublishDir)))</_RelativePublishDir>
 			<!-- Compute the relative path of the app bundle relative to the publish directory. The _AppBundlePath is relative to the project directory, so to compute this we need to have both app bundle path and the publish directory as absolute paths first. -->
-			<_RelativeAppBundlePath>$([MSBuild]::MakeRelative($(_AbsolutePublishDir),$(MSBuildProjectDirectory)/$(_AppBundlePath)))</_RelativeAppBundlePath>
+			<!-- _AppBundlePath stays an absolute path when the app bundle is on a different drive than the project (Windows only, there's no relative path between drives), so use Path.Combine (which keeps an absolute path as-is) instead of just appending it to the project directory. -->
+			<_RelativeAppBundlePath>$([MSBuild]::MakeRelative($(_AbsolutePublishDir),$([System.IO.Path]::Combine($(MSBuildProjectDirectory),$(_AppBundlePath)))))</_RelativeAppBundlePath>
 
 			<_IntermediateNativeLibraryDir>$(IntermediateOutputPath)nativelibraries/</_IntermediateNativeLibraryDir>
 			<_IntermediateFrameworksDir>$(DeviceSpecificIntermediateOutputPath)frameworks</_IntermediateFrameworksDir>
@@ -1593,14 +1501,9 @@
 
 			<!-- Always link statically when using NativeAOT -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">static</_LibMonoLinkMode>
-			<!-- default to 'static' for Mac Catalyst to work around https://github.com/dotnet/macios/issues/14686 -->
-			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(UseMonoRuntime)' == 'true'">static</_LibMonoLinkMode>
 			<!-- we can't use dylibs for mobile apps when building for device, because the App Store won't allow it -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(SdkIsDevice)' == 'true'">static</_LibMonoLinkMode>
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == ''">dylib</_LibMonoLinkMode>
-
-			<_LibMonoExtension Condition="'$(_LibMonoLinkMode)' == 'dylib'">dylib</_LibMonoExtension>
-			<_LibMonoExtension Condition="'$(_LibMonoLinkMode)' == 'static'">a</_LibMonoExtension>
 
 			<!-- default to 'static' for Mac Catalyst to work around https://github.com/dotnet/macios/issues/14686 -->
 			<_LibXamarinLinkMode Condition="'$(_LibXamarinLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst'">static</_LibXamarinLinkMode>
@@ -1608,7 +1511,6 @@
 			<_LibXamarinLinkMode Condition="'$(_LibXamarinLinkMode)' == ''">static</_LibXamarinLinkMode>
 			<_LibXamarinExtension Condition="'$(_LibXamarinLinkMode)' == 'dylib'">dylib</_LibXamarinExtension>
 			<_LibXamarinExtension Condition="'$(_LibXamarinLinkMode)' == 'static'">a</_LibXamarinExtension>
-			<_LibXamarinRuntime Condition="'$(_XamarinRuntime)' == 'MonoVM'"></_LibXamarinRuntime>
 			<_LibXamarinRuntime Condition="'$(_XamarinRuntime)' == 'CoreCLR'">-coreclr</_LibXamarinRuntime>
 			<_LibXamarinRuntime Condition="'$(_XamarinRuntime)' == 'NativeAOT'">-nativeaot</_LibXamarinRuntime>
 			<_LibXamarinDebug Condition="'$(_BundlerDebug)' == 'true'">-debug</_LibXamarinDebug>
@@ -1619,8 +1521,6 @@
 
 			<_EmbeddedFrameworksRPath Condition="'$(SdkIsMobile)' == 'true'">@executable_path/Frameworks</_EmbeddedFrameworksRPath>
 			<_EmbeddedFrameworksRPath Condition="'$(SdkIsDesktop)' == 'true'">@executable_path/../Frameworks/</_EmbeddedFrameworksRPath>
-
-			<_RuntimeConfigurationFile>runtimeconfig.bin</_RuntimeConfigurationFile>
 
 			<!-- The runtimeconfig.json merged with the companion runtimeconfig.dev.json (see _CreateRuntimeConfiguration). -->
 			<_MergedRuntimeConfigFilePath>$(DeviceSpecificIntermediateOutputPath)runtimeconfig.merged.json</_MergedRuntimeConfigFilePath>
@@ -1644,21 +1544,9 @@
 
 	<Target Name="_CreateRuntimeConfiguration"
 		Inputs="$(ProjectRuntimeConfigFilePath);$(ProjectRuntimeConfigDevFilePath)"
-		Outputs="$(_RuntimeConfigurationOutputFile)"
+		Outputs="$(_MergedRuntimeConfigFilePath)"
 		DependsOnTargets="GenerateBuildRuntimeConfigurationFiles;_ComputePublishLocation"
 		>
-		<ItemGroup>
-			<!-- List all the properties passed to xamarin_bridge_vm_initialize in xamarin_vm_initialize (in runtime.m) -->
-			<_RuntimeConfigReservedProperties Include="APP_PATHS" />
-			<_RuntimeConfigReservedProperties Include="PINVOKE_OVERRIDE" />
-			<_RuntimeConfigReservedProperties Include="TRUSTED_PLATFORM_ASSEMBLIES" />
-			<_RuntimeConfigReservedProperties Include="NATIVE_DLL_SEARCH_DIRECTORIES" />
-			<_RuntimeConfigReservedProperties Include="RUNTIME_IDENTIFIER" />
-			<_RuntimeConfigReservedProperties Include="APP_CONTEXT_BASE_DIRECTORY" />
-			<_RuntimeConfigReservedProperties Include="SYSTEM_CORELIB_DIRECTORY" />
-			<_RuntimeConfigReservedProperties Include="STARTUP_HOOKS" />
-		</ItemGroup>
-
 		<!-- Merge the runtimeconfig.dev.json (Debug-only switches such as Hot Reload) on top of the main
 		     runtimeconfig.json, because we hand the runtime configuration directly to the runtime and thus
 		     bypass hostfxr, which is what would normally merge these files. -->
@@ -1674,14 +1562,6 @@
 			<FileWrites Include="$(_MergedRuntimeConfigFilePath)" />
 		</ItemGroup>
 
-		<RuntimeConfigParserTask
-			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'"
-			RuntimeConfigFile="$(_MergedRuntimeConfigFilePath)"
-			OutputFile="$(_ParsedRuntimeConfigFilePath)"
-			RuntimeConfigReservedProperties="@(_RuntimeConfigReservedProperties)"
-			>
-		</RuntimeConfigParserTask>
-
 		<Warning Condition="'$(GenerateRuntimeConfigurationFiles)' != 'true'" Text="Some features may not work correctly, because the generation of the runtime configure file (*.runtimeconfig.json) has been disabled." />
 	</Target>
 
@@ -1689,9 +1569,9 @@
 		<ItemGroup Condition="'$(IsAppExtension)' == 'true'">
 			<!-- https://github.com/xamarin/xamarin-macios/issues/19037 -->
 			<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
-				 So here we set RootMode=Library for these cases. -->
-			<TrimmerRootAssembly Update="@(TrimmerRootAssembly)" Condition=" '%(TrimmerRootAssembly.RootMode)' == 'EntryPoint' " RootMode="Library" />
-			<TrimmerRootAssembly Include="@(IntermediateAssembly->'%(Filename)')" RootMode="Library" Condition="'@(TrimmerRootAssembly)' == ''" />
+				 So here we set RootMode=Visible for these cases. -->
+			<TrimmerRootAssembly Update="@(TrimmerRootAssembly)" Condition=" '%(TrimmerRootAssembly.RootMode)' == 'EntryPoint' " RootMode="Visible" />
+			<TrimmerRootAssembly Include="@(IntermediateAssembly->'%(Filename)')" RootMode="Visible" Condition="'@(TrimmerRootAssembly)' == ''" />
 		</ItemGroup>
 		<!-- If $(IntermediateAssembly) was modified by the AssemblyPreparer task, then we must update the TrimmerRootAssembly item group to point to the updated version of the intermediate assembly. -->
 		<!-- It turned out a bit complicated, because we want to preserve any existing metadata on the items in the TrimmerRootAssembly item group. -->
@@ -2099,6 +1979,7 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)$(_LibXamarinName)" />
+			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)libxamarin-widgetkit.a" Condition="'$(_PlatformName)' != 'tvOS'" />
 			<!-- Link with the libraries shipped with the mono runtime pack -->
 			<_XamarinMainLibraries Include="@(_MonoLibrary)" />
 
@@ -2246,7 +2127,8 @@
 			</_DynamicLibraryToReidentify>
 			<!-- Set ComputedRelativePath from Filename and Extension if not set (i.e. RelativePath didn't exist on the item) -->
 			<_DynamicLibraryToReidentify Update="@(_DynamicLibraryToReidentify)" Condition="'%(SourceItemGroup)' == '_FileNativeReference' And '%(_DynamicLibraryToReidentify.ComputedRelativePath)' == ''">
-				<ComputedRelativePath>Contents/$(_CustomBundleName)/%(Filename)%(Extension)</ComputedRelativePath>
+				<ComputedRelativePath Condition="'$(SdkIsMobile)' == 'true'">%(Filename)%(Extension)</ComputedRelativePath>
+				<ComputedRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents/$(_CustomBundleName)/%(Filename)%(Extension)</ComputedRelativePath>
 			</_DynamicLibraryToReidentify>
 			<!-- Compute DynamicLibraryId and ReidentifiedPath -->
 			<_DynamicLibraryToReidentify Update="@(_DynamicLibraryToReidentify)" Condition="'%(SourceItemGroup)' == '_FileNativeReference'">
@@ -2399,7 +2281,6 @@
 			_DetectSigningIdentity;
 			_PrepareResourceRules;
 			_AddDebugSymbolsToBundle;
-			_ComputeMonoComponents;
 		</_ComputePublishLocationDependsOn>
 	</PropertyGroup>
 
@@ -2412,23 +2293,8 @@
 			<_AssemblyPublishDir Condition="'$(SdkIsDesktop)' == 'true'">$(_RelativeAppBundlePath)\Contents\$(_CustomBundleName)\</_AssemblyPublishDir>
 			<_DylibPublishDir Condition="'$(SdkIsMobile)' == 'true'">$(_RelativeAppBundlePath)\</_DylibPublishDir>
 			<_DylibPublishDir Condition="'$(SdkIsDesktop)' == 'true'">$(_RelativeAppBundlePath)\Contents\$(_CustomBundleName)\</_DylibPublishDir>
-			<_ParsedRuntimeConfigFilePath Condition="'$(_ParsedRuntimeConfigFilePath)' == ''">$(DeviceSpecificIntermediateOutputPath)$(_RuntimeConfigurationFile)</_ParsedRuntimeConfigFilePath>
-
-			<!-- The final output of _CreateRuntimeConfiguration: only MonoVM ships the binary runtimeconfig format;
-			     CoreCLR and NativeAOT use the merged json instead (baked into the app as C code by the linker for
-			     CoreCLR, embedded into the executable at publish time for NativeAOT). -->
-			<_RuntimeConfigurationOutputFile Condition="'$(_XamarinRuntime)' != 'MonoVM'">$(_MergedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
-			<_RuntimeConfigurationOutputFile Condition="'$(_RuntimeConfigurationOutputFile)' == ''">$(_ParsedRuntimeConfigFilePath)</_RuntimeConfigurationOutputFile>
 		</PropertyGroup>
 		<ItemGroup>
-			<!-- Add runtimeconfig.bin to ResolvedFileToPublish so we process it in ComputeBundlePath and copy the file to the app bundle.
-			     Only MonoVM ships this file (CoreCLR bakes the configuration into the app as C code, NativeAOT embeds it at publish time). -->
-			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'">
-				<RelativePath>$([System.IO.Path]::GetFileName('$(_ParsedRuntimeConfigFilePath)'))</RelativePath>
-				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-			</ResolvedFileToPublish>
-
 			<!--
 				Remove any items we've already handled elsewhere
 			-->
@@ -2455,6 +2321,15 @@
 				Update="@(ResolvedFileToPublish)"
 				Condition=" '%(ResolvedFileToPublish.Extension)' == '.dat' And
 				             $([System.String]::new('%(ResolvedFileToPublish.Filename)').StartsWith('icudt')) And
+				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
+				            "
+				PublishFolderType="None"
+			/>
+
+			<!-- Don't publish any *.wit files (WASI component type definitions), they're not used on Apple platforms -->
+			<ResolvedFileToPublish
+				Update="@(ResolvedFileToPublish)"
+				Condition=" '%(ResolvedFileToPublish.Extension)' == '.wit' And
 				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
 				            "
 				PublishFolderType="None"
@@ -2490,15 +2365,6 @@
 			<ResolvedFileToPublish Remove="@(_CreateDumpExecutable)" />
 			<ResolvedFileToPublish Include="@(_CreateDumpExecutable)" Condition="'$(BundleCreateDump)' == 'true'" />
 
-			<!-- Remove any dylibs Mono told us not to link with -->
-			<ResolvedFileToPublish
-				Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPath)/native/%(Identity)')"
-				Condition=" '%(ResolvedFileToPublish.AssetType)' == 'native' And
-				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
-				            "
-			/>
-
 			<!-- We don't ship the runtimeconfig.json file -->
 			<ResolvedFileToPublish Remove="$(ProjectRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'" />
 		</ItemGroup>
@@ -2506,8 +2372,6 @@
 		<ProcessRuntimeLibraries
 			DebuggerSupport="$(DebuggerSupport)"
 			DotNetRuntime="$(_XamarinRuntime)"
-			MonoRuntimeComponentLink="@(_MonoRuntimeComponentLink)"
-			MonoRuntimeComponentDontLink="@(_MonoRuntimeComponentDontLink)"
 			ResolvedFileToPublish="@(ResolvedFileToPublish)"
 			RuntimeIdentifier="$(RuntimeIdentifier)"
 			RuntimeLibLinkMode="$(_LibMonoLinkMode)"

@@ -83,7 +83,7 @@ stages:
         vmImage: ${{ parameters.macPool }}
 
     variables:
-      PR_ID: $[ stageDependencies.configure_build.configure.outputs['labels.pr_number'] ]
+      PR_ID: $[ stageDependencies.configure_build.configure.outputs['build_configuration.pr_number'] ]
       ${{ if parameters.vmVendor }}:
         VM_VENDOR: ${{ parameters.vmVendor }}
 

@@ -2430,7 +2430,8 @@ namespace Xamarin.Tests {
 				properties ["_IsPublishing"] = "true";
 			}
 
-			DotNet.AssertBuild (consumingProjectDir, properties);
+			var rv = DotNet.AssertBuild (consumingProjectDir, properties);
+			rv.AssertNoWarnings (v => !Extensions.IsFilteredWarning (v, platform));
 
 			var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "ExtensionProject.appex");
 			Assert.That (Directory.Exists (extensionPath), $"App extension directory does not exist: {extensionPath}");

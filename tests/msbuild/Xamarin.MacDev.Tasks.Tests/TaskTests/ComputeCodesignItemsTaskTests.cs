@@ -417,6 +417,56 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void AppExtension (ApplePlatform platform)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+
+			var currentDir = Environment.CurrentDirectory;
+			try {
+				Environment.CurrentDirectory = tmpdir;
+
+				var contents = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst ? "Contents/" : "";
+				var appMetadata = new Dictionary<string, string> {
+					{ "RequireCodeSigning", "true" },
+					{ "CodesignSigningKey", "app-signing-key" },
+				};
+				var extensionMetadata = new Dictionary<string, string> {
+					{ "RequireCodeSigning", "true" },
+					{ "CodesignSigningKey", "extension-signing-key" },
+				};
+				var extension = $"Bundle.app/{contents}PlugIns/Ext.appex";
+
+				var infos = new CodesignInfo [] {
+					new CodesignInfo ("Bundle.app", Platforms.All, appMetadata.Set ("CodesignStampFile", "codesign-stamp-path/Bundle.app/.stampfile")),
+					new CodesignInfo ($"Bundle.app/{contents}MonoBundle/libApp.dylib", Platforms.All, appMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/Bundle.app/{contents}MonoBundle/libApp.dylib")),
+					new CodesignInfo (extension, Platforms.All, extensionMetadata.Set ("CodesignStampFile", "codesign-stamp-path/Ext.appex/.stampfile")),
+					new CodesignInfo ($"{extension}/{contents}MonoBundle/libExt.dylib", Platforms.All, extensionMetadata.Set ("CodesignStampFile", $"codesign-stamp-path/{extension}/{contents}MonoBundle/libExt.dylib")),
+				};
+
+				Touch (tmpdir, infos.Select (v => v.ItemSpec).ToArray ());
+
+				var task = CreateTask<ComputeCodesignItems> ();
+				task.AppBundleDir = "Bundle.app";
+				task.CodesignBundle = new ITaskItem [] {
+					new TaskItem ("Bundle.app", appMetadata),
+					new TaskItem (extension, extensionMetadata),
+				};
+				task.CodesignStampPath = "codesign-stamp-path/";
+				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+				ExecuteTask (task);
+				Assert.That (Engine.Logger.WarningsEvents.Select (v => v.Message), Is.Empty, "Warnings");
+
+				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
+			} finally {
+				Environment.CurrentDirectory = currentDir;
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		public void Symlinks (ApplePlatform platform)

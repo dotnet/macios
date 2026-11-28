@@ -1,6 +1,4 @@
-# This job will parse all the labels present in a PR, will set
-# the tags for the build AND will set a number of configuration
-# variables to be used by the rest of the projects
+# Configure platforms, build variables, and test matrices.
 parameters:
 
 - name: uploadArtifacts
@@ -205,7 +203,7 @@ steps:
     GITHUB_TOKEN: $(GitHub.Token)
     ACCESSTOKEN: $(AzDoBuildAccess.Token)
     IS_PR: ${{ parameters.isPR }}
-  name: labels
+  name: build_configuration
   displayName: 'Configure build'
 
 - bash: ./$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/bash/configure-decisions.sh

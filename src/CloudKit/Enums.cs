@@ -16,6 +16,7 @@ namespace CloudKit {
 		Restricted = 2,
 		/// <summary>The user has no iCloud account.</summary>
 		NoAccount = 3,
+		/// <summary>An iCloud account is signed in, but it isn't ready. Ask the user to verify their credentials in Settings.</summary>
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		TemporarilyUnavailable = 4,
 	}
@@ -121,9 +122,11 @@ namespace CloudKit {
 		ParticipantMayNeedVerification = 33,
 		/// <summary>Indicates that the response was lost.</summary>
 		ResponseLost = 34,
-		/// <summary>To be added.</summary>
+		/// <summary>The asset file couldn't be opened. The app may not have permission, or data protection may be hiding the file. Retry after the file can be opened.</summary>
 		AssetNotAvailable = 35,
+		/// <summary>The iCloud account isn't ready, and the user may need to check it in Settings. After the account changes, check the account status and retry.</summary>
 		TemporarilyUnavailable = 36,
+		/// <summary>The user is already invited to this share and must accept that invitation before continuing.</summary>
 		ParticipantAlreadyInvited = 37,
 	}
 
@@ -179,9 +182,10 @@ namespace CloudKit {
 		FetchChanges = 1 << 0,
 		/// <summary>The zone supports atomic operations on sets of records.</summary>
 		Atomic = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The zone supports sharing records.</summary>
 		[MacCatalyst (13, 1)]
 		Sharing = 1 << 2,
+		/// <summary>The zone supports one share that includes every record in the zone.</summary>
 		[iOS (15, 0), TV (15, 0)]
 		[MacCatalyst (15, 0)]
 		ZoneWideSharing = 1 << 3,
@@ -287,117 +291,161 @@ namespace CloudKit {
 		FiresOnce = 1 << 3,
 	}
 
+	/// <summary>Enumerates possible data transfer sizes for a CloudKit operation group.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKOperationGroupTransferSize : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size is unknown.</summary>
 		Unknown,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents one or more kilobytes.</summary>
 		Kilobytes,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents one or more megabytes.</summary>
 		Megabytes,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents tens of megabytes.</summary>
 		TensOfMegabytes,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents hundreds of megabytes.</summary>
 		HundredsOfMegabytes,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents one or more gigabytes.</summary>
 		Gigabytes,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents tens of gigabytes.</summary>
 		TensOfGigabytes,
-		/// <summary>To be added.</summary>
+		/// <summary>The transfer size represents hundreds of gigabytes.</summary>
 		HundredsOfGigabytes,
 	}
 
+	/// <summary>Enumerates the roles of participants in a CloudKit share.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantRole : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The participant's role is unknown.</summary>
 		Unknown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The participant owns the share.</summary>
 		Owner = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The participant is a private user.</summary>
 		PrivateUser = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The participant is a public user.</summary>
 		PublicUser = 4,
+		/// <summary>The participant is an administrator of the share.</summary>
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		Administrator = 2,
 	}
 
+	/// <summary>Flags indicating the access options available for a CloudKit share.</summary>
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantAccessOption : ulong {
+		/// <summary>The user can share with anyone who has the share URL.</summary>
 		AnyoneWithLink = 1uL << 0,
+		/// <summary>The user can share only with specified recipients.</summary>
 		SpecifiedRecipientsOnly = 1uL << 1,
+		/// <summary>The user can share with anyone who has the URL or only with specified recipients.</summary>
 		Any = AnyoneWithLink | SpecifiedRecipientsOnly,
 	}
 
+	/// <summary>Flags that control which permissions a user can grant to participants when sharing.</summary>
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantPermissionOption : ulong {
+		/// <summary>The user can grant read-only access.</summary>
 		ReadOnly = 1uL << 0,
+		/// <summary>The user can grant read and write access.</summary>
 		ReadWrite = 1uL << 1,
+		/// <summary>The user can grant read-only or read and write access.</summary>
 		Any = ReadOnly | ReadWrite,
 	}
 
 
+	/// <summary>Enumerates changes to the signed-in iCloud account that the sync engine reports.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineAccountChangeType : long {
+		/// <summary>The user signed in to an iCloud account.</summary>
 		SignIn,
+		/// <summary>The user signed out of an iCloud account.</summary>
 		SignOut,
+		/// <summary>The user switched from one iCloud account to another.</summary>
 		SwitchAccounts,
 	}
 
+	/// <summary>Enumerates reasons that the sync engine starts a synchronization.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineSyncReason : long {
+		/// <summary>The sync was scheduled by the system.</summary>
 		Scheduled,
+		/// <summary>The app initiated the sync manually.</summary>
 		Manual,
 	}
 
+	/// <summary>Enumerates the events reported by the CloudKit sync engine.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineEventType : long {
+		/// <summary>The sync engine's state changed.</summary>
 		StateUpdate,
+		/// <summary>The signed-in iCloud account changed.</summary>
 		AccountChange,
+		/// <summary>The sync engine fetched changes to the database.</summary>
 		FetchedDatabaseChanges,
+		/// <summary>The sync engine fetched changes to a record zone.</summary>
 		FetchedRecordZoneChanges,
+		/// <summary>The sync engine sent changes to the database.</summary>
 		SentDatabaseChanges,
+		/// <summary>The sync engine sent changes to a record zone.</summary>
 		SentRecordZoneChanges,
+		/// <summary>The sync engine is about to fetch changes.</summary>
 		WillFetchChanges,
+		/// <summary>The sync engine is about to fetch record zone changes.</summary>
 		WillFetchRecordZoneChanges,
+		/// <summary>The sync engine finished fetching record zone changes.</summary>
 		DidFetchRecordZoneChanges,
+		/// <summary>The sync engine finished fetching changes.</summary>
 		DidFetchChanges,
+		/// <summary>The sync engine is about to send changes.</summary>
 		WillSendChanges,
+		/// <summary>The sync engine finished sending changes.</summary>
 		DidSendChanges,
 	}
 
+	/// <summary>Enumerates changes that the sync engine can make to records in a zone.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingRecordZoneChangeType : long {
+		/// <summary>The sync engine should save a record.</summary>
 		SaveRecord,
+		/// <summary>The sync engine should delete a record.</summary>
 		DeleteRecord,
 	}
 
+	/// <summary>Enumerates reasons that the sync engine reports a record zone deletion.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineZoneDeletionReason : long {
+		/// <summary>The app deleted the record zone.</summary>
 		Deleted,
+		/// <summary>The iCloud account owner purged the app's data in Settings.</summary>
 		Purged,
+		/// <summary>The iCloud account owner reset their encrypted data.</summary>
 		EncryptedDataReset,
 	}
 
+	/// <summary>Enumerates changes that the sync engine can make to a database.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingDatabaseChangeType : long {
+		/// <summary>The sync engine should save a record zone.</summary>
 		SaveZone,
+		/// <summary>The sync engine should delete a record zone.</summary>
 		DeleteZone,
 	}
 
+	/// <summary>Enumerates the scopes of the encryption keys used for the encrypted values in a record zone.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Native]
 	public enum CKRecordZoneEncryptionScope : long {
+		/// <summary>The zone uses per-record encryption keys.</summary>
 		Record,
+		/// <summary>The zone uses per-zone encryption keys, which also cover its zone-wide share, if present.</summary>
 		Zone,
 	}
 }

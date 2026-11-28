@@ -1,10 +1,13 @@
 
 namespace CoreTelephony {
 
+	/// <summary>Constants that describe what a cellular plan supports.</summary>
 	[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
 	[Native]
 	public enum CTCellularPlanCapability : long {
+		/// <summary>The cellular plan supports only cellular data.</summary>
 		Only,
+		/// <summary>The cellular plan supports cellular data and voice calls.</summary>
 		AndVoice,
 	}
 

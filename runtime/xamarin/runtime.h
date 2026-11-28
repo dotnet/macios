@@ -187,7 +187,7 @@ MonoObject *	xamarin_get_delegate_for_block_parameter (MonoMethod *method, guint
 id              xamarin_get_block_for_delegate (MonoMethod *method, MonoObject *delegate, const char *signature /* NULL allowed, but requires the dynamic registrar at runtime to compute */, guint32 token_ref /* INVALID_TOKEN_REF allowed, but requires the dynamic registrar at runtime */, GCHandle *exception_gchandle);
 id				xamarin_get_nsobject_handle (MonoObject *obj);
 uint32_t        xamarin_get_nsobject_flags (MonoObject *obj);
-void			xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags);
+void			xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags); // Sets the given flags, other flags are unchanged.
 uint32_t		xamarin_get_nsobject_id_flags (id obj);
 struct NSObjectData* xamarin_get_nsobject_data (id obj);
 void			xamarin_throw_nsexception (MonoException *exc);
@@ -338,9 +338,6 @@ void			xamarin_mono_object_release_at_process_exit (MonoObject *mobj);
  * Stable API.
  */
 MonoAssembly * xamarin_open_assembly (const char *name);
-
-typedef void (*xamarin_register_assemblies_callback) ();
-extern xamarin_register_assemblies_callback xamarin_register_assemblies;
 
 // This has a managed equivalent in NSObject.cs
 struct NSObjectData {

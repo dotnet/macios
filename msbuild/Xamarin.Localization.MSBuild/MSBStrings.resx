@@ -1825,6 +1825,9 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>The --aot option is not supported because Mono AOT compilation has been removed.</value>
         <comment>Shown when the --aot option is passed in AppBundleExtraOptions. Do not translate --aot, AppBundleExtraOptions, or Mono AOT.</comment>
     </data>
+    <data name="E7202" xml:space="preserve">
+        <value>The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

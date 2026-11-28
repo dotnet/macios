@@ -225,11 +225,6 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("struct AssemblyLocations assembly_locations = {{ {0}, assembly_location_entries }};", assembly_location_count);
 			}
 
-			sw.WriteLine ("void xamarin_register_assemblies_impl ()");
-			sw.WriteLine ("{");
-			sw.WriteLine ("}");
-			sw.WriteLine ();
-
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
 				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\",");
@@ -317,7 +312,6 @@ namespace Xamarin.Bundler {
 					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 			}
-			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
 			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
 				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties.Count);
 				sw.WriteLine ("\txamarin_runtime_config_property_keys = xamarin_runtime_config_property_keys_array;");
@@ -357,7 +351,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("void xamarin_initialize_callbacks ()");
 			sw.WriteLine ("{");
 			sw.WriteLine ("\txamarin_setup = xamarin_setup_impl;");
-			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
 			sw.WriteLine ("}");
 		}
 

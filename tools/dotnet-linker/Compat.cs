@@ -19,7 +19,6 @@ namespace Xamarin.Bundler {
 	public partial class Application {
 		LinkerConfiguration? configuration;
 		public LinkerConfiguration Configuration { get => configuration!; }
-		public string? RuntimeConfigurationFile { get; set; }
 
 		// The runtimeconfig.json 'configProperties' (already merged with the dev file), baked into
 		// the app as C arrays for CoreCLR instead of shipping the binary runtimeconfig format.

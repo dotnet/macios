@@ -3,8 +3,6 @@
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
   </PropertyGroup>
 
-  <Import Project="../../eng/Versions.props" />
-
   <ItemGroup>
     <PackageDownload Include="AppleDocReader.$(AdrRuntimeIdentifier)" Version="[$(AdrNuGetVersion)]" />
   </ItemGroup>

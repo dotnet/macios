@@ -174,6 +174,9 @@ namespace Registrar {
 			if (!minfo.IsStatic && type != minfo.DeclaringType)
 				throw new ArgumentException (string.Format ("Cannot register the instance method '{0}' on the type '{1}'. The type to connect to ('{2}') must match the method's type ('{1}').", minfo.Name, type.FullName, minfo.DeclaringType?.FullName));
 
+			if (!minfo.IsStatic && ea.Selector == "retainCount")
+				throw CreateRetainCountException (minfo);
+
 			List<Exception>? exceptions = null;
 			var objcType = RegisterType (type, ref exceptions);
 			var method = new ObjCMethod (this, objcType!, minfo);

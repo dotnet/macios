@@ -6,6 +6,8 @@
     <_packagePath>$(MSBuildThisFileDirectory)..\Templates\Microsoft.$(_PlatformName).Templates\</_packagePath>
     <LocalizeTemplates Condition=" '$(CIBuild)' != 'true' ">true</LocalizeTemplates>
     <LocalizableTemplatesPath>$(_packagePath)</LocalizableTemplatesPath>
+    <!-- error NU5123: Warning As Error: The file 'tvos/csharp/Assets.xcassets/App Icon & Top Shelf Image.brandassets/App Icon - Large.imagestack/Back.imagestacklayer/Content.imageset/Contents.json' path, name, or both are too long. Your package might not work without long file path support. Shorten the file path or file name. -->
+    <NoWarn>$(NoWarn);NU5123</NoWarn>
   </PropertyGroup>
   <ItemGroup Condition=" '$(CIBuild)' != 'true' ">
     <PackageReference Include="Microsoft.TemplateEngine.Authoring.Tasks" Version="$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)" PrivateAssets="all" IsImplicitlyDefined="true" />

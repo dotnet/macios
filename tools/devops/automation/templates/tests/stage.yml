@@ -77,7 +77,6 @@ stages:
   - ${{ if eq(parameters.postPipeline, false) }}:
     - build_packages
   - configure_build
-  # we need to have the pkgs built and the device sets to be ran, that is decided via the labels or type of build during the build_packages stage
   condition: and(succeeded(), ${{ parameters.condition }})
 
   jobs:
@@ -88,10 +87,9 @@ stages:
       # disable governance checks in the tests 
       skipComponentGovernanceDetection: true
       # old and ugly env var use by jenkins, we do have parts of the code that use it, contains the PR number
-      PR_ID: $[ stageDependencies.configure_build.configure.outputs['labels.pr_number'] ]
+      PR_ID: $[ stageDependencies.configure_build.configure.outputs['build_configuration.pr_number'] ]
       # set the branch variable name, this is required by jenkins and we have a lot of scripts that depend on it
       BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
-      XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
       DOTNET_PLATFORMS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.DOTNET_PLATFORMS'] ]
       # The ACES pool is a virtual-machine pool; expose VM_VENDOR so tests
       # gated by TestRuntime.AssertNotVirtualMachine get ignored there.
@@ -118,7 +116,6 @@ stages:
           clean: all
     strategy:
       matrix: $[ stageDependencies.configure_build.configure.outputs['test_matrix.SIMULATOR_TEST_MATRIX'] ]
-    condition: ne(stageDependencies.configure_build.configure.outputs['labels.skip_all_tests'], 'True')
     steps:
 
     - bash: |

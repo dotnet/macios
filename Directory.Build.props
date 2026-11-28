@@ -33,4 +33,5 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
+	<Import Project="eng/Versions.props" />
 </Project>

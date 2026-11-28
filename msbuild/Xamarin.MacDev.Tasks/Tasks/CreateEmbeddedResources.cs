@@ -7,6 +7,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.MacDev.Tasks;
 
 namespace Xamarin.MacDev.Tasks {
+	[MSBuildMultiThreadableTask]
 	public class CreateEmbeddedResources : XamarinTask {
 		[Required]
 		public ITaskItem [] BundleResources { get; set; } = Array.Empty<ITaskItem> ();

@@ -94,7 +94,7 @@ Constraints:
 - **Don't flag what CI catches.** Skip compiler errors, formatting the linter will catch, etc.
 - **Avoid false positives.** Verify the concern actually applies given the full context. If unsure, phrase it as a question rather than a firm claim.
 - **Don't report potential C# compilation errors** — the compiler will report those.
-- **Ignore comments from 'vs-mobiletools-engineering-service2'** when processing issues and pull requests.
+- **Ignore comments from 'vs-mobiletools-engineering-service2' and 'MauiBot'** when processing issues and pull requests.
 
 ### 7. Post the review
 

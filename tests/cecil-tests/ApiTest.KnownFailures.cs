@@ -17,6 +17,10 @@ using Xamarin.Utils;
 namespace Cecil.Tests {
 
 	public partial class ApiTest {
+		static HashSet<string> knownFailuresTypeNamesDifferingOnlyByCase = new HashSet<string> {
+			"Security.SecKeyChain, Security.SecKeychain",
+		};
+
 		static HashSet<string> knownFailuresMustStartWithCapitalizationLetter = new HashSet<string> {
 			"The field 'Accelerate.vImageGamma Accelerate.vImageGamma::k11ove_5_HalfPrecision' has incorrect capitalization: first letter is not upper case.",
 			"The field 'Accelerate.vImageGamma Accelerate.vImageGamma::k11over9_HalfPrecision' has incorrect capitalization: first letter is not upper case.",

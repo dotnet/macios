@@ -21,6 +21,7 @@ pr:
       - tools/mtouch/README.md
       - msbuild/Xamarin.Localization.MSBuild/README.md
       - '**/TranslatedAssemblies/*.*.resx'
+      - 'macios/Localize/**'
 
 extends:
   template: templates/pipelines/api-diff-pipeline.yml

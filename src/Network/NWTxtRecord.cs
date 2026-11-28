@@ -129,6 +129,7 @@ namespace Network {
 
 		public delegate bool NWTxtRecordApplyDelegate (string? key, NWTxtRecordFindKey result, ReadOnlySpan<byte> value);
 
+		[UserDelegateType (typeof (Func<IntPtr, NWTxtRecordFindKey, IntPtr, ulong, bool>))]
 		[UnmanagedCallersOnly]
 		unsafe static byte TrampolineApplyHandler (IntPtr block, IntPtr keyPointer, NWTxtRecordFindKey found, IntPtr value, nuint valueLen)
 		{
@@ -161,8 +162,9 @@ namespace Network {
 
 		public delegate void NWTxtRecordGetValueDelegete (string? key, NWTxtRecordFindKey result, ReadOnlySpan<byte> value);
 
+		[UserDelegateType (typeof (Func<IntPtr, NWTxtRecordFindKey, IntPtr, ulong, bool>))]
 		[UnmanagedCallersOnly]
-		unsafe static void TrampolineAccessKeyHandler (IntPtr block, IntPtr keyPointer, NWTxtRecordFindKey found, IntPtr value, nuint valueLen)
+		unsafe static byte TrampolineAccessKeyHandler (IntPtr block, IntPtr keyPointer, NWTxtRecordFindKey found, IntPtr value, nuint valueLen)
 		{
 			var del = BlockLiteral.GetTarget<NWTxtRecordGetValueDelegete> (block);
 			if (del is not null) {
@@ -173,7 +175,9 @@ namespace Network {
 					mValue = Array.Empty<byte> ();
 				var key = Marshal.PtrToStringAuto (keyPointer);
 				del (key, found, mValue);
+				return 1;
 			}
+			return 0;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -183,7 +187,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, IntPtr, NWTxtRecordFindKey, IntPtr, nuint, void> trampoline = &TrampolineAccessKeyHandler;
+				delegate* unmanaged<IntPtr, IntPtr, NWTxtRecordFindKey, IntPtr, nuint, byte> trampoline = &TrampolineAccessKeyHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWTxtRecord), nameof (TrampolineAccessKeyHandler));
 				using var keyPtr = new TransientString (key);
 				var result = nw_txt_record_access_key (GetCheckedHandle (), keyPtr, &block) != 0;
@@ -197,14 +201,17 @@ namespace Network {
 
 		public delegate void NWTxtRecordGetRawByteDelegate (ReadOnlySpan<byte> value);
 
+		[UserDelegateType (typeof (Func<IntPtr, ulong, bool>))]
 		[UnmanagedCallersOnly]
-		unsafe static void TrampolineRawBytesHandler (IntPtr block, IntPtr value, nuint valueLen)
+		unsafe static byte TrampolineRawBytesHandler (IntPtr block, IntPtr value, nuint valueLen)
 		{
 			var del = BlockLiteral.GetTarget<NWTxtRecordGetRawByteDelegate> (block);
 			if (del is not null) {
 				var mValue = new ReadOnlySpan<byte> ((void*) value, (int) valueLen);
 				del (mValue);
+				return 1;
 			}
+			return 0;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -214,7 +221,7 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, IntPtr, nuint, void> trampoline = &TrampolineRawBytesHandler;
+				delegate* unmanaged<IntPtr, IntPtr, nuint, byte> trampoline = &TrampolineRawBytesHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWTxtRecord), nameof (TrampolineRawBytesHandler));
 				var result = nw_txt_record_access_bytes (GetCheckedHandle (), &block) != 0;
 				GC.KeepAlive (this);

@@ -83,6 +83,7 @@ jobs:
           // Approved gist owners. Add more entries here as needed.
           const approvedOwners = [
             'vs-mobiletools-engineering-service2',
+            'MauiBot'
           ];
 
           // The Gists API isn't accessible to the GitHub Actions token (a GitHub App

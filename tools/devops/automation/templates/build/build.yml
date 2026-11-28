@@ -87,17 +87,9 @@ steps:
       xcodeChannel: ${{ parameters.XcodeChannel }}
       retryCount: ${{ parameters.retryCount }}
 
-  # Use the env variables that were set by the label parsing in the configure step
-  # print some useful logging to allow to know what is going on AND allow make some
-  # choices, there are labels that contradict each other (skip-package vs build-packages)
-  # we use warnings for those case we are not sure about.
-  - task: PowerShell@2
-    name: configuration
-    displayName: "Parse PR labels"
-    timeoutInMinutes: 5
-    inputs:
-      filePath: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/parse_pr_labels.ps1
-      arguments: -XamarinTop "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/" -BuildReason "$(Build.Reason)"
+  - pwsh: |
+      Write-Host "##vso[task.setvariable variable=XAM_TOP]$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/"
+    displayName: 'Set build directory'
 
   - ${{ if contains(variables['Build.DefinitionName'], 'private') }}:
       - task: PowerShell@2

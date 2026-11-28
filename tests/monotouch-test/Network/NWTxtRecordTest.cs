@@ -122,34 +122,37 @@ namespace MonoTouchFixtures.Network {
 		public void TestGetValueMissing ()
 		{
 			var missing = "missingKey";
-			record.GetValue (missing, (k, r, value) => {
+			var result = record.GetValue (missing, (k, r, value) => {
 				Assert.That (k, Is.EqualTo (missing), "key");
 				Assert.That (r, Is.EqualTo (NWTxtRecordFindKey.NotPresent), "result");
 				Assert.That (value.Length, Is.EqualTo (0), "value");
 			});
+			Assert.That (result, Is.True, "Callback completed for a missing key");
 		}
 
 		[Test]
 		public void TestGetValuePresent ()
 		{
-			record.GetValue (randomKey, (k, r, value) => {
+			var result = record.GetValue (randomKey, (k, r, value) => {
 				Assert.That (k, Is.EqualTo (randomKey), "key");
 				Assert.That (r, Is.EqualTo (NWTxtRecordFindKey.NonEmptyValue), "result");
 				Assert.That (value.Length, Is.Not.EqualTo (0), "value");
 			});
+			Assert.That (result, Is.True, "Callback completed for a present key");
 		}
 
 		[Test]
 		public void TestGetRaw ()
 		{
 			var e = new AutoResetEvent (false);
-			record.GetRawBytes (
+			var result = record.GetRawBytes (
 				(d) => {
 					Assert.That (d.Length, Is.Not.EqualTo (0));
 					e.Set ();
 				}
 			);
 			e.WaitOne ();
+			Assert.That (result, Is.True, "Callback completed for raw bytes");
 
 		}
 	}

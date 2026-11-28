@@ -11,12 +11,15 @@
 #if !TVOS
 
 namespace SharedWithYouCore {
+	/// <summary>Specifies the kind of identifier used to create a <see cref="SWCollaborationMetadata" />.</summary>
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public enum SWIdentifierType {
+		/// <summary>The identifier is a local identifier.</summary>
 		Local,
+		/// <summary>The identifier is a collaboration identifier.</summary>
 		Collaboration,
 	}
 

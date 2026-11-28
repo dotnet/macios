@@ -128,6 +128,7 @@ namespace VideoToolbox {
 			return VTRAWProcessingSessionSetParameterChangedHandler (GetCheckedHandle (), handler is null ? null : &block);
 		}
 
+		[UserDelegateType (typeof (VTRawProcessingParameterChangeHandler))]
 		[UnmanagedCallersOnly]
 		static void VTRawProcessingParameterChangeHandlerCallback (IntPtr block, IntPtr newParameters)
 		{
@@ -161,6 +162,7 @@ namespace VideoToolbox {
 			return status;
 		}
 
+		[UserDelegateType (typeof (VTRawProcessingOutputHandler))]
 		[UnmanagedCallersOnly]
 		static void VTRawProcessingOutputHandlerCallback (IntPtr block, VTStatus status, IntPtr processedPixelBuffer)
 		{

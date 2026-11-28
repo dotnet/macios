@@ -47,6 +47,7 @@ namespace UIKit {
 		public delegate void UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler (bool success, NSError? error);
 
 		static internal class UIGuidedAccessConfigureAccessibilityFeaturesTrampoline {
+			[UserDelegateType (typeof (UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler))]
 			[UnmanagedCallersOnlyAttribute]
 			internal static unsafe void Invoke (IntPtr block, byte success, IntPtr error)
 			{

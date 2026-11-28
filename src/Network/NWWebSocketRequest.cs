@@ -26,6 +26,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern byte nw_ws_request_enumerate_additional_headers (OS_nw_ws_request request, BlockLiteral* enumerator);
 
+		[UserDelegateType (typeof (Func<IntPtr, IntPtr, bool>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEnumerateHeaderHandler (IntPtr block, IntPtr headerPointer, IntPtr valuePointer)
 		{
@@ -54,6 +55,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern byte nw_ws_request_enumerate_subprotocols (OS_nw_ws_request request, BlockLiteral* enumerator);
 
+		[UserDelegateType (typeof (Func<IntPtr, bool>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEnumerateSubprotocolHandler (IntPtr block, IntPtr subprotocolPointer)
 		{

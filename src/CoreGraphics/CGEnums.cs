@@ -202,62 +202,114 @@ namespace CoreGraphics {
 		PlusLighter,
 	}
 
+	/// <summary>Tag types for describing a PDF document's structure and content.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CGPdfTagType /* int32_t */ {
+		/// <summary>The root of the document's logical structure.</summary>
 		Document = 100,
+		/// <summary>A division of a larger document into related parts.</summary>
 		Part,
+		/// <summary>An article in the document.</summary>
 		Art,
+		/// <summary>A section of the document.</summary>
 		Section,
+		/// <summary>A generic block-level element or group of elements.</summary>
 		Div,
+		/// <summary>A passage quoted from another author.</summary>
 		BlockQuote,
+		/// <summary>A brief description of a table or figure.</summary>
 		Caption,
+		/// <summary>A table of contents.</summary>
 		Toc,
+		/// <summary>An entry in a table of contents.</summary>
 		Toci,
+		/// <summary>An index.</summary>
 		Index,
+		/// <summary>A grouping element with no inherent structural significance.</summary>
 		NonStructure,
+		/// <summary>A grouping element reserved for private use.</summary>
 		Private,
+		/// <summary>An ordinary paragraph.</summary>
 		Paragraph = 200,
+		/// <summary>A heading.</summary>
 		Header,
+		/// <summary>A level-one heading.</summary>
 		Header1,
+		/// <summary>A level-two heading.</summary>
 		Header2,
+		/// <summary>A level-three heading.</summary>
 		Header3,
+		/// <summary>A level-four heading.</summary>
 		Header4,
+		/// <summary>A level-five heading.</summary>
 		Header5,
+		/// <summary>A level-six heading.</summary>
 		Header6,
+		/// <summary>A list container.</summary>
 		List = 300,
+		/// <summary>An item in a list.</summary>
 		ListItem,
+		/// <summary>The label of a list item.</summary>
 		Label,
+		/// <summary>The body of a list item.</summary>
 		ListBody,
+		/// <summary>A table.</summary>
 		Table = 400,
+		/// <summary>A row in a table.</summary>
 		TableRow,
+		/// <summary>A cell containing table header information.</summary>
 		TableHeaderCell,
+		/// <summary>A cell containing table data.</summary>
 		TableDataCell,
+		/// <summary>A group of rows that form the table header.</summary>
 		TableHeader,
+		/// <summary>A group of rows that form the table body.</summary>
 		TableBody,
+		/// <summary>A group of rows that form the table footer.</summary>
 		TableFooter,
+		/// <summary>A generic inline portion of text.</summary>
 		Span = 500,
+		/// <summary>An inline quotation attributed to another author.</summary>
 		Quote,
+		/// <summary>An explanatory note, such as a footnote or endnote.</summary>
 		Note,
+		/// <summary>A reference to another part of the document.</summary>
 		Reference,
+		/// <summary>A bibliography entry.</summary>
 		Bibliography,
+		/// <summary>A fragment of computer code.</summary>
 		Code,
+		/// <summary>A link and its associated link annotation.</summary>
 		Link,
+		/// <summary>An association between document content and a PDF annotation, excluding link and widget annotations.</summary>
 		Annotation,
+		/// <summary>A side note in smaller text placed next to the text it annotates.</summary>
 		Ruby = 600,
+		/// <summary>The main text to which a ruby annotation applies.</summary>
 		RubyBaseText,
+		/// <summary>The smaller text placed next to ruby base text.</summary>
 		RubyAnnotationText,
+		/// <summary>Punctuation that encloses ruby annotation text.</summary>
 		RubyPunctuation,
+		/// <summary>A smaller-text annotation formatted on two lines and placed inline after its base text.</summary>
 		Warichu,
+		/// <summary>The smaller text of a warichu annotation placed inline after its base text.</summary>
 		WarichuText,
+		/// <summary>Punctuation that encloses warichu text.</summary>
 		WarichuPunctuation,
 #if !XAMCORE_5_0
+		/// <summary>An obsolete, misspelled alias for <see cref="WarichuPunctuation" />.</summary>
 		[Obsolete ("Use 'WarichuPunctuation' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		WarichuPunctiation = WarichuPunctuation,
 #endif
+		/// <summary>A figure or other graphical content.</summary>
 		Figure = 700,
+		/// <summary>A mathematical formula.</summary>
 		Formula,
+		/// <summary>A widget annotation for an interactive form field.</summary>
 		Form,
+		/// <summary>An object reference associated with the document structure.</summary>
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Object = 800,
 		/// <summary>A non-structural tag for content that should be excluded from the document's logical structure.</summary>

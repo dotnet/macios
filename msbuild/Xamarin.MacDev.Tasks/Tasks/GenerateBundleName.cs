@@ -8,6 +8,7 @@ using Xamarin.Localization.MSBuild;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
+	[MSBuildMultiThreadableTask]
 	public class GenerateBundleName : XamarinTask {
 		[Required]
 		public string ProjectName { get; set; } = "";
